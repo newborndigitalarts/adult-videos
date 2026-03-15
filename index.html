@@ -3,661 +3,830 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Naughty Video Club – Free Adult Videos Online</title>
-<meta name="description" content="Watch free adult videos online. The best 18+ video content curated daily.">
+<title>Naughty Video Club – Free Adult Videos</title>
+<meta name="description" content="Watch free adult videos online. Best 18+ content updated daily.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0705;
-    --surface: #110e0b;
-    --card: #161210;
-    --border: #2a2018;
-    --accent: #e8a045;
-    --accent2: #c4503a;
-    --text: #e8ddd0;
-    --muted: #6b5a48;
-    --glow: 0 0 30px rgba(232,160,69,0.25);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(232,160,69,0.06) 0%, transparent 60%);
-    pointer-events: none;
-  }
+:root {
+  --bg: #111111;
+  --bg2: #1a1a1a;
+  --bg3: #222222;
+  --border: #2e2e2e;
+  --red: #e02020;
+  --red2: #ff3333;
+  --text: #f0f0f0;
+  --muted: #888;
+  --muted2: #555;
+  --thumb-ratio: 56.25%;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-serif; font-size:13px; }
 
-  /* HEADER */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,7,5,0.96);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 32px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 24px;
-    letter-spacing: 1px;
-  }
-  .logo span { color: var(--accent); }
-  .logo em { color: var(--accent2); font-style: italic; }
-  nav { display: flex; gap: 4px; align-items: center; }
-  nav a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    padding: 6px 14px;
-    transition: color 0.2s;
-    letter-spacing: 0.3px;
-  }
-  nav a:hover, nav a.active { color: var(--accent); }
-  .nav-divider { color: var(--border); }
+/* ── HEADER ── */
+.header-top {
+  background:#000;
+  padding:10px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:200;
+  border-bottom:2px solid var(--red);
+}
+.logo {
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  flex-shrink:0;
+  text-decoration:none;
+}
+.logo-naughty {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:28px;
+  color:var(--red);
+  letter-spacing:2px;
+  line-height:1;
+}
+.logo-video {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:28px;
+  color:#fff;
+  letter-spacing:2px;
+  line-height:1;
+}
+.logo-club {
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:14px;
+  color:#aaa;
+  font-weight:400;
+  letter-spacing:1px;
+}
+.search-bar {
+  flex:1;
+  max-width:600px;
+  display:flex;
+  background:var(--bg3);
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+.search-bar input {
+  flex:1;
+  background:none;
+  border:none;
+  outline:none;
+  color:var(--text);
+  font-family:'Montserrat',sans-serif;
+  font-size:13px;
+  padding:8px 14px;
+}
+.search-bar input::placeholder { color:var(--muted2); }
+.search-bar button {
+  background:var(--red);
+  border:none;
+  color:#fff;
+  padding:0 18px;
+  cursor:pointer;
+  font-size:16px;
+  transition:background 0.2s;
+}
+.search-bar button:hover { background:var(--red2); }
+.header-actions { margin-left:auto; display:flex; gap:8px; }
+.btn-login {
+  background:none;
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:6px 14px;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-login:hover { border-color:var(--muted); color:var(--text); }
+.btn-signup {
+  background:var(--red);
+  border:none;
+  color:#fff;
+  padding:6px 14px;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:background 0.2s;
+}
+.btn-signup:hover { background:var(--red2); }
 
-  /* FEATURED */
-  .featured {
-    position: relative;
-    z-index: 1;
-    max-width: 1300px;
-    margin: 32px auto 0;
-    padding: 0 24px;
-  }
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-  .featured-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 16px;
-  }
-  .featured-main {
-    position: relative;
-    cursor: pointer;
-    overflow: hidden;
-  }
-  .featured-main .thumb {
-    width: 100%;
-    padding-bottom: 56.25%;
-    position: relative;
-    background: var(--surface);
-  }
-  .featured-main .thumb img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s;
-  }
-  .featured-main:hover .thumb img { transform: scale(1.03); }
-  .featured-side {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .side-card {
-    display: flex;
-    gap: 12px;
-    cursor: pointer;
-    padding: 8px;
-    border: 1px solid transparent;
-    transition: all 0.2s;
-  }
-  .side-card:hover { border-color: var(--border); background: var(--card); }
-  .side-thumb {
-    width: 120px;
-    flex-shrink: 0;
-    position: relative;
-    padding-bottom: 0;
-    height: 68px;
-    background: var(--surface);
-    overflow: hidden;
-  }
-  .side-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .side-info { flex: 1; min-width: 0; }
-  .side-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 4px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    line-height: 1.3;
-  }
-  .side-meta { font-size: 12px; color: var(--muted); }
+/* ── NAV ── */
+.nav-bar {
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  gap:0;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.nav-bar::-webkit-scrollbar { display:none; }
+.nav-link {
+  color:var(--muted);
+  text-decoration:none;
+  font-size:12px;
+  font-weight:500;
+  padding:10px 14px;
+  white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:all 0.2s;
+  letter-spacing:0.3px;
+  text-transform:uppercase;
+}
+.nav-link:hover, .nav-link.active {
+  color:var(--text);
+  border-bottom-color:var(--red);
+}
 
-  /* VIDEO INFO OVERLAY */
-  .video-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.85));
-    padding: 32px 16px 14px;
-  }
-  .video-overlay .v-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px;
-    color: white;
-    margin-bottom: 4px;
-  }
-  .video-overlay .v-meta { font-size: 12px; color: rgba(255,255,255,0.6); }
-  .duration-badge {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    background: rgba(0,0,0,0.8);
-    color: white;
-    font-size: 11px;
-    font-weight: 500;
-    padding: 2px 6px;
-    font-family: 'DM Sans', monospace;
-  }
-  .play-circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 52px;
-    height: 52px;
-    background: rgba(232,160,69,0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .featured-main:hover .play-circle { opacity: 1; }
-  .play-circle::after {
-    content: '';
-    width: 0;
-    height: 0;
-    border-top: 9px solid transparent;
-    border-bottom: 9px solid transparent;
-    border-left: 16px solid white;
-    margin-left: 3px;
-  }
+/* ── LAYOUT ── */
+.page {
+  display:flex;
+  max-width:1600px;
+  margin:0 auto;
+  padding:0;
+}
 
-  /* MAIN GRID */
-  .main-content {
-    position: relative;
-    z-index: 1;
-    max-width: 1300px;
-    margin: 40px auto;
-    padding: 0 24px;
-  }
-  .category-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .category-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    color: var(--text);
-  }
-  .view-all {
-    font-size: 13px;
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 500;
-    letter-spacing: 0.3px;
-  }
-  .video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
-    margin-bottom: 40px;
-  }
-  .video-card {
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .video-card:hover { transform: translateY(-2px); }
-  .v-thumb {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%;
-    background: var(--surface);
-    overflow: hidden;
-    margin-bottom: 10px;
-  }
-  .v-thumb img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-  }
-  .video-card:hover .v-thumb img { transform: scale(1.04); }
-  .v-play {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .video-card:hover .v-play { opacity: 1; }
-  .v-play-icon {
-    width: 44px;
-    height: 44px;
-    background: rgba(232,160,69,0.9);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .v-play-icon::after {
-    content: '';
-    width: 0; height: 0;
-    border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
-    border-left: 13px solid white;
-    margin-left: 2px;
-  }
-  .v-duration {
-    position: absolute;
-    bottom: 6px;
-    right: 6px;
-    background: rgba(0,0,0,0.8);
-    color: white;
-    font-size: 11px;
-    padding: 1px 5px;
-  }
-  .v-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.4;
-    margin-bottom: 4px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-  .v-info { font-size: 12px; color: var(--muted); display: flex; gap: 8px; }
+/* ── SIDEBAR ── */
+.sidebar {
+  width:180px;
+  flex-shrink:0;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  min-height:calc(100vh - 90px);
+  padding:16px 0;
+}
+.sidebar-title {
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted2);
+  padding:0 14px 8px;
+}
+.sidebar-link {
+  display:block;
+  color:var(--muted);
+  text-decoration:none;
+  padding:7px 14px;
+  font-size:12px;
+  font-weight:500;
+  transition:all 0.15s;
+  border-left:2px solid transparent;
+}
+.sidebar-link:hover, .sidebar-link.active {
+  color:var(--text);
+  background:var(--bg3);
+  border-left-color:var(--red);
+}
+.sidebar-divider {
+  height:1px;
+  background:var(--border);
+  margin:10px 14px;
+}
 
-  /* FILTERS BAR */
-  .filters-bar {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-  }
-  .filter-pill {
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 5px 14px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    border-radius: 20px;
-    transition: all 0.2s;
-  }
-  .filter-pill:hover, .filter-pill.active {
-    background: var(--accent);
-    color: var(--bg);
-    border-color: var(--accent);
-  }
+/* ── MAIN ── */
+.main { flex:1; min-width:0; padding:14px 16px; }
 
-  /* MODAL */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.94);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--card);
-    border: 1px solid var(--border);
-    width: 100%;
-    max-width: 960px;
-  }
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--border);
-  }
-  .modal-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 18px;
-    color: var(--text);
-  }
-  .modal-close {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 2px;
-    transition: all 0.2s;
-  }
-  .modal-close:hover { color: var(--accent2); border-color: var(--accent2); }
-  .modal-body {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%;
-  }
-  .modal-body iframe {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    background: #000;
-  }
-  .modal-footer {
-    padding: 10px 18px;
-    border-top: 1px solid var(--border);
-    font-size: 12px;
-    color: var(--muted);
-  }
+/* ── SECTION HEADER ── */
+.section-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+  margin-top:20px;
+}
+.section-header:first-child { margin-top:0; }
+.section-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:22px;
+  letter-spacing:2px;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.section-title::before {
+  content:'';
+  display:block;
+  width:4px;
+  height:20px;
+  background:var(--red);
+}
+.section-more {
+  color:var(--red);
+  text-decoration:none;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.section-more:hover { color:var(--red2); }
 
-  /* AGE GATE */
-  .age-gate {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-  .age-gate-box {
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-    border: 1px solid var(--border);
-    padding: 48px 32px;
-    background: var(--card);
-  }
-  .age-logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    margin-bottom: 24px;
-    color: var(--text);
-  }
-  .age-logo span { color: var(--accent); }
-  .age-gate-box h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 18px;
-    color: var(--text);
-    margin-bottom: 12px;
-    font-weight: 400;
-  }
-  .age-gate-box p {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 28px;
-  }
-  .age-btns { display: flex; flex-direction: column; gap: 10px; }
-  .btn-enter {
-    background: var(--accent);
-    color: var(--bg);
-    border: none;
-    padding: 14px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .btn-enter:hover { box-shadow: var(--glow); }
-  .btn-leave {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 12px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-leave:hover { border-color: var(--muted); }
+/* ── VIDEO GRID ── */
+.video-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+  gap:10px;
+  margin-bottom:24px;
+}
+.video-grid.large {
+  grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+}
 
-  /* FOOTER */
-  footer {
-    position: relative;
-    z-index: 1;
-    border-top: 1px solid var(--border);
-    padding: 28px 24px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    max-width: 1300px;
-    margin: 0 auto;
-  }
-  footer a { color: var(--muted); text-decoration: none; margin: 0 8px; }
-  footer a:hover { color: var(--accent); }
+/* ── VIDEO CARD ── */
+.vcard {
+  cursor:pointer;
+  transition:transform 0.15s;
+}
+.vcard:hover { transform:translateY(-2px); }
+.vcard-thumb {
+  position:relative;
+  width:100%;
+  padding-bottom:var(--thumb-ratio);
+  background:var(--bg3);
+  overflow:hidden;
+}
+.vcard-thumb img {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform 0.3s;
+}
+.vcard:hover .vcard-thumb img { transform:scale(1.05); }
+.vcard-duration {
+  position:absolute;
+  bottom:5px;
+  right:5px;
+  background:rgba(0,0,0,0.85);
+  color:#fff;
+  font-size:11px;
+  font-weight:600;
+  padding:1px 5px;
+  border-radius:2px;
+}
+.vcard-hd {
+  position:absolute;
+  top:5px;
+  left:5px;
+  background:var(--red);
+  color:#fff;
+  font-size:9px;
+  font-weight:700;
+  padding:1px 4px;
+  letter-spacing:1px;
+}
+.vcard-new {
+  position:absolute;
+  top:5px;
+  right:5px;
+  background:#f5a623;
+  color:#000;
+  font-size:9px;
+  font-weight:700;
+  padding:1px 4px;
+  letter-spacing:1px;
+}
+.vcard-overlay {
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:opacity 0.2s;
+}
+.vcard:hover .vcard-overlay { opacity:1; }
+.vcard-play {
+  width:44px;
+  height:44px;
+  background:rgba(224,32,32,0.9);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.vcard-play::after {
+  content:'';
+  width:0; height:0;
+  border-top:8px solid transparent;
+  border-bottom:8px solid transparent;
+  border-left:15px solid #fff;
+  margin-left:3px;
+}
+.vcard-info { padding:6px 2px 2px; }
+.vcard-title {
+  font-size:12px;
+  font-weight:500;
+  color:var(--text);
+  line-height:1.4;
+  margin-bottom:3px;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+}
+.vcard-meta {
+  display:flex;
+  gap:8px;
+  color:var(--muted);
+  font-size:11px;
+}
+.vcard-views { color:var(--muted); }
+.vcard-channel { color:var(--red); font-weight:500; }
 
-  @media (max-width: 768px) {
-    .featured-grid { grid-template-columns: 1fr; }
-    .featured-side { display: none; }
-    .video-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    nav a { display: none; }
-    nav a.active { display: block; }
-  }
+/* ── CATEGORY PILLS ── */
+.cat-pills {
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.cat-pill {
+  background:var(--bg3);
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:5px 12px;
+  font-size:11px;
+  font-weight:500;
+  cursor:pointer;
+  border-radius:2px;
+  transition:all 0.15s;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+.cat-pill:hover, .cat-pill.active {
+  background:var(--red);
+  border-color:var(--red);
+  color:#fff;
+}
+
+/* ── FEATURED BANNER ── */
+.featured-banner {
+  position:relative;
+  width:100%;
+  padding-bottom:35%;
+  background:var(--bg3);
+  overflow:hidden;
+  margin-bottom:20px;
+  cursor:pointer;
+}
+.featured-banner img {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.featured-banner::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to right, rgba(0,0,0,0.8) 0%, transparent 60%);
+}
+.featured-info {
+  position:absolute;
+  left:32px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:2;
+  max-width:400px;
+}
+.featured-tag {
+  background:var(--red);
+  color:#fff;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  padding:3px 8px;
+  display:inline-block;
+  margin-bottom:8px;
+}
+.featured-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:32px;
+  letter-spacing:2px;
+  color:#fff;
+  line-height:1.1;
+  margin-bottom:6px;
+}
+.featured-meta { color:#aaa; font-size:12px; }
+.featured-play {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:2;
+  width:60px;
+  height:60px;
+  background:rgba(224,32,32,0.9);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transition:opacity 0.2s;
+}
+.featured-banner:hover .featured-play { opacity:1; }
+.featured-play::after {
+  content:'';
+  width:0; height:0;
+  border-top:10px solid transparent;
+  border-bottom:10px solid transparent;
+  border-left:20px solid #fff;
+  margin-left:4px;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.95);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:#000;
+  border:1px solid var(--border);
+  width:100%;
+  max-width:1000px;
+}
+.modal-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 14px;
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+}
+.modal-title {
+  font-size:14px;
+  font-weight:600;
+  color:var(--text);
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  max-width:80%;
+}
+.modal-close {
+  background:var(--bg3);
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:30px;
+  height:30px;
+  cursor:pointer;
+  font-size:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.2s;
+  flex-shrink:0;
+}
+.modal-close:hover { color:#fff; background:var(--red); border-color:var(--red); }
+.modal-body {
+  position:relative;
+  width:100%;
+  padding-bottom:56.25%;
+}
+.modal-body iframe {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:none;
+  background:#000;
+}
+.modal-footer {
+  padding:8px 14px;
+  background:var(--bg2);
+  border-top:1px solid var(--border);
+  font-size:11px;
+  color:var(--muted);
+  display:flex;
+  gap:12px;
+}
+
+/* ── AGE GATE ── */
+.age-gate {
+  position:fixed;
+  inset:0;
+  background:#0a0a0a;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.age-box {
+  text-align:center;
+  max-width:460px;
+  padding:48px 40px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-top:3px solid var(--red);
+}
+.age-logo {
+  margin-bottom:20px;
+}
+.age-logo .l1 { font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--red); letter-spacing:3px; }
+.age-logo .l2 { font-family:'Bebas Neue',sans-serif; font-size:36px; color:#fff; letter-spacing:3px; }
+.age-logo .l3 { font-family:'Playfair Display',serif; font-style:italic; font-size:16px; color:var(--muted); display:block; margin-top:-4px; }
+.age-box h3 { font-size:14px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text); margin-bottom:10px; }
+.age-box p { color:var(--muted); font-size:12px; line-height:1.7; margin-bottom:28px; }
+.age-btn-yes {
+  display:block;
+  width:100%;
+  background:var(--red);
+  border:none;
+  color:#fff;
+  padding:14px;
+  font-family:'Montserrat',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  cursor:pointer;
+  margin-bottom:10px;
+  transition:background 0.2s;
+}
+.age-btn-yes:hover { background:var(--red2); }
+.age-btn-no {
+  display:block;
+  width:100%;
+  background:none;
+  border:1px solid var(--border);
+  color:var(--muted);
+  padding:11px;
+  font-family:'Montserrat',sans-serif;
+  font-size:13px;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.age-btn-no:hover { border-color:var(--muted); color:var(--text); }
+
+/* ── FOOTER ── */
+.site-footer {
+  background:#000;
+  border-top:1px solid var(--border);
+  padding:20px 16px;
+  text-align:center;
+  color:var(--muted2);
+  font-size:11px;
+  margin-top:32px;
+}
+.site-footer a { color:var(--muted); text-decoration:none; margin:0 8px; }
+.site-footer a:hover { color:var(--red); }
+
+@media(max-width:900px) {
+  .sidebar { display:none; }
+  .video-grid { grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:8px; }
+  .featured-banner { padding-bottom:50%; }
+  .featured-info { display:none; }
+}
+@media(max-width:600px) {
+  .video-grid { grid-template-columns:repeat(2,1fr); }
+  .header-actions { display:none; }
+}
 </style>
 </head>
 <body>
 
 <!-- AGE GATE -->
 <div class="age-gate" id="ageGate">
-  <div class="age-gate-box">
-    <div class="age-logo"><span>Naughty</span> Video Club</div>
-    <h3>This site contains adult content</h3>
-    <p>You must be 18 years of age or older to enter. By clicking enter, you confirm you are of legal age in your jurisdiction.</p>
-    <div class="age-btns">
-      <button class="btn-enter" onclick="enterSite()">I confirm I am 18+ — Enter</button>
-      <button class="btn-leave" onclick="window.location.href='https://google.com'">Leave this site</button>
+  <div class="age-box">
+    <div class="age-logo">
+      <span class="l1">Naughty </span><span class="l2">Video</span>
+      <span class="l3">Club</span>
     </div>
+    <h3>Adult Content Warning</h3>
+    <p>This website contains explicit adult content intended for mature audiences only. By entering you confirm you are at least 18 years of age and it is legal to view such material in your location.</p>
+    <button class="age-btn-yes" onclick="enterSite()">I AM 18+ — ENTER NOW</button>
+    <button class="age-btn-no" onclick="location.href='https://google.com'">I am under 18 — Leave</button>
   </div>
 </div>
 
 <!-- HEADER -->
-<header>
-  <div class="logo"><span>Naughty</span> Video <em>Club</em></div>
-  <nav>
-    <a href="#" class="active">Home</a>
-    <span class="nav-divider">|</span>
-    <a href="#">Categories</a>
-    <span class="nav-divider">|</span>
-    <a href="#">Most Viewed</a>
-    <span class="nav-divider">|</span>
-    <a href="#">New</a>
-  </nav>
-</header>
+<div class="header-top">
+  <a class="logo" href="#">
+    <span class="logo-naughty">Naughty</span>
+    <span class="logo-video">Video</span>
+    <span class="logo-club">Club</span>
+  </a>
+  <div class="search-bar">
+    <input type="text" placeholder="Search videos...">
+    <button>🔍</button>
+  </div>
+  <div class="header-actions">
+    <button class="btn-login">Login</button>
+    <button class="btn-signup">Sign Up Free</button>
+  </div>
+</div>
 
-<!-- FEATURED -->
-<div class="featured">
-  <div class="section-label">Featured Today</div>
-  <div class="featured-grid">
-    <div class="featured-main" onclick="openVideo(1)">
-      <div class="thumb">
-        <img src="https://picsum.photos/seed/vid1/800/450" alt="Featured Video">
-        <div class="play-circle"></div>
-        <span class="duration-badge">12:34</span>
+<!-- NAV -->
+<div class="nav-bar">
+  <a class="nav-link active" href="#">Home</a>
+  <a class="nav-link" href="#">Videos</a>
+  <a class="nav-link" href="#">Categories</a>
+  <a class="nav-link" href="#">Most Viewed</a>
+  <a class="nav-link" href="#">Top Rated</a>
+  <a class="nav-link" href="#">Newest</a>
+  <a class="nav-link" href="#">Long Videos</a>
+  <a class="nav-link" href="#">HD</a>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-title">Categories</div>
+    <a class="sidebar-link active" href="#" onclick="filterVideos('all',this);return false;">All Videos</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('amateur',this);return false;">Amateur</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('milf',this);return false;">MILF</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('teen',this);return false;">Teen (18+)</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('lesbian',this);return false;">Lesbian</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('asian',this);return false;">Asian</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('latina',this);return false;">Latina</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('bbw',this);return false;">BBW</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('anal',this);return false;">Anal</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('compilation',this);return false;">Compilation</a>
+    <a class="sidebar-link" href="#" onclick="filterVideos('hd',this);return false;">HD Videos</a>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-title">Popular Tags</div>
+    <a class="sidebar-link" href="#">Homemade</a>
+    <a class="sidebar-link" href="#">POV</a>
+    <a class="sidebar-link" href="#">Creampie</a>
+    <a class="sidebar-link" href="#">Blowjob</a>
+    <a class="sidebar-link" href="#">Solo</a>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- FEATURED -->
+    <div class="featured-banner" onclick="openVideo(1)">
+      <img src="https://picsum.photos/seed/feat/1200/400" alt="Featured">
+      <div class="featured-info">
+        <span class="featured-tag">⚡ Trending Now</span>
+        <div class="featured-title">Today's Most Watched</div>
+        <div class="featured-meta">2.4M views &nbsp;•&nbsp; 18:22 &nbsp;•&nbsp; HD</div>
       </div>
-      <div class="video-overlay">
-        <div class="v-title">Editor's Pick — Premium Selection</div>
-        <div class="v-meta">Featured • 1.2M views</div>
-      </div>
+      <div class="featured-play"></div>
     </div>
-    <div class="featured-side" id="featuredSide"></div>
+
+    <!-- CATEGORY PILLS -->
+    <div class="cat-pills" id="catPills">
+      <button class="cat-pill active" onclick="filterVideos('all',this)">All</button>
+      <button class="cat-pill" onclick="filterVideos('amateur',this)">Amateur</button>
+      <button class="cat-pill" onclick="filterVideos('milf',this)">MILF</button>
+      <button class="cat-pill" onclick="filterVideos('teen',this)">Teen (18+)</button>
+      <button class="cat-pill" onclick="filterVideos('lesbian',this)">Lesbian</button>
+      <button class="cat-pill" onclick="filterVideos('asian',this)">Asian</button>
+      <button class="cat-pill" onclick="filterVideos('hd',this)">HD</button>
+      <button class="cat-pill" onclick="filterVideos('compilation',this)">Compilation</button>
+    </div>
+
+    <!-- TRENDING -->
+    <div class="section-header">
+      <div class="section-title">Trending Videos</div>
+      <a href="#" class="section-more">View All →</a>
+    </div>
+    <div class="video-grid large" id="trendingGrid"></div>
+
+    <!-- NEWEST -->
+    <div class="section-header">
+      <div class="section-title">Newest Uploads</div>
+      <a href="#" class="section-more">View All →</a>
+    </div>
+    <div class="video-grid" id="newestGrid"></div>
+
+    <!-- MOST VIEWED -->
+    <div class="section-header">
+      <div class="section-title">Most Viewed</div>
+      <a href="#" class="section-more">View All →</a>
+    </div>
+    <div class="video-grid" id="popularGrid"></div>
+
   </div>
 </div>
-
-<!-- MAIN CONTENT -->
-<div class="main-content">
-
-  <!-- FILTERS -->
-  <div class="filters-bar">
-    <button class="filter-pill active" onclick="filterVideos('all', this)">All</button>
-    <button class="filter-pill" onclick="filterVideos('amateur', this)">Amateur</button>
-    <button class="filter-pill" onclick="filterVideos('premium', this)">Premium</button>
-    <button class="filter-pill" onclick="filterVideos('animation', this)">Animation</button>
-    <button class="filter-pill" onclick="filterVideos('vintage', this)">Vintage</button>
-    <button class="filter-pill" onclick="filterVideos('compilation', this)">Compilation</button>
-  </div>
-
-  <div class="category-header">
-    <h2 class="category-title">Latest Videos</h2>
-    <a href="#" class="view-all">View all →</a>
-  </div>
-  <div class="video-grid" id="videoGrid"></div>
-
-  <div class="category-header">
-    <h2 class="category-title">Most Popular</h2>
-    <a href="#" class="view-all">View all →</a>
-  </div>
-  <div class="video-grid" id="popularGrid"></div>
-
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <p>© 2025 NaughtyVideoClub.com &nbsp;|&nbsp;
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms of Use</a>
-    <a href="#">DMCA</a>
-    <a href="#">Contact</a>
-  </p>
-  <p style="margin-top:8px;">This site embeds publicly available content. All videos are property of their respective owners.</p>
-</footer>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="videoModal">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title" id="modalTitle">Video Title</span>
+      <span class="modal-title" id="modalTitle">Video</span>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
       <iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe>
     </div>
-    <div class="modal-footer" id="modalMeta">category • views</div>
+    <div class="modal-footer" id="modalMeta"></div>
   </div>
 </div>
 
+<!-- FOOTER -->
+<div class="site-footer">
+  <p>© 2025 NaughtyVideoClub.com &nbsp;|&nbsp;
+    <a href="dmca.html">DMCA</a>
+    <a href="dmca.html">Privacy Policy</a>
+    <a href="dmca.html">Terms of Use</a>
+  </p>
+  <p style="margin-top:6px;">All videos are embedded from third-party platforms. We do not host any video files.</p>
+  <p style="margin-top:6px;">Contact: <a href="mailto:newborndigitalarts@protonmail.com">newborndigitalarts@protonmail.com</a></p>
+</div>
+
 <script>
-// ── VIDEO DATA ─────────────────────────────────────────────
-// Replace embedUrl with real YouTube embed URLs or other sources
-// Example: https://www.youtube.com/embed/VIDEO_ID
+// ── VIDEO DATA ─────────────────────────────────────
+// embedUrl alanlarını gerçek video embed linkleriyle değiştir
 const videos = [
-  { id:1,  title:"Midnight Rendezvous", cat:"premium",     views:"2.4M", duration:"18:22", thumb:"https://picsum.photos/seed/v1/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:2,  title:"Summer Escape",       cat:"amateur",     views:"890K", duration:"08:45", thumb:"https://picsum.photos/seed/v2/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:3,  title:"Neon Dreams",         cat:"animation",   views:"1.1M", duration:"14:30", thumb:"https://picsum.photos/seed/v3/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:4,  title:"Classic Encounters",  cat:"vintage",     views:"560K", duration:"22:10", thumb:"https://picsum.photos/seed/v4/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:5,  title:"Best Of Vol.3",       cat:"compilation", views:"3.2M", duration:"45:00", thumb:"https://picsum.photos/seed/v5/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:6,  title:"Private Sessions",    cat:"amateur",     views:"440K", duration:"11:18", thumb:"https://picsum.photos/seed/v6/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:7,  title:"Luxury Suite",        cat:"premium",     views:"1.8M", duration:"20:05", thumb:"https://picsum.photos/seed/v7/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:8,  title:"Animated Fantasy",    cat:"animation",   views:"720K", duration:"16:40", thumb:"https://picsum.photos/seed/v8/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:9,  title:"The Golden Era",      cat:"vintage",     views:"380K", duration:"30:15", thumb:"https://picsum.photos/seed/v9/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:10, title:"Ultimate Mix",        cat:"compilation", views:"4.1M", duration:"60:00", thumb:"https://picsum.photos/seed/v10/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:11, title:"After Hours",         cat:"premium",     views:"950K", duration:"17:33", thumb:"https://picsum.photos/seed/v11/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
-  { id:12, title:"Raw & Real",          cat:"amateur",     views:"310K", duration:"09:22", thumb:"https://picsum.photos/seed/v12/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:1,  title:"Passionate Encounter – Amateur Couple",       cat:"amateur",     views:"2.4M", duration:"18:22", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v1/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:2,  title:"Experienced Woman Shows What She Knows",      cat:"milf",        views:"1.8M", duration:"24:10", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v2/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:3,  title:"Beautiful Latina Beauty – POV",               cat:"latina",      views:"990K", duration:"14:30", hd:false, isNew:true,  thumb:"https://picsum.photos/seed/v3/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:4,  title:"College Girls Having Fun",                    cat:"teen",        views:"3.1M", duration:"22:05", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v4/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:5,  title:"Asian Beauty – Solo Performance",             cat:"asian",       views:"1.2M", duration:"16:40", hd:true,  isNew:true,  thumb:"https://picsum.photos/seed/v5/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:6,  title:"Best Of 2025 – Ultimate Compilation",         cat:"compilation", views:"5.4M", duration:"60:00", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v6/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:7,  title:"Two Friends Get Close",                       cat:"lesbian",     views:"880K", duration:"19:15", hd:false, isNew:true,  thumb:"https://picsum.photos/seed/v7/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:8,  title:"Home Alone – Amateur Session",                cat:"amateur",     views:"440K", duration:"11:50", hd:false, isNew:true,  thumb:"https://picsum.photos/seed/v8/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:9,  title:"Curvy and Confident",                        cat:"bbw",         views:"670K", duration:"13:20", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v9/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:10, title:"HD Premium – Full Scene",                     cat:"hd",          views:"2.1M", duration:"35:00", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v10/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:11, title:"Sneaky Afternoon Delight",                    cat:"amateur",     views:"320K", duration:"08:44", hd:false, isNew:true,  thumb:"https://picsum.photos/seed/v11/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:12, title:"Stepmom Teaches a Lesson",                    cat:"milf",        views:"4.2M", duration:"28:33", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v12/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:13, title:"Yoga Session Gets Interesting",               cat:"teen",        views:"760K", duration:"17:11", hd:true,  isNew:true,  thumb:"https://picsum.photos/seed/v13/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:14, title:"Outdoor Adventure – Public Fun",              cat:"amateur",     views:"550K", duration:"09:30", hd:false, isNew:true,  thumb:"https://picsum.photos/seed/v14/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:15, title:"Asian Office Lady After Hours",               cat:"asian",       views:"1.4M", duration:"21:00", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v15/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:16, title:"Lesbian Roommates – Real Amateur",            cat:"lesbian",     views:"990K", duration:"15:55", hd:false, isNew:false, thumb:"https://picsum.photos/seed/v16/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:17, title:"Deep Anal with Perfect Body",                 cat:"anal",        views:"3.3M", duration:"26:18", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v17/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:18, title:"Top 20 Scenes of the Month",                  cat:"compilation", views:"6.1M", duration:"90:00", hd:true,  isNew:false, thumb:"https://picsum.photos/seed/v18/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:19, title:"Latina Maid Has a Secret",                    cat:"latina",      views:"1.1M", duration:"20:44", hd:true,  isNew:true,  thumb:"https://picsum.photos/seed/v19/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:20, title:"BBW Goddess – Solo Show",                     cat:"bbw",         views:"410K", duration:"12:30", hd:false, isNew:true,  thumb:"https://picsum.photos/seed/v20/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
 ];
 
-function videoCard(v) {
+function makeCard(v) {
   return `
-    <div class="video-card" onclick="openVideo(${v.id})">
-      <div class="v-thumb">
-        <img src="${v.thumb}" alt="${v.title}" loading="lazy">
-        <div class="v-play"><div class="v-play-icon"></div></div>
-        <span class="v-duration">${v.duration}</span>
+  <div class="vcard" onclick="openVideo(${v.id})">
+    <div class="vcard-thumb">
+      <img src="${v.thumb}" alt="${v.title}" loading="lazy">
+      <div class="vcard-overlay"><div class="vcard-play"></div></div>
+      <span class="vcard-duration">${v.duration}</span>
+      ${v.hd ? '<span class="vcard-hd">HD</span>' : ''}
+      ${v.isNew ? '<span class="vcard-new">NEW</span>' : ''}
+    </div>
+    <div class="vcard-info">
+      <div class="vcard-title">${v.title}</div>
+      <div class="vcard-meta">
+        <span class="vcard-views">${v.views} views</span>
       </div>
-      <div class="v-title">${v.title}</div>
-      <div class="v-info"><span>${v.cat}</span><span>•</span><span>${v.views} views</span></div>
-    </div>`;
+    </div>
+  </div>`;
 }
 
-function renderVideos(filter) {
+let currentFilter = 'all';
+
+function renderAll(filter) {
   const list = filter === 'all' ? videos : videos.filter(v => v.cat === filter);
-  document.getElementById('videoGrid').innerHTML = list.slice(0,8).map(videoCard).join('');
-  const sorted = [...videos].sort((a,b) => parseFloat(b.views) - parseFloat(a.views));
-  document.getElementById('popularGrid').innerHTML = sorted.slice(0,4).map(videoCard).join('');
+  // Trending: top by views
+  const trending = [...list].sort((a,b) => parseFloat(b.views) - parseFloat(a.views)).slice(0,6);
+  // Newest: isNew first
+  const newest = [...list].filter(v => v.isNew).concat(list.filter(v => !v.isNew)).slice(0,8);
+  // Popular: all sorted
+  const popular = [...list].sort((a,b) => parseFloat(b.views) - parseFloat(a.views)).slice(0,8);
+
+  document.getElementById('trendingGrid').innerHTML = trending.map(makeCard).join('');
+  document.getElementById('newestGrid').innerHTML = newest.map(makeCard).join('');
+  document.getElementById('popularGrid').innerHTML = popular.map(makeCard).join('');
 }
 
-function renderFeaturedSide() {
-  const side = videos.slice(1,4);
-  document.getElementById('featuredSide').innerHTML = side.map(v => `
-    <div class="side-card" onclick="openVideo(${v.id})">
-      <div class="side-thumb"><img src="${v.thumb}" alt="${v.title}"></div>
-      <div class="side-info">
-        <div class="side-title">${v.title}</div>
-        <div class="side-meta">${v.duration} • ${v.views} views</div>
-      </div>
-    </div>`).join('');
-}
-
-function filterVideos(cat, btn) {
-  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderVideos(cat);
+function filterVideos(cat, el) {
+  currentFilter = cat;
+  // pills
+  document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+  // sidebar
+  document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderAll(cat);
 }
 
 function openVideo(id) {
   const v = videos.find(x => x.id === id);
   if (!v) return;
   document.getElementById('modalTitle').textContent = v.title;
-  document.getElementById('modalMeta').textContent = `${v.cat} • ${v.views} views • ${v.duration}`;
+  document.getElementById('modalMeta').textContent = `${v.cat} • ${v.views} views • ${v.duration}${v.hd?' • HD':''}`;
   document.getElementById('videoFrame').src = v.embedUrl;
   document.getElementById('videoModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -675,15 +844,14 @@ document.getElementById('videoModal').addEventListener('click', function(e) {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 function enterSite() {
-  localStorage.setItem('ageVerified_nvc', '1');
+  localStorage.setItem('nvc_age', '1');
   document.getElementById('ageGate').style.display = 'none';
 }
-if (localStorage.getItem('ageVerified_nvc')) {
+if (localStorage.getItem('nvc_age')) {
   document.getElementById('ageGate').style.display = 'none';
 }
 
-renderVideos('all');
-renderFeaturedSide();
+renderAll('all');
 </script>
 </body>
 </html>
