@@ -3,9 +3,687 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Adult Videos</title>
+<title>Naughty Video Club – Free Adult Videos Online</title>
+<meta name="description" content="Watch free adult videos online. The best 18+ video content curated daily.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0705;
+    --surface: #110e0b;
+    --card: #161210;
+    --border: #2a2018;
+    --accent: #e8a045;
+    --accent2: #c4503a;
+    --text: #e8ddd0;
+    --muted: #6b5a48;
+    --glow: 0 0 30px rgba(232,160,69,0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(232,160,69,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,7,5,0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+  .logo span { color: var(--accent); }
+  .logo em { color: var(--accent2); font-style: italic; }
+  nav { display: flex; gap: 4px; align-items: center; }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    transition: color 0.2s;
+    letter-spacing: 0.3px;
+  }
+  nav a:hover, nav a.active { color: var(--accent); }
+  .nav-divider { color: var(--border); }
+
+  /* FEATURED */
+  .featured {
+    position: relative;
+    z-index: 1;
+    max-width: 1300px;
+    margin: 32px auto 0;
+    padding: 0 24px;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+  }
+  .featured-main {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .featured-main .thumb {
+    width: 100%;
+    padding-bottom: 56.25%;
+    position: relative;
+    background: var(--surface);
+  }
+  .featured-main .thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .featured-main:hover .thumb img { transform: scale(1.03); }
+  .featured-side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .side-card {
+    display: flex;
+    gap: 12px;
+    cursor: pointer;
+    padding: 8px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .side-card:hover { border-color: var(--border); background: var(--card); }
+  .side-thumb {
+    width: 120px;
+    flex-shrink: 0;
+    position: relative;
+    padding-bottom: 0;
+    height: 68px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .side-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .side-info { flex: 1; min-width: 0; }
+  .side-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-height: 1.3;
+  }
+  .side-meta { font-size: 12px; color: var(--muted); }
+
+  /* VIDEO INFO OVERLAY */
+  .video-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.85));
+    padding: 32px 16px 14px;
+  }
+  .video-overlay .v-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: white;
+    margin-bottom: 4px;
+  }
+  .video-overlay .v-meta { font-size: 12px; color: rgba(255,255,255,0.6); }
+  .duration-badge {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 6px;
+    font-family: 'DM Sans', monospace;
+  }
+  .play-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 52px;
+    height: 52px;
+    background: rgba(232,160,69,0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .featured-main:hover .play-circle { opacity: 1; }
+  .play-circle::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-left: 16px solid white;
+    margin-left: 3px;
+  }
+
+  /* MAIN GRID */
+  .main-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 24px;
+  }
+  .category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .category-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--text);
+  }
+  .view-all {
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .video-card {
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .video-card:hover { transform: translateY(-2px); }
+  .v-thumb {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: var(--surface);
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .v-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+  .video-card:hover .v-thumb img { transform: scale(1.04); }
+  .v-play {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .video-card:hover .v-play { opacity: 1; }
+  .v-play-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(232,160,69,0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .v-play-icon::after {
+    content: '';
+    width: 0; height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 13px solid white;
+    margin-left: 2px;
+  }
+  .v-duration {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    font-size: 11px;
+    padding: 1px 5px;
+  }
+  .v-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 4px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .v-info { font-size: 12px; color: var(--muted); display: flex; gap: 8px; }
+
+  /* FILTERS BAR */
+  .filters-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .filter-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.2s;
+  }
+  .filter-pill:hover, .filter-pill.active {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.94);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 960px;
+  }
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--text);
+  }
+  .modal-close {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { color: var(--accent2); border-color: var(--accent2); }
+  .modal-body {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+  }
+  .modal-body iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #000;
+  }
+  .modal-footer {
+    padding: 10px 18px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* AGE GATE */
+  .age-gate {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .age-gate-box {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    border: 1px solid var(--border);
+    padding: 48px 32px;
+    background: var(--card);
+  }
+  .age-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+  .age-logo span { color: var(--accent); }
+  .age-gate-box h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--text);
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+  .age-gate-box p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .age-btns { display: flex; flex-direction: column; gap: 10px; }
+  .btn-enter {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 14px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .btn-enter:hover { box-shadow: var(--glow); }
+  .btn-leave {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-leave:hover { border-color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 28px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+  footer a { color: var(--muted); text-decoration: none; margin: 0 8px; }
+  footer a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .featured-grid { grid-template-columns: 1fr; }
+    .featured-side { display: none; }
+    .video-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    nav a { display: none; }
+    nav a.active { display: block; }
+  }
+</style>
 </head>
 <body>
-<h1>Coming Soon</h1>
+
+<!-- AGE GATE -->
+<div class="age-gate" id="ageGate">
+  <div class="age-gate-box">
+    <div class="age-logo"><span>Naughty</span> Video Club</div>
+    <h3>This site contains adult content</h3>
+    <p>You must be 18 years of age or older to enter. By clicking enter, you confirm you are of legal age in your jurisdiction.</p>
+    <div class="age-btns">
+      <button class="btn-enter" onclick="enterSite()">I confirm I am 18+ — Enter</button>
+      <button class="btn-leave" onclick="window.location.href='https://google.com'">Leave this site</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo"><span>Naughty</span> Video <em>Club</em></div>
+  <nav>
+    <a href="#" class="active">Home</a>
+    <span class="nav-divider">|</span>
+    <a href="#">Categories</a>
+    <span class="nav-divider">|</span>
+    <a href="#">Most Viewed</a>
+    <span class="nav-divider">|</span>
+    <a href="#">New</a>
+  </nav>
+</header>
+
+<!-- FEATURED -->
+<div class="featured">
+  <div class="section-label">Featured Today</div>
+  <div class="featured-grid">
+    <div class="featured-main" onclick="openVideo(1)">
+      <div class="thumb">
+        <img src="https://picsum.photos/seed/vid1/800/450" alt="Featured Video">
+        <div class="play-circle"></div>
+        <span class="duration-badge">12:34</span>
+      </div>
+      <div class="video-overlay">
+        <div class="v-title">Editor's Pick — Premium Selection</div>
+        <div class="v-meta">Featured • 1.2M views</div>
+      </div>
+    </div>
+    <div class="featured-side" id="featuredSide"></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+  <!-- FILTERS -->
+  <div class="filters-bar">
+    <button class="filter-pill active" onclick="filterVideos('all', this)">All</button>
+    <button class="filter-pill" onclick="filterVideos('amateur', this)">Amateur</button>
+    <button class="filter-pill" onclick="filterVideos('premium', this)">Premium</button>
+    <button class="filter-pill" onclick="filterVideos('animation', this)">Animation</button>
+    <button class="filter-pill" onclick="filterVideos('vintage', this)">Vintage</button>
+    <button class="filter-pill" onclick="filterVideos('compilation', this)">Compilation</button>
+  </div>
+
+  <div class="category-header">
+    <h2 class="category-title">Latest Videos</h2>
+    <a href="#" class="view-all">View all →</a>
+  </div>
+  <div class="video-grid" id="videoGrid"></div>
+
+  <div class="category-header">
+    <h2 class="category-title">Most Popular</h2>
+    <a href="#" class="view-all">View all →</a>
+  </div>
+  <div class="video-grid" id="popularGrid"></div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 NaughtyVideoClub.com &nbsp;|&nbsp;
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Use</a>
+    <a href="#">DMCA</a>
+    <a href="#">Contact</a>
+  </p>
+  <p style="margin-top:8px;">This site embeds publicly available content. All videos are property of their respective owners.</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="videoModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Video Title</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe>
+    </div>
+    <div class="modal-footer" id="modalMeta">category • views</div>
+  </div>
+</div>
+
+<script>
+// ── VIDEO DATA ─────────────────────────────────────────────
+// Replace embedUrl with real YouTube embed URLs or other sources
+// Example: https://www.youtube.com/embed/VIDEO_ID
+const videos = [
+  { id:1,  title:"Midnight Rendezvous", cat:"premium",     views:"2.4M", duration:"18:22", thumb:"https://picsum.photos/seed/v1/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:2,  title:"Summer Escape",       cat:"amateur",     views:"890K", duration:"08:45", thumb:"https://picsum.photos/seed/v2/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:3,  title:"Neon Dreams",         cat:"animation",   views:"1.1M", duration:"14:30", thumb:"https://picsum.photos/seed/v3/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:4,  title:"Classic Encounters",  cat:"vintage",     views:"560K", duration:"22:10", thumb:"https://picsum.photos/seed/v4/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:5,  title:"Best Of Vol.3",       cat:"compilation", views:"3.2M", duration:"45:00", thumb:"https://picsum.photos/seed/v5/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:6,  title:"Private Sessions",    cat:"amateur",     views:"440K", duration:"11:18", thumb:"https://picsum.photos/seed/v6/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:7,  title:"Luxury Suite",        cat:"premium",     views:"1.8M", duration:"20:05", thumb:"https://picsum.photos/seed/v7/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:8,  title:"Animated Fantasy",    cat:"animation",   views:"720K", duration:"16:40", thumb:"https://picsum.photos/seed/v8/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:9,  title:"The Golden Era",      cat:"vintage",     views:"380K", duration:"30:15", thumb:"https://picsum.photos/seed/v9/400/225",  embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:10, title:"Ultimate Mix",        cat:"compilation", views:"4.1M", duration:"60:00", thumb:"https://picsum.photos/seed/v10/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:11, title:"After Hours",         cat:"premium",     views:"950K", duration:"17:33", thumb:"https://picsum.photos/seed/v11/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+  { id:12, title:"Raw & Real",          cat:"amateur",     views:"310K", duration:"09:22", thumb:"https://picsum.photos/seed/v12/400/225", embedUrl:"https://www.youtube.com/embed/REPLACE_ID" },
+];
+
+function videoCard(v) {
+  return `
+    <div class="video-card" onclick="openVideo(${v.id})">
+      <div class="v-thumb">
+        <img src="${v.thumb}" alt="${v.title}" loading="lazy">
+        <div class="v-play"><div class="v-play-icon"></div></div>
+        <span class="v-duration">${v.duration}</span>
+      </div>
+      <div class="v-title">${v.title}</div>
+      <div class="v-info"><span>${v.cat}</span><span>•</span><span>${v.views} views</span></div>
+    </div>`;
+}
+
+function renderVideos(filter) {
+  const list = filter === 'all' ? videos : videos.filter(v => v.cat === filter);
+  document.getElementById('videoGrid').innerHTML = list.slice(0,8).map(videoCard).join('');
+  const sorted = [...videos].sort((a,b) => parseFloat(b.views) - parseFloat(a.views));
+  document.getElementById('popularGrid').innerHTML = sorted.slice(0,4).map(videoCard).join('');
+}
+
+function renderFeaturedSide() {
+  const side = videos.slice(1,4);
+  document.getElementById('featuredSide').innerHTML = side.map(v => `
+    <div class="side-card" onclick="openVideo(${v.id})">
+      <div class="side-thumb"><img src="${v.thumb}" alt="${v.title}"></div>
+      <div class="side-info">
+        <div class="side-title">${v.title}</div>
+        <div class="side-meta">${v.duration} • ${v.views} views</div>
+      </div>
+    </div>`).join('');
+}
+
+function filterVideos(cat, btn) {
+  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderVideos(cat);
+}
+
+function openVideo(id) {
+  const v = videos.find(x => x.id === id);
+  if (!v) return;
+  document.getElementById('modalTitle').textContent = v.title;
+  document.getElementById('modalMeta').textContent = `${v.cat} • ${v.views} views • ${v.duration}`;
+  document.getElementById('videoFrame').src = v.embedUrl;
+  document.getElementById('videoModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('videoModal').classList.remove('open');
+  document.getElementById('videoFrame').src = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('videoModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function enterSite() {
+  localStorage.setItem('ageVerified_nvc', '1');
+  document.getElementById('ageGate').style.display = 'none';
+}
+if (localStorage.getItem('ageVerified_nvc')) {
+  document.getElementById('ageGate').style.display = 'none';
+}
+
+renderVideos('all');
+renderFeaturedSide();
+</script>
 </body>
 </html>
