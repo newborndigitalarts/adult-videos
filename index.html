@@ -640,14 +640,14 @@ body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-se
 
 <!-- NAV -->
 <div class="nav-bar">
-  <a class="nav-link active" href="#">Home</a>
-  <a class="nav-link" href="#">Videos</a>
-  <a class="nav-link" href="#">Categories</a>
-  <a class="nav-link" href="#">Most Viewed</a>
-  <a class="nav-link" href="#">Top Rated</a>
-  <a class="nav-link" href="#">Newest</a>
-  <a class="nav-link" href="#">Long Videos</a>
-  <a class="nav-link" href="#">HD</a>
+  <a class="nav-link active" href="#" onclick="filterVideos('all',this);return false;">Home</a>
+  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Videos</a>
+  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Categories</a>
+  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Most Viewed</a>
+  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Top Rated</a>
+  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Newest</a>
+  <a class="nav-link" href="#" onclick="filterVideos('compilation',this);return false;">Long Videos</a>
+  <a class="nav-link" href="#" onclick="filterVideos('hd',this);return false;">HD</a>
 </div>
 
 <!-- PAGE -->
@@ -843,27 +843,40 @@ async function loadMissingThumbs() {
   }
 }
 
-let currentFilter = 'all';
+function parseViews(str) {
+  if (!str) return 0;
+  const s = str.toUpperCase().replace(/,/g,'');
+  if (s.endsWith('M')) return parseFloat(s) * 1000000;
+  if (s.endsWith('K')) return parseFloat(s) * 1000;
+  return parseFloat(s) || 0;
+}
 
 function renderAll(filter) {
   const list = filter === 'all' ? videos : videos.filter(v => v.cat === filter);
-  // Trending: top by views
-  const trending = [...list].sort((a,b) => parseFloat(b.views) - parseFloat(a.views)).slice(0,6);
-  // Newest: isNew first
-  const newest = [...list].filter(v => v.isNew).concat(list.filter(v => !v.isNew)).slice(0,8);
-  // Popular: all sorted
-  const popular = [...list].sort((a,b) => parseFloat(b.views) - parseFloat(a.views)).slice(0,8);
+  if (!list.length) {
+    document.getElementById('trendingGrid').innerHTML = '<p style="color:var(--muted);padding:12px">No videos in this category yet.</p>';
+    document.getElementById('newestGrid').innerHTML = '';
+    document.getElementById('popularGrid').innerHTML = '';
+    return;
+  }
+  const byViews = [...list].sort((a,b) => parseViews(b.views) - parseViews(a.views));
+  const trending = byViews.slice(0, 6);
+  const newest = [...list].filter(v => v.isNew).concat(list.filter(v => !v.isNew)).slice(0, 8);
+  const popular = byViews.slice(0, 8);
 
   document.getElementById('trendingGrid').innerHTML = trending.map(makeCard).join('');
   document.getElementById('newestGrid').innerHTML = newest.map(makeCard).join('');
   document.getElementById('popularGrid').innerHTML = popular.map(makeCard).join('');
+
+  // Render sonrası bilinen thumb'ları uygula
+  Object.entries(XV_THUMBS).forEach(([xvId, url]) => {
+    document.querySelectorAll(`#thumb-${xvId}`).forEach(img => { img.src = url; });
+  });
 }
 
 function filterVideos(cat, el) {
   currentFilter = cat;
-  // pills
   document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
-  // sidebar
   document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('active'));
   if (el) el.classList.add('active');
   renderAll(cat);
