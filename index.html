@@ -781,19 +781,40 @@ const videos = [
   { id:25, title:"She could hardly withstand this anal penetration",           cat:"amateur",     views:"87K",   duration:"9 min",  hd:true, isNew:false, xvId:"oukklap3283", embedUrl:"https://www.xvideos.com/embedframe/oukklap3283" },
 ];
 
-// XVideos thumbnail URL'sini oluştur — CDN format
-function xvThumb(xvId) {
-  return `https://thumb-cdn77.xvideos-cdn.com/thumbs169lll/${xvId}/1.jpg`;
+// Bilinen UUID'ler — her video için sayfa fetch edilip çıkarıldı
+const XV_THUMBS = {
+  "uudotvpe2d5": "https://thumb-cdn77.xvideos-cdn.com/d87192f0-3d9c-4398-ab69-a78fa13645e8/0/xv_15_t.jpg",
+  "kdatkmhd92c": "https://thumb-cdn77.xvideos-cdn.com/e45152e0-1792-4c1c-a567-0e47ae0ea543/0/xv_5_t.jpg",
+  "uebpaim777c": "https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
+  "klekcih2186": "https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
+  "kbabulo578b": "https://thumb-cdn77.xvideos-cdn.com/fc572b6a-9b48-43f7-8966-5eddc997c661/0/xv_27_t.jpg",
+};
+
+// Thumbnail al — bilinen UUID varsa direkt, yoksa allorigins proxy ile çek
+async function fetchThumb(xvId) {
+  if (XV_THUMBS[xvId]) return XV_THUMBS[xvId];
+  try {
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.' + xvId + '/')}`;
+    const res = await fetch(proxyUrl);
+    const data = await res.json();
+    const match = data.contents.match(/thumb-cdn[^"]+xv_\d+_t\.jpg/);
+    if (match) {
+      const url = 'https://' + match[0];
+      XV_THUMBS[xvId] = url;
+      return url;
+    }
+  } catch(e) {}
+  return null;
 }
 
 function makeCard(v) {
-  const thumb = xvThumb(v.xvId);
-  const fallback = `https://picsum.photos/seed/${v.xvId}/400/225`;
+  const placeholder = `https://picsum.photos/seed/${v.xvId}/400/225`;
+  const knownThumb = XV_THUMBS[v.xvId] || placeholder;
   return `
   <div class="vcard" onclick="openVideo(${v.id})">
     <div class="vcard-thumb">
-      <img src="${thumb}" alt="${v.title}" loading="lazy"
-           onerror="this.onerror=null;this.src='${fallback}'">
+      <img src="${knownThumb}" alt="${v.title}" loading="lazy" id="thumb-${v.xvId}"
+           onerror="this.onerror=null;this.src='${placeholder}'">
       <div class="vcard-overlay"><div class="vcard-play"></div></div>
       <span class="vcard-duration">${v.duration}</span>
       ${v.hd ? '<span class="vcard-hd">HD</span>' : ''}
@@ -806,6 +827,20 @@ function makeCard(v) {
       </div>
     </div>
   </div>`;
+}
+
+// Bilinmeyen thumbnail'leri arka planda yükle
+async function loadMissingThumbs() {
+  const unknown = videos.filter(v => !XV_THUMBS[v.xvId]);
+  for (const v of unknown) {
+    const url = await fetchThumb(v.xvId);
+    if (url) {
+      document.querySelectorAll(`#thumb-${v.xvId}`).forEach(img => {
+        img.src = url;
+      });
+    }
+    await new Promise(r => setTimeout(r, 300)); // rate limit önlemi
+  }
 }
 
 let currentFilter = 'all';
@@ -864,6 +899,7 @@ if (localStorage.getItem('nvc_age')) {
 }
 
 renderAll('all');
+loadMissingThumbs();
 </script>
 </body>
 </html>
