@@ -523,7 +523,7 @@ body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-se
   gap:12px;
 }
 
-/* ── AGE GATE ── */
+/* ── AGE GATE / COMING SOON ── */
 .age-gate {
   position:fixed;
   inset:0;
@@ -532,53 +532,57 @@ body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-se
   display:flex;
   align-items:center;
   justify-content:center;
+  overflow-y:auto;
+  padding:20px;
 }
 .age-box {
   text-align:center;
-  max-width:460px;
-  padding:48px 40px;
+  width:100%;
+  max-width:500px;
+  padding:40px 36px;
   background:var(--bg2);
   border:1px solid var(--border);
   border-top:3px solid var(--red);
 }
-.age-logo {
-  margin-bottom:20px;
-}
+.age-logo { margin-bottom:20px; }
 .age-logo .l1 { font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--red); letter-spacing:3px; }
 .age-logo .l2 { font-family:'Bebas Neue',sans-serif; font-size:36px; color:#fff; letter-spacing:3px; }
 .age-logo .l3 { font-family:'Playfair Display',serif; font-style:italic; font-size:16px; color:var(--muted); display:block; margin-top:-4px; }
-.age-box h3 { font-size:14px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text); margin-bottom:10px; }
-.age-box p { color:var(--muted); font-size:12px; line-height:1.7; margin-bottom:28px; }
-.age-btn-yes {
-  display:block;
-  width:100%;
-  background:var(--red);
-  border:none;
-  color:#fff;
-  padding:14px;
-  font-family:'Montserrat',sans-serif;
-  font-size:14px;
-  font-weight:700;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  cursor:pointer;
-  margin-bottom:10px;
-  transition:background 0.2s;
+.age-box h3 { font-size:13px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text); margin-bottom:8px; }
+.age-box .warning-text { color:var(--muted); font-size:12px; line-height:1.7; margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--border); }
+.countdown-wrap { margin-bottom:24px; }
+.countdown-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted2); margin-bottom:10px; }
+.countdown { display:flex; justify-content:center; gap:8px; }
+.cd-unit { background:var(--bg3); border:1px solid var(--border); padding:10px 14px; min-width:64px; }
+.cd-num { font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--red); line-height:1; display:block; }
+.cd-lbl { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted2); display:block; margin-top:2px; }
+.msg-wrap { text-align:left; margin-bottom:16px; }
+.msg-wrap label { display:block; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.msg-wrap textarea {
+  width:100%; background:var(--bg3); border:1px solid var(--border);
+  color:var(--text); font-family:'Montserrat',sans-serif; font-size:12px;
+  padding:10px 12px; resize:none; outline:none; line-height:1.6; transition:border-color 0.2s;
 }
-.age-btn-yes:hover { background:var(--red2); }
-.age-btn-no {
-  display:block;
-  width:100%;
-  background:none;
-  border:1px solid var(--border);
-  color:var(--muted);
-  padding:11px;
-  font-family:'Montserrat',sans-serif;
-  font-size:13px;
-  cursor:pointer;
-  transition:all 0.2s;
+.msg-wrap textarea:focus { border-color:var(--red); }
+.msg-wrap textarea::placeholder { color:var(--muted2); }
+.msg-wrap input[type=email] {
+  width:100%; background:var(--bg3); border:1px solid var(--border);
+  color:var(--text); font-family:'Montserrat',sans-serif; font-size:12px;
+  padding:9px 12px; outline:none; transition:border-color 0.2s; margin-top:8px;
 }
-.age-btn-no:hover { border-color:var(--muted); color:var(--text); }
+.msg-wrap input[type=email]:focus { border-color:var(--red); }
+.msg-wrap input[type=email]::placeholder { color:var(--muted2); }
+.btn-send {
+  display:block; width:100%; background:var(--red); border:none; color:#fff;
+  padding:13px; font-family:'Montserrat',sans-serif; font-size:13px;
+  font-weight:700; letter-spacing:1px; text-transform:uppercase;
+  cursor:pointer; transition:background 0.2s; margin-top:12px;
+}
+.btn-send:hover { background:var(--red2); }
+.btn-send:disabled { background:var(--muted2); cursor:not-allowed; }
+.send-status { font-size:12px; margin-top:10px; min-height:18px; }
+.send-status.ok { color:#4caf50; }
+.send-status.err { color:var(--red); }
 
 /* ── FOOTER ── */
 .site-footer {
@@ -607,7 +611,7 @@ body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-se
 </head>
 <body>
 
-<!-- AGE GATE -->
+<!-- AGE GATE / COMING SOON -->
 <div class="age-gate" id="ageGate">
   <div class="age-box">
     <div class="age-logo">
@@ -615,9 +619,25 @@ body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-se
       <span class="l3">Club</span>
     </div>
     <h3>Adult Content Warning</h3>
-    <p>This website contains explicit adult content intended for mature audiences only. By entering you confirm you are at least 18 years of age and it is legal to view such material in your location.</p>
-    <button class="age-btn-yes" onclick="enterSite()">I AM 18+ — ENTER NOW</button>
-    <button class="age-btn-no" onclick="location.href='https://google.com'">I am under 18 — Leave</button>
+    <p class="warning-text">This website contains explicit adult content intended for mature audiences only. By entering you confirm you are at least 18 years of age and it is legal to view such material in your location.</p>
+
+    <div class="countdown-wrap">
+      <div class="countdown-label">Site launches in</div>
+      <div class="countdown">
+        <div class="cd-unit"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">Days</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">Hours</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">Min</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">Sec</span></div>
+      </div>
+    </div>
+
+    <div class="msg-wrap">
+      <label>What do you want to see? Leave us a message:</label>
+      <textarea id="msgText" rows="3" placeholder="Tell us what you want to see... Boss didn't give you a raise? Neighbour's dog messing up your garden? Vent here. Leave your email below if you want to be notified when we launch."></textarea>
+      <input type="email" id="msgEmail" placeholder="your@email.com (optional)">
+    </div>
+    <div class="send-status" id="sendStatus"></div>
+    <button class="btn-send" id="sendBtn" onclick="submitMsg()">SEND MESSAGE</button>
   </div>
 </div>
 
@@ -903,10 +923,78 @@ document.getElementById('videoModal').addEventListener('click', function(e) {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-function enterSite() {
-  localStorage.setItem('nvc_age', '1');
-  document.getElementById('ageGate').style.display = 'none';
+// Secret password to enter site
+const SECRET = 'claude1258108+';
+
+// Countdown to 27 March 2026 21:30 UTC
+function updateCountdown() {
+  const target = new Date('2026-03-27T21:30:00Z').getTime();
+  const now = Date.now();
+  const diff = Math.max(0, target - now);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('cd-d').textContent = pad(d);
+  document.getElementById('cd-h').textContent = pad(h);
+  document.getElementById('cd-m').textContent = pad(m);
+  document.getElementById('cd-s').textContent = pad(s);
 }
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+async function submitMsg() {
+  const msg = document.getElementById('msgText').value.trim();
+  const email = document.getElementById('msgEmail').value.trim();
+  const btn = document.getElementById('sendBtn');
+  const status = document.getElementById('sendStatus');
+
+  // Şifre kontrolü
+  if (msg === SECRET) {
+    localStorage.setItem('nvc_age', '1');
+    document.getElementById('ageGate').style.display = 'none';
+    return;
+  }
+
+  if (!msg) {
+    status.textContent = 'Please write something first.';
+    status.className = 'send-status err';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'SENDING...';
+  status.textContent = '';
+
+  // Formspree native form submit
+  const formData = new FormData();
+  formData.append('message', msg);
+  formData.append('email', email || 'not provided');
+
+  try {
+    const res = await fetch('https://formspree.io/f/xojkngpw', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      status.textContent = '✓ Message sent! We will notify you when we launch.';
+      status.className = 'send-status ok';
+      document.getElementById('msgText').value = '';
+      document.getElementById('msgEmail').value = '';
+      btn.textContent = 'SENT ✓';
+    } else {
+      throw new Error('fail');
+    }
+  } catch(e) {
+    status.textContent = 'Something went wrong. Try again.';
+    status.className = 'send-status err';
+    btn.disabled = false;
+    btn.textContent = 'SEND MESSAGE';
+  }
+}
+
 if (localStorage.getItem('nvc_age')) {
   document.getElementById('ageGate').style.display = 'none';
 }
