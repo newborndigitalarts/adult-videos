@@ -350,6 +350,19 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .thumb-status.ok{background:#4caf50;}
 .thumb-status.missing{background:#f5a623;}
 
+/* Tag chips */
+.tag-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--muted);font-size:11px;font-weight:600;
+  padding:4px 10px;cursor:pointer;transition:all .15s;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.tag-chip:hover{border-color:var(--red);color:#fff;}
+.tag-chip.selected{background:#1a0a0a;border-color:var(--red);color:var(--red);}
+.tag-chip .tag-x{color:var(--muted2);font-size:10px;margin-left:2px;}
+.tag-chip.selected .tag-x{color:var(--red);}
+
 @media(max-width:900px){
   .left-panel{display:none;}
   .page{padding:10px;}
@@ -518,27 +531,40 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
       </div>
 
       <div id="addForm" style="display:none;margin-top:14px;">
+
+        <!-- Thumbnail URL -->
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Thumbnail URL <span style="color:var(--muted2);font-weight:400;">(XVideos'ta resme sağ tık → Resmi yeni sekmede aç → URL kopyala)</span></label>
+            <div style="display:flex;gap:8px;">
+              <input class="admin-input" id="a-thumb" placeholder="https://thumb-cdn77.xvideos-cdn.com/..." style="flex:1" oninput="previewThumbUrl(this.value)">
+            </div>
+          </div>
+        </div>
+
+        <!-- Title -->
         <div class="admin-row">
           <div class="admin-field">
             <label>Title</label>
             <input class="admin-input" id="a-title" placeholder="Video başlığı">
           </div>
         </div>
+
+        <!-- Tags — çoklu, serbest -->
         <div class="admin-row">
           <div class="admin-field">
-            <label>Category</label>
-            <select class="admin-select" id="a-cat">
-              <option value="anal">Anal</option>
-              <option value="amateur">Amateur</option>
-              <option value="milf">MILF</option>
-              <option value="teen">Teen (18+)</option>
-              <option value="lesbian">Lesbian</option>
-              <option value="asian">Asian</option>
-              <option value="latina">Latina</option>
-              <option value="bbw">BBW</option>
-              <option value="compilation">Compilation</option>
-            </select>
+            <label>Tags <span style="color:var(--muted2);font-weight:400;">(birden fazla seçebilirsin + yeni ekleyebilirsin)</span></label>
+            <div id="tagSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;"></div>
+            <div style="display:flex;gap:8px;">
+              <input class="admin-input" id="a-newtag" placeholder="Yeni tag ekle (örn: creampie)" style="flex:1" onkeydown="if(event.key==='Enter'){addNewTag();event.preventDefault();}">
+              <button class="admin-btn secondary" onclick="addNewTag()">+ EKLE</button>
+            </div>
+            <div style="margin-top:6px;font-size:10px;color:var(--muted2);">Seçili: <span id="selectedTagsLabel" style="color:var(--muted);">—</span></div>
           </div>
+        </div>
+
+        <!-- Duration + Views -->
+        <div class="admin-row">
           <div class="admin-field">
             <label>Duration</label>
             <input class="admin-input" id="a-dur" placeholder="örn: 12 min">
@@ -548,15 +574,18 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
             <input class="admin-input" id="a-views" placeholder="örn: 1.2M">
           </div>
         </div>
-        <div class="admin-row">
+
+        <!-- HD + NEW -->
+        <div class="admin-row" style="gap:20px;">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:11px;">
             <input type="checkbox" id="a-hd" checked> HD
           </label>
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:11px;margin-left:16px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:11px;">
             <input type="checkbox" id="a-new"> Mark as NEW
           </label>
         </div>
-        <div style="margin-top:12px;display:flex;gap:10px;">
+
+        <div style="margin-top:14px;display:flex;gap:10px;">
           <button class="admin-btn" onclick="saveVideo()">💾 SAVE & PUBLISH</button>
           <button class="admin-btn secondary" onclick="resetAddForm()">RESET</button>
         </div>
@@ -567,6 +596,7 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
     <!-- Video Listesi -->
     <div class="admin-section">
       <h3>Current Videos (<span id="videoCount">0</span>)</h3>
+      <div class="admin-status" id="deleteStatus"></div>
       <div class="admin-vidlist" id="adminVidList"></div>
     </div>
 
@@ -581,37 +611,37 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
     <a href="dmca.html">Terms of Use</a>
   </p>
   <p style="margin-top:6px;">All videos are embedded from third-party platforms. We do not host any video files.</p>
-  <p style="margin-top:6px;">Contact: <a href="mailto:newborndigitalarts@protonmail.com">newborndigitalarts@protonmail.com</a></p>
+  <p style="margin-top:6px;">Contact: <a href="/cdn-cgi/l/email-protection#aec0cbd9ccc1dcc0cac7c9c7dacfc2cfdcdaddeededcc1dac1c0c3cfc7c280cdc1c3"><span class="__cf_email__" data-cfemail="e688839184899488828f818f92878a87949295a69694899289888b878f8ac885898b">[email&#160;protected]</span></a></p>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── VIDEO DATA ────────────────────────────────────────────────
 const videos = [
-  { id:1,  title:"Big black cock and innocent white girl – painful fucking",    cat:"anal",    views:"1.1M",  duration:"11 min", hd:true,  isNew:true,  addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
-  { id:2,  title:"Llorando y gritando en anal doloroso",                        cat:"anal",    views:"5.1M",  duration:"10 min", hd:true,  isNew:true,  addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
-  { id:3,  title:"18 years old first anal is so painful",                       cat:"anal",    views:"5.9M",  duration:"10 min", hd:true,  isNew:true,  addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
-  { id:4,  title:"She didn't want it but finally gave in",                      cat:"anal",    views:"9.1M",  duration:"5 min",  hd:true,  isNew:true,  addedAt:22, xvId:"uevccib4df4", embedUrl:"https://www.xvideos.com/embedframe/uevccib4df4" },
-  { id:5,  title:"Girlfriend was crying taking big cock in her small ass",      cat:"amateur", views:"91.8K", duration:"10 min", hd:true,  isNew:true,  addedAt:21, xvId:"ufefuhb5ff6", embedUrl:"https://www.xvideos.com/embedframe/ufefuhb5ff6" },
-  { id:6,  title:"Destroy my ass – World's Most Painful Anal – Kristal Ass",   cat:"anal",    views:"1.3M",  duration:"10 min", hd:true,  isNew:false, addedAt:20, xvId:"ulcmbad1219", embedUrl:"https://www.xvideos.com/embedframe/ulcmbad1219" },
-  { id:7,  title:"Stepfather fucks stepdaughter – rough painful hotel bathroom",cat:"anal",    views:"1.6M",  duration:"15 min", hd:true,  isNew:false, addedAt:19, xvId:"uufiuet5bc2", embedUrl:"https://www.xvideos.com/embedframe/uufiuet5bc2" },
-  { id:8,  title:"Painful anal for this white woman",                           cat:"anal",    views:"403.1K",duration:"14 min", hd:true,  isNew:false, addedAt:18, xvId:"kpbkied68f0", embedUrl:"https://www.xvideos.com/embedframe/kpbkied68f0" },
-  { id:9,  title:"French amateur teen tries painful anal homemade",             cat:"amateur", views:"778.6K",duration:"30 min", hd:true,  isNew:false, addedAt:17, xvId:"kfdlodfc301", embedUrl:"https://www.xvideos.com/embedframe/kfdlodfc301" },
-  { id:10, title:"19yo girl with big ass gets rough painful anal sex",          cat:"anal",    views:"14.6M", duration:"13 min", hd:true,  isNew:false, addedAt:16, xvId:"klekcih2186", embedUrl:"https://www.xvideos.com/embedframe/klekcih2186" },
-  { id:11, title:"Devote hausfrau gets painful BDSM casting",                  cat:"anal",    views:"309.1K",duration:"81 min", hd:true,  isNew:false, addedAt:15, xvId:"uoceokb77af", embedUrl:"https://www.xvideos.com/embedframe/uoceokb77af" },
-  { id:12, title:"Compilation – deep and painful anal sex",                    cat:"compilation",views:"875.7K",duration:"42 min",hd:true, isNew:false, addedAt:14, xvId:"otlpiad3974", embedUrl:"https://www.xvideos.com/embedframe/otlpiad3974" },
-  { id:13, title:"Painful anal with my lover",                                 cat:"anal",    views:"489.5K",duration:"11 min", hd:true,  isNew:false, addedAt:13, xvId:"ufbevldc98a", embedUrl:"https://www.xvideos.com/embedframe/ufbevldc98a" },
-  { id:14, title:"18yo girl first time painful anal with stepbrother",         cat:"amateur", views:"469.9K",duration:"6 min",  hd:true,  isNew:false, addedAt:12, xvId:"ottlcmo0522", embedUrl:"https://www.xvideos.com/embedframe/ottlcmo0522" },
-  { id:15, title:"Stepdaughter wants anal but it's very painful",              cat:"anal",    views:"811.2K",duration:"23 min", hd:true,  isNew:false, addedAt:11, xvId:"udidcah7fdd", embedUrl:"https://www.xvideos.com/embedframe/udidcah7fdd" },
-  { id:16, title:"Make me scream – I want a painful anal orgasm",              cat:"anal",    views:"174.2K",duration:"6 min",  hd:true,  isNew:false, addedAt:10, xvId:"ubavlpd4e7c", embedUrl:"https://www.xvideos.com/embedframe/ubavlpd4e7c" },
-  { id:17, title:"IT HURTS – Rough painful anal makes young girl scream",      cat:"anal",    views:"18.2M", duration:"10 min", hd:true,  isNew:false, addedAt:9,  xvId:"uioacfoc8a6", embedUrl:"https://www.xvideos.com/embedframe/uioacfoc8a6" },
-  { id:18, title:"Too painful to finish – cowgirl big cock",                   cat:"amateur", views:"182.8K",duration:"10 min", hd:true,  isNew:false, addedAt:8,  xvId:"ohvbloh6357", embedUrl:"https://www.xvideos.com/embedframe/ohvbloh6357" },
-  { id:19, title:"Please cum it's painful – you said it would be quick",       cat:"anal",    views:"13.1M", duration:"5 min",  hd:true,  isNew:false, addedAt:7,  xvId:"keabmtm9159", embedUrl:"https://www.xvideos.com/embedframe/keabmtm9159" },
-  { id:20, title:"Painful doggystyle to stepsister",                           cat:"anal",    views:"9.3M",  duration:"5 min",  hd:true,  isNew:false, addedAt:6,  xvId:"kbpkluo661a", embedUrl:"https://www.xvideos.com/embedframe/kbpkluo661a" },
-  { id:21, title:"Painful anal with huge orgasm and yells",                    cat:"anal",    views:"37.8M", duration:"5 min",  hd:true,  isNew:false, addedAt:5,  xvId:"kbabulo578b", embedUrl:"https://www.xvideos.com/embedframe/kbabulo578b" },
-  { id:22, title:"Rough slow painful anal",                                    cat:"amateur", views:"29.9K", duration:"9 min",  hd:true,  isNew:false, addedAt:4,  xvId:"oilbfiv8527", embedUrl:"https://www.xvideos.com/embedframe/oilbfiv8527" },
-  { id:23, title:"ASS DESTRUCTION – Rough painful anal blonde teen",           cat:"anal",    views:"25.4M", duration:"10 min", hd:true,  isNew:false, addedAt:3,  xvId:"uiluuad549c", embedUrl:"https://www.xvideos.com/embedframe/uiluuad549c" },
-  { id:24, title:"Get off me my ass is burning",                               cat:"anal",    views:"187.3K",duration:"6 min",  hd:true,  isNew:false, addedAt:2,  xvId:"oukvidc2ecb", embedUrl:"https://www.xvideos.com/embedframe/oukvidc2ecb" },
-  { id:25, title:"She could hardly withstand this anal penetration",           cat:"amateur", views:"87K",   duration:"9 min",  hd:true,  isNew:false, addedAt:1,  xvId:"oukklap3283", embedUrl:"https://www.xvideos.com/embedframe/oukklap3283" },
+  { id:1,  title:"Big black cock and innocent white girl – painful fucking",    cat:"anal",    tags:["anal","amateur","painful"],          views:"1.1M",  duration:"11 min", hd:true,  isNew:true,  addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
+  { id:2,  title:"Llorando y gritando en anal doloroso",                        cat:"anal",    tags:["anal","latina","painful"],           views:"5.1M",  duration:"10 min", hd:true,  isNew:true,  addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
+  { id:3,  title:"18 years old first anal is so painful",                       cat:"anal",    tags:["anal","teen","painful","first time"],views:"5.9M",  duration:"10 min", hd:true,  isNew:true,  addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
+  { id:4,  title:"She didn't want it but finally gave in",                      cat:"anal",    tags:["anal","painful","rough"],            views:"9.1M",  duration:"5 min",  hd:true,  isNew:true,  addedAt:22, xvId:"uevccib4df4", embedUrl:"https://www.xvideos.com/embedframe/uevccib4df4" },
+  { id:5,  title:"Girlfriend was crying taking big cock in her small ass",      cat:"amateur", tags:["amateur","anal","painful","big cock"],views:"91.8K", duration:"10 min", hd:true,  isNew:true,  addedAt:21, xvId:"ufefuhb5ff6", embedUrl:"https://www.xvideos.com/embedframe/ufefuhb5ff6" },
+  { id:6,  title:"Destroy my ass – World's Most Painful Anal – Kristal Ass",   cat:"anal",    tags:["anal","painful","rough"],            views:"1.3M",  duration:"10 min", hd:true,  isNew:false, addedAt:20, xvId:"ulcmbad1219", embedUrl:"https://www.xvideos.com/embedframe/ulcmbad1219" },
+  { id:7,  title:"Stepfather fucks stepdaughter – rough painful hotel bathroom",cat:"anal",    tags:["anal","taboo","painful","rough"],    views:"1.6M",  duration:"15 min", hd:true,  isNew:false, addedAt:19, xvId:"uufiuet5bc2", embedUrl:"https://www.xvideos.com/embedframe/uufiuet5bc2" },
+  { id:8,  title:"Painful anal for this white woman",                           cat:"anal",    tags:["anal","painful","mature"],           views:"403.1K",duration:"14 min", hd:true,  isNew:false, addedAt:18, xvId:"kpbkied68f0", embedUrl:"https://www.xvideos.com/embedframe/kpbkied68f0" },
+  { id:9,  title:"French amateur teen tries painful anal homemade",             cat:"amateur", tags:["amateur","anal","teen","homemade","painful"],views:"778.6K",duration:"30 min", hd:true,  isNew:false, addedAt:17, xvId:"kfdlodfc301", embedUrl:"https://www.xvideos.com/embedframe/kfdlodfc301" },
+  { id:10, title:"19yo girl with big ass gets rough painful anal sex",          cat:"anal",    tags:["anal","teen","big ass","rough","painful"],views:"14.6M", duration:"13 min", hd:true,  isNew:false, addedAt:16, xvId:"klekcih2186", embedUrl:"https://www.xvideos.com/embedframe/klekcih2186" },
+  { id:11, title:"Devote hausfrau gets painful BDSM casting",                  cat:"anal",    tags:["anal","bdsm","casting","painful","mature"],views:"309.1K",duration:"81 min", hd:true,  isNew:false, addedAt:15, xvId:"uoceokb77af", embedUrl:"https://www.xvideos.com/embedframe/uoceokb77af" },
+  { id:12, title:"Compilation – deep and painful anal sex",                    cat:"compilation",tags:["compilation","anal","painful"],   views:"875.7K",duration:"42 min", hd:true,  isNew:false, addedAt:14, xvId:"otlpiad3974", embedUrl:"https://www.xvideos.com/embedframe/otlpiad3974" },
+  { id:13, title:"Painful anal with my lover",                                 cat:"anal",    tags:["anal","amateur","painful","homemade"],views:"489.5K",duration:"11 min", hd:true,  isNew:false, addedAt:13, xvId:"ufbevldc98a", embedUrl:"https://www.xvideos.com/embedframe/ufbevldc98a" },
+  { id:14, title:"18yo girl first time painful anal with stepbrother",         cat:"amateur", tags:["amateur","anal","teen","taboo","first time"],views:"469.9K",duration:"6 min",  hd:true,  isNew:false, addedAt:12, xvId:"ottlcmo0522", embedUrl:"https://www.xvideos.com/embedframe/ottlcmo0522" },
+  { id:15, title:"Stepdaughter wants anal but it's very painful",              cat:"anal",    tags:["anal","taboo","painful"],            views:"811.2K",duration:"23 min", hd:true,  isNew:false, addedAt:11, xvId:"udidcah7fdd", embedUrl:"https://www.xvideos.com/embedframe/udidcah7fdd" },
+  { id:16, title:"Make me scream – I want a painful anal orgasm",              cat:"anal",    tags:["anal","painful","orgasm"],           views:"174.2K",duration:"6 min",  hd:true,  isNew:false, addedAt:10, xvId:"ubavlpd4e7c", embedUrl:"https://www.xvideos.com/embedframe/ubavlpd4e7c" },
+  { id:17, title:"IT HURTS – Rough painful anal makes young girl scream",      cat:"anal",    tags:["anal","teen","rough","painful"],     views:"18.2M", duration:"10 min", hd:true,  isNew:false, addedAt:9,  xvId:"uioacfoc8a6", embedUrl:"https://www.xvideos.com/embedframe/uioacfoc8a6" },
+  { id:18, title:"Too painful to finish – cowgirl big cock",                   cat:"amateur", tags:["amateur","big cock","painful"],      views:"182.8K",duration:"10 min", hd:true,  isNew:false, addedAt:8,  xvId:"ohvbloh6357", embedUrl:"https://www.xvideos.com/embedframe/ohvbloh6357" },
+  { id:19, title:"Please cum it's painful – you said it would be quick",       cat:"anal",    tags:["anal","amateur","painful","rough"],  views:"13.1M", duration:"5 min",  hd:true,  isNew:false, addedAt:7,  xvId:"keabmtm9159", embedUrl:"https://www.xvideos.com/embedframe/keabmtm9159" },
+  { id:20, title:"Painful doggystyle to stepsister",                           cat:"anal",    tags:["anal","taboo","painful","doggystyle"],views:"9.3M",  duration:"5 min",  hd:true,  isNew:false, addedAt:6,  xvId:"kbpkluo661a", embedUrl:"https://www.xvideos.com/embedframe/kbpkluo661a" },
+  { id:21, title:"Painful anal with huge orgasm and yells",                    cat:"anal",    tags:["anal","painful","orgasm","big cock"],views:"37.8M", duration:"5 min",  hd:true,  isNew:false, addedAt:5,  xvId:"kbabulo578b", embedUrl:"https://www.xvideos.com/embedframe/kbabulo578b" },
+  { id:22, title:"Rough slow painful anal",                                    cat:"amateur", tags:["amateur","anal","rough","painful"],  views:"29.9K", duration:"9 min",  hd:true,  isNew:false, addedAt:4,  xvId:"oilbfiv8527", embedUrl:"https://www.xvideos.com/embedframe/oilbfiv8527" },
+  { id:23, title:"ASS DESTRUCTION – Rough painful anal blonde teen",           cat:"anal",    tags:["anal","teen","rough","painful","blonde"],views:"25.4M", duration:"10 min", hd:true,  isNew:false, addedAt:3,  xvId:"uiluuad549c", embedUrl:"https://www.xvideos.com/embedframe/uiluuad549c" },
+  { id:24, title:"Get off me my ass is burning",                               cat:"anal",    tags:["anal","painful","amateur"],          views:"187.3K",duration:"6 min",  hd:true,  isNew:false, addedAt:2,  xvId:"oukvidc2ecb", embedUrl:"https://www.xvideos.com/embedframe/oukvidc2ecb" },
+  { id:25, title:"She could hardly withstand this anal penetration",           cat:"amateur", tags:["amateur","anal","painful"],          views:"87K",   duration:"9 min",  hd:true,  isNew:false, addedAt:1,  xvId:"oukklap3283", embedUrl:"https://www.xvideos.com/embedframe/oukklap3283" },
 ];
 
 // ── THUMBNAILS ────────────────────────────────────────────────
@@ -768,8 +798,8 @@ function setTab(tab, catFilter) {
     document.getElementById('secTitle').textContent = 'Newest';
     currentList = [...videos].sort((a,b) => b.addedAt - a.addedAt);
   } else if (tab === 'cat' && catFilter) {
-    document.getElementById('secTitle').textContent = catFilter.charAt(0).toUpperCase()+catFilter.slice(1);
-    currentList = [...videos].filter(v => v.cat === catFilter).sort((a,b) => parseViews(b.views)-parseViews(a.views));
+    document.getElementById('secTitle').textContent = catFilter.toUpperCase();
+    currentList = [...videos].filter(v => (v.tags||[v.cat]).includes(catFilter)).sort((a,b) => parseViews(b.views)-parseViews(a.views));
   }
 
   renderPage();
@@ -803,18 +833,21 @@ const CAT_LABELS = {
 };
 
 function openCats() {
+  // Tüm tag'leri topla + say
   const counts = {};
-  videos.forEach(v => { counts[v.cat] = (counts[v.cat]||0)+1; });
-  const allCats = Object.keys(CAT_LABELS);
+  videos.forEach(v => {
+    const tags = v.tags || [v.cat];
+    tags.forEach(t => { counts[t] = (counts[t]||0)+1; });
+  });
+  // Sırala: video sayısına göre
+  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
   const grid = document.getElementById('catGrid');
-  grid.innerHTML = allCats.map(cat => {
-    const count = counts[cat] || 0;
-    const label = CAT_LABELS[cat];
-    return `<div class="cat-card" onclick="selectCat('${cat}')">
-      <span class="cat-card-name">${label}</span>
-      <span class="cat-card-count${!count?' empty':''}">${count ? count+' video'+(count!==1?'s':'') : 'Coming soon'}</span>
-    </div>`;
-  }).join('');
+  grid.innerHTML = sorted.map(([tag, count]) =>
+    `<div class="cat-card" onclick="selectCat('${tag}')">
+      <span class="cat-card-name">${tag.toUpperCase()}</span>
+      <span class="cat-card-count">${count} video${count!==1?'s':''}</span>
+    </div>`
+  ).join('');
   document.getElementById('catOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1014,6 +1047,334 @@ const GITHUB_REPO  = 'newborndigitalarts/adult-videos';
 const GITHUB_FILE  = 'index.html';
 const ADMIN_PASS   = 'claude1258108+';
 
+// Varsayılan tag listesi — videolar eklendikçe genişler
+const DEFAULT_TAGS = ['anal','amateur','milf','teen','lesbian','asian','latina','bbw','compilation','rough','painful','homemade','taboo','big cock','big ass','blonde','brunette','mature','bdsm','creampie','doggystyle','orgasm','casting','first time'];
+let selectedTags = [];
+
+let adminUnlockCount = 0;
+let adminUnlockTimer;
+
+function adminTap() {
+  adminUnlockCount++;
+  clearTimeout(adminUnlockTimer);
+  adminUnlockTimer = setTimeout(() => { adminUnlockCount = 0; }, 2000);
+  if (adminUnlockCount >= 7) {
+    adminUnlockCount = 0;
+    const pw = prompt('Admin password:');
+    if (pw === ADMIN_PASS) openAdmin();
+  }
+}
+
+function openAdmin() {
+  document.getElementById('adminPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderAdminList();
+  renderTagSelector();
+}
+
+function closeAdmin() {
+  document.getElementById('adminPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setFetchStatus(msg, type) {
+  const el = document.getElementById('fetchStatus');
+  el.textContent = msg; el.className = 'admin-status ' + type;
+}
+
+function setSaveStatus(msg, type) {
+  const el = document.getElementById('saveStatus');
+  el.textContent = msg; el.className = 'admin-status ' + type;
+}
+
+// ── TAG SEÇİCİ ───────────────────────────────────────────────
+function getAllTags() {
+  const fromVideos = new Set();
+  videos.forEach(v => (v.tags||[v.cat]).forEach(t => fromVideos.add(t)));
+  const all = new Set([...DEFAULT_TAGS, ...fromVideos]);
+  return [...all].sort();
+}
+
+function renderTagSelector() {
+  selectedTags = [];
+  const tags = getAllTags();
+  const wrap = document.getElementById('tagSelector');
+  wrap.innerHTML = tags.map(t =>
+    `<span class="tag-chip" id="tc-${t.replace(/\s/g,'_')}" onclick="toggleTag('${t}')">${t}</span>`
+  ).join('');
+  updateSelectedLabel();
+}
+
+function toggleTag(tag) {
+  const idx = selectedTags.indexOf(tag);
+  const el = document.getElementById('tc-'+tag.replace(/\s/g,'_'));
+  if (idx === -1) {
+    selectedTags.push(tag);
+    if (el) el.classList.add('selected');
+  } else {
+    selectedTags.splice(idx, 1);
+    if (el) el.classList.remove('selected');
+  }
+  updateSelectedLabel();
+}
+
+function addNewTag() {
+  const input = document.getElementById('a-newtag');
+  const tag = input.value.trim().toLowerCase();
+  if (!tag) return;
+  input.value = '';
+  // Chip yoksa ekle
+  const wrap = document.getElementById('tagSelector');
+  if (!document.getElementById('tc-'+tag.replace(/\s/g,'_'))) {
+    const chip = document.createElement('span');
+    chip.className = 'tag-chip';
+    chip.id = 'tc-'+tag.replace(/\s/g,'_');
+    chip.textContent = tag;
+    chip.onclick = () => toggleTag(tag);
+    wrap.appendChild(chip);
+  }
+  toggleTag(tag);
+}
+
+function updateSelectedLabel() {
+  document.getElementById('selectedTagsLabel').textContent =
+    selectedTags.length ? selectedTags.join(', ') : '—';
+}
+
+// ── THUMBNAIL PREVIEW ────────────────────────────────────────
+function previewThumbUrl(url) {
+  if (url && url.startsWith('http')) {
+    document.getElementById('previewThumb').src = url;
+    document.getElementById('videoPreview').classList.add('show');
+  }
+}
+
+// ── FETCH INFO ───────────────────────────────────────────────
+function parseXvId(raw) {
+  const urlMatch = raw.match(/xvideos\.com\/video\.([a-z0-9]+)/i);
+  if (urlMatch) return urlMatch[1];
+  return raw.replace(/\s/g,'');
+}
+
+async function fetchVideoInfo() {
+  const raw = document.getElementById('a-xvid').value.trim();
+  if (!raw) { setFetchStatus('xvId veya URL gir.', 'err'); return; }
+
+  const xvId = parseXvId(raw);
+  document.getElementById('a-xvid').value = xvId;
+
+  setFetchStatus('Bilgiler çekiliyor...', 'info');
+  document.getElementById('videoPreview').classList.remove('show');
+  document.getElementById('addForm').style.display = 'none';
+
+  let title = '', duration = '', views = '';
+
+  try {
+    const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video-api/short/video/' + xvId)}`;
+    const res = await fetch(apiUrl);
+    const data = await res.json();
+    const json = JSON.parse(data.contents);
+    title    = json.title || '';
+    duration = json.duration ? Math.round(json.duration/60) + ' min' : '';
+    const watched = json.nb_watch || json.video_watched || 0;
+    if (watched >= 1e6) views = (watched/1e6).toFixed(1).replace('.0','')+'M';
+    else if (watched >= 1e3) views = (watched/1e3).toFixed(1).replace('.0','')+'K';
+    else if (watched > 0) views = String(watched);
+  } catch(e) {}
+
+  if (!title) {
+    try {
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.' + xvId + '/')}`;
+      const res = await fetch(proxyUrl);
+      const data = await res.json();
+      const html = data.contents;
+      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
+      title = titleMatch ? titleMatch[1].replace(/ - XVIDEOS\.COM/i,'').trim() : '';
+      if (!duration) { const m = html.match(/(\d+)\s*min/i); duration = m ? m[1]+' min' : ''; }
+    } catch(e) {}
+  }
+
+  document.getElementById('previewInfo').innerHTML =
+    `<strong>ID:</strong> ${xvId}<br>
+     <strong>Title:</strong> ${title||'—'}<br>
+     <strong>Duration:</strong> ${duration||'—'}<br>
+     <strong>Views:</strong> ${views||'—'}`;
+  document.getElementById('videoPreview').classList.add('show');
+  document.getElementById('a-title').value = title;
+  document.getElementById('a-dur').value = duration;
+  document.getElementById('a-views').value = views;
+  document.getElementById('addForm').style.display = 'block';
+
+  if (title) setFetchStatus('✓ Bilgiler çekildi. Thumbnail URL yapıştır, tag seç, kaydet.', 'ok');
+  else setFetchStatus('⚠ Otomatik çekilemedi — bilgileri manuel gir.', 'info');
+}
+
+// ── SAVE VIDEO ───────────────────────────────────────────────
+async function saveVideo() {
+  const xvId   = document.getElementById('a-xvid').value.trim();
+  const title  = document.getElementById('a-title').value.trim();
+  const thumbInput = document.getElementById('a-thumb').value.trim();
+  const dur    = document.getElementById('a-dur').value.trim();
+  const views  = document.getElementById('a-views').value.trim();
+  const hd     = document.getElementById('a-hd').checked;
+  const isNew  = document.getElementById('a-new').checked;
+  const tags   = selectedTags.length ? [...selectedTags] : ['uncategorized'];
+  const cat    = tags[0]; // ilk tag ana kategori
+
+  if (!xvId || !title) { setSaveStatus('xvId ve title zorunlu.', 'err'); return; }
+  if (videos.find(v => v.xvId === xvId)) { setSaveStatus('Bu video zaten listede!', 'err'); return; }
+
+  setSaveStatus('GitHub\'a kaydediliyor...', 'info');
+  document.querySelector('#addForm .admin-btn').disabled = true;
+
+  try {
+    const newId = Math.max(...videos.map(v=>v.id)) + 1;
+    const newAddedAt = Math.max(...videos.map(v=>v.addedAt)) + 1;
+    const newVideo = { id:newId, title, cat, tags, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl:`https://www.xvideos.com/embedframe/${xvId}` };
+    videos.push(newVideo);
+    if (thumbInput) XV_THUMBS[xvId] = thumbInput;
+
+    const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const fileData = await fileRes.json();
+    const currentContent = atob(fileData.content.replace(/\n/g,''));
+    const sha = fileData.sha;
+
+    const tagsJson = JSON.stringify(tags);
+    const videoLine = `  { id:${newId}, title:${JSON.stringify(title)}, cat:${JSON.stringify(cat)}, tags:${tagsJson}, views:${JSON.stringify(views)}, duration:${JSON.stringify(dur)}, hd:${hd}, isNew:${isNew}, addedAt:${newAddedAt}, xvId:${JSON.stringify(xvId)}, embedUrl:"https://www.xvideos.com/embedframe/${xvId}" },`;
+
+    let updatedContent = currentContent.replace(
+      /(\{ id:\d+[^\n]+addedAt:\d+[^\n]+\n)(];)/,
+      `$1${videoLine}\n$2`
+    );
+
+    if (thumbInput) {
+      updatedContent = updatedContent.replace(
+        /(const XV_THUMBS = \{)/,
+        `$1\n  "${xvId}":"${thumbInput}",`
+      );
+    }
+
+    const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Add: ${xvId} — ${title.substring(0,50)}`,
+        content: btoa(unescape(encodeURIComponent(updatedContent))),
+        sha
+      })
+    });
+
+    if (!updateRes.ok) { const err = await updateRes.json(); throw new Error(err.message||'GitHub API hatası'); }
+
+    setSaveStatus(`✓ "${title.substring(0,40)}..." eklendi ve yayınlandı!`, 'ok');
+    renderAdminList();
+    resetAddForm();
+
+  } catch(e) {
+    setSaveStatus('Hata: ' + e.message, 'err');
+  } finally {
+    document.querySelector('#addForm .admin-btn').disabled = false;
+  }
+}
+
+function resetAddForm() {
+  document.getElementById('a-xvid').value = '';
+  document.getElementById('a-title').value = '';
+  document.getElementById('a-thumb').value = '';
+  document.getElementById('a-dur').value = '';
+  document.getElementById('a-views').value = '';
+  document.getElementById('a-hd').checked = true;
+  document.getElementById('a-new').checked = false;
+  document.getElementById('videoPreview').classList.remove('show');
+  document.getElementById('addForm').style.display = 'none';
+  document.getElementById('fetchStatus').className = 'admin-status';
+  document.getElementById('saveStatus').className = 'admin-status';
+  renderTagSelector();
+}
+
+function renderAdminList() {
+  document.getElementById('videoCount').textContent = videos.length;
+  const sorted = [...videos].sort((a,b) => b.addedAt - a.addedAt);
+  document.getElementById('adminVidList').innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Title</th><th>Tags</th><th>Views</th><th>Thumb</th><th></th>
+      </tr></thead>
+      <tbody>${sorted.map(v => `
+        <tr>
+          <td>${v.title.substring(0,40)}${v.title.length>40?'…':''}</td>
+          <td style="color:var(--muted2)">${(v.tags||[v.cat]).join(', ')}</td>
+          <td>${v.views}</td>
+          <td><span class="thumb-status ${XV_THUMBS[v.xvId]?'ok':'missing'}"></span>${XV_THUMBS[v.xvId]?'✓':'—'}</td>
+          <td><button class="del-btn" onclick="deleteVideo(${v.id})" title="Sil">🗑</button></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function deleteVideo(id) {
+  const v = videos.find(x => x.id===id);
+  if (!v) return;
+  if (!confirm(`Sil: "${v.title.substring(0,50)}"\n\nBu işlem geri alınamaz!`)) return;
+
+  const setDelStatus = (msg, type) => {
+    const el = document.getElementById('deleteStatus');
+    if (el) { el.textContent = msg; el.className = 'admin-status ' + type; }
+  };
+
+  setDelStatus('GitHub\'tan siliniyor...', 'info');
+
+  try {
+    const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const fileData = await fileRes.json();
+    const currentContent = atob(fileData.content.replace(/\n/g, ''));
+    const sha = fileData.sha;
+
+    const fileLines = currentContent.split('\n');
+    const filtered = fileLines.filter(line => !line.includes(`xvId:"${v.xvId}"`));
+    let updatedContent = filtered.join('\n');
+
+    updatedContent = updatedContent.replace(
+      new RegExp(`\\s*"${v.xvId}":"[^"]*",?\\n?`), '\n'
+    );
+
+    const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Delete: ${v.xvId} — ${v.title.substring(0, 50)}`,
+        content: btoa(unescape(encodeURIComponent(updatedContent))),
+        sha
+      })
+    });
+
+    if (!updateRes.ok) {
+      const err = await updateRes.json();
+      throw new Error(err.message || 'GitHub API hatası');
+    }
+
+    videos.splice(videos.findIndex(x => x.id === id), 1);
+    delete XV_THUMBS[v.xvId];
+    renderAdminList();
+    setTab(currentTab);
+    setDelStatus(`✓ "${v.title.substring(0, 40)}..." silindi.`, 'ok');
+    setTimeout(() => {
+      const el = document.getElementById('deleteStatus');
+      if (el) el.className = 'admin-status';
+    }, 4000);
+
+  } catch(e) {
+    setDelStatus('Silme hatası: ' + e.message, 'err');
+  }
+}
 let adminUnlockCount = 0;
 let adminUnlockTimer;
 
@@ -1150,136 +1511,5 @@ async function fetchVideoInfo() {
   else setFetchStatus('⚠ Otomatik çekilemedi — bilgileri manuel gir.', 'info');
 }
 
-async function saveVideo() {
-  const xvId   = document.getElementById('a-xvid').value.trim();
-  const title  = document.getElementById('a-title').value.trim();
-  const cat    = document.getElementById('a-cat').value;
-  const dur    = document.getElementById('a-dur').value.trim();
-  const views  = document.getElementById('a-views').value.trim();
-  const hd     = document.getElementById('a-hd').checked;
-  const isNew  = document.getElementById('a-new').checked;
-
-  if (!xvId || !title) { setSaveStatus('xvId ve title zorunlu.', 'err'); return; }
-
-  // Duplicate kontrol
-  if (videos.find(v => v.xvId === xvId)) {
-    setSaveStatus('Bu video zaten listede!', 'err'); return;
-  }
-
-  setSaveStatus('GitHub\'a kaydediliyor...', 'info');
-  document.querySelector('#addForm .admin-btn').disabled = true;
-
-  try {
-    // Yeni video objesi
-    const newId = Math.max(...videos.map(v=>v.id)) + 1;
-    const newAddedAt = Math.max(...videos.map(v=>v.addedAt)) + 1;
-    const newVideo = { id:newId, title, cat, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl:`https://www.xvideos.com/embedframe/${xvId}` };
-    videos.push(newVideo);
-
-    // UUID varsa ekle
-    const thumbUrl = XV_THUMBS[xvId];
-
-    // HTML dosyasını GitHub'dan çek
-    const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    const fileData = await fileRes.json();
-    const currentContent = atob(fileData.content.replace(/\n/g,''));
-    const sha = fileData.sha;
-
-    // videos array'ini güncelle — son satırı bul ve yeni video ekle
-    const videoLine = `  { id:${newId}, title:${JSON.stringify(title)}, cat:${JSON.stringify(cat)}, views:${JSON.stringify(views)}, duration:${JSON.stringify(dur)}, hd:${hd}, isNew:${isNew}, addedAt:${newAddedAt}, xvId:${JSON.stringify(xvId)}, embedUrl:"https://www.xvideos.com/embedframe/${xvId}" },`;
-    const updatedContent = currentContent.replace(
-      /(\{ id:\d+, title:[^\n]+addedAt:\d+[^\n]+\n)(];)/,
-      `$1${videoLine}\n$2`
-    );
-
-    // UUID varsa XV_THUMBS'a da ekle
-    let finalContent = updatedContent;
-    if (thumbUrl) {
-      finalContent = updatedContent.replace(
-        /(const XV_THUMBS = \{)/,
-        `$1\n  "${xvId}":"${thumbUrl}",`
-      );
-    }
-
-    // GitHub'a commit at
-    const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
-      method: 'PUT',
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: `Add video: ${xvId} — ${title.substring(0,50)}`,
-        content: btoa(unescape(encodeURIComponent(finalContent))),
-        sha
-      })
-    });
-
-    if (!updateRes.ok) {
-      const err = await updateRes.json();
-      throw new Error(err.message || 'GitHub API hatası');
-    }
-
-    setSaveStatus(`✓ "${title.substring(0,40)}..." eklendi ve GitHub'a gönderildi!`, 'ok');
-    renderAdminList();
-    resetAddForm();
-
-  } catch(e) {
-    // Hata olsa da lokalde göster
-    setSaveStatus('GitHub hatası: ' + e.message, 'err');
-  } finally {
-    document.querySelector('#addForm .admin-btn').disabled = false;
-  }
-}
-
-function resetAddForm() {
-  document.getElementById('a-xvid').value = '';
-  document.getElementById('a-title').value = '';
-  document.getElementById('a-dur').value = '';
-  document.getElementById('a-views').value = '';
-  document.getElementById('a-hd').checked = true;
-  document.getElementById('a-new').checked = false;
-  document.getElementById('videoPreview').classList.remove('show');
-  document.getElementById('addForm').style.display = 'none';
-  document.getElementById('fetchStatus').className = 'admin-status';
-  document.getElementById('saveStatus').className = 'admin-status';
-}
-
-function renderAdminList() {
-  document.getElementById('videoCount').textContent = videos.length;
-  const sorted = [...videos].sort((a,b) => b.addedAt - a.addedAt);
-  document.getElementById('adminVidList').innerHTML = `
-    <table>
-      <thead><tr>
-        <th>Title</th><th>Cat</th><th>Views</th><th>Thumb</th><th></th>
-      </tr></thead>
-      <tbody>${sorted.map(v => `
-        <tr>
-          <td>${v.title.substring(0,45)}${v.title.length>45?'…':''}</td>
-          <td>${v.cat}</td>
-          <td>${v.views}</td>
-          <td><span class="thumb-status ${XV_THUMBS[v.xvId]?'ok':'missing'}"></span>${XV_THUMBS[v.xvId]?'✓':'missing'}</td>
-          <td><button class="del-btn" onclick="deleteVideo(${v.id})" title="Sil">🗑</button></td>
-        </tr>`).join('')}
-      </tbody>
-    </table>`;
-}
-
-async function deleteVideo(id) {
-  const v = videos.find(x => x.id===id);
-  if (!v) return;
-  if (!confirm(`Sil: "${v.title.substring(0,50)}..."`)) return;
-
-  videos.splice(videos.findIndex(x=>x.id===id), 1);
-  renderAdminList();
-  setTab(currentTab);
-  // GitHub commit — basit bildirim
-  alert('Lokal silindi. GitHub\'a commit için sayfayı kaydet ve manuel push yap, ya da bir sonraki video eklemede otomatik sync olur.');
-}
-
-// ── INIT ─────────────────────────────────────────────────────
-initVote();
-setTab('home');
-loadMissingThumbs();
-</script>
 </body>
 </html>
