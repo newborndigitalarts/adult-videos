@@ -3,615 +3,319 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Naughty Video Club – Free Adult Videos</title>
-<meta name="description" content="Watch free adult videos online. Best 18+ content updated daily.">
+<title>Naughty Video Club – Curated Adult Videos</title>
+<meta name="description" content="Editor-curated adult videos. Real, amateur, authentic — not algorithmically pushed content.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #111111;
-  --bg2: #1a1a1a;
-  --bg3: #222222;
-  --border: #2e2e2e;
-  --red: #e02020;
-  --red2: #ff3333;
-  --text: #f0f0f0;
-  --muted: #888;
-  --muted2: #555;
-  --thumb-ratio: 56.25%;
+  --bg:#111;
+  --bg2:#1a1a1a;
+  --bg3:#222;
+  --border:#2e2e2e;
+  --red:#e02020;
+  --red2:#ff3333;
+  --text:#f0f0f0;
+  --muted:#888;
+  --muted2:#555;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-serif; font-size:13px; }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;font-size:13px;}
 
 /* ── HEADER ── */
-.header-top {
+.header{
   background:#000;
-  padding:10px 16px;
+  border-bottom:2px solid var(--red);
+  padding:0 16px;
+  height:48px;
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:16px;
   position:sticky;
   top:0;
-  z-index:200;
-  border-bottom:2px solid var(--red);
+  z-index:300;
 }
-.logo {
-  display:flex;
-  align-items:baseline;
-  gap:6px;
-  flex-shrink:0;
-  text-decoration:none;
-}
-.logo-naughty {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:28px;
-  color:var(--red);
-  letter-spacing:2px;
-  line-height:1;
-}
-.logo-video {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:28px;
-  color:#fff;
-  letter-spacing:2px;
-  line-height:1;
-}
-.logo-club {
-  font-family:'Playfair Display',serif;
-  font-style:italic;
-  font-size:14px;
-  color:#aaa;
-  font-weight:400;
-  letter-spacing:1px;
-}
-.search-bar {
-  flex:1;
-  max-width:600px;
-  display:flex;
-  background:var(--bg3);
-  border:1px solid var(--border);
-  overflow:hidden;
-}
-.search-bar input {
-  flex:1;
-  background:none;
-  border:none;
-  outline:none;
-  color:var(--text);
-  font-family:'Montserrat',sans-serif;
-  font-size:13px;
-  padding:8px 14px;
-}
-.search-bar input::placeholder { color:var(--muted2); }
-.search-bar button {
-  background:var(--red);
-  border:none;
-  color:#fff;
-  padding:0 18px;
-  cursor:pointer;
-  font-size:16px;
-  transition:background 0.2s;
-}
-.search-bar button:hover { background:var(--red2); }
-.header-actions { margin-left:auto; display:flex; gap:8px; }
-.btn-login {
-  background:none;
-  border:1px solid var(--border);
-  color:var(--muted);
-  padding:6px 14px;
-  font-family:'Montserrat',sans-serif;
-  font-size:12px;
-  font-weight:500;
-  cursor:pointer;
-  transition:all 0.2s;
-}
-.btn-login:hover { border-color:var(--muted); color:var(--text); }
-.btn-signup {
-  background:var(--red);
-  border:none;
-  color:#fff;
-  padding:6px 14px;
-  font-family:'Montserrat',sans-serif;
-  font-size:12px;
-  font-weight:600;
-  cursor:pointer;
-  transition:background 0.2s;
-}
-.btn-signup:hover { background:var(--red2); }
+.logo{display:flex;align-items:baseline;gap:5px;text-decoration:none;flex-shrink:0;}
+.logo-n{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--red);letter-spacing:2px;}
+.logo-v{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;letter-spacing:2px;}
+.logo-c{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:var(--muted);}
+
+/* Search */
+.search-wrap{flex:1;max-width:400px;display:flex;background:var(--bg3);border:1px solid var(--border);}
+.search-wrap input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:7px 12px;}
+.search-wrap input::placeholder{color:var(--muted2);}
+.search-wrap button{background:var(--red);border:none;color:#fff;padding:0 14px;cursor:pointer;font-size:13px;transition:background .2s;}
+.search-wrap button:hover{background:var(--red2);}
 
 /* ── NAV ── */
-.nav-bar {
+.nav{
   background:var(--bg2);
   border-bottom:1px solid var(--border);
   padding:0 16px;
   display:flex;
-  align-items:center;
   gap:0;
   overflow-x:auto;
   scrollbar-width:none;
 }
-.nav-bar::-webkit-scrollbar { display:none; }
-.nav-link {
+.nav::-webkit-scrollbar{display:none;}
+.nav-link{
   color:var(--muted);
   text-decoration:none;
-  font-size:12px;
-  font-weight:500;
-  padding:10px 14px;
+  font-size:11px;
+  font-weight:600;
+  padding:10px 16px;
   white-space:nowrap;
   border-bottom:2px solid transparent;
-  transition:all 0.2s;
-  letter-spacing:0.3px;
+  transition:all .2s;
+  letter-spacing:1px;
   text-transform:uppercase;
+  cursor:pointer;
+  background:none;
+  border-top:none;
+  border-left:none;
+  border-right:none;
+  font-family:'Montserrat',sans-serif;
 }
-.nav-link:hover, .nav-link.active {
-  color:var(--text);
-  border-bottom-color:var(--red);
-}
+.nav-link:hover,.nav-link.active{color:#fff;border-bottom-color:var(--red);}
 
 /* ── LAYOUT ── */
-.page {
-  display:flex;
-  max-width:1600px;
-  margin:0 auto;
-  padding:0;
+.page{display:flex;max-width:1400px;margin:0 auto;padding:16px;gap:16px;align-items:flex-start;}
+
+/* ── LEFT PANEL ── */
+.left-panel{width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;}
+
+.panel-block{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-top:2px solid var(--red);
+  padding:16px;
+}
+.panel-block h4{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px;
+  letter-spacing:2px;
+  color:var(--red);
+  margin-bottom:10px;
 }
 
-/* ── SIDEBAR ── */
-.sidebar {
-  width:180px;
-  flex-shrink:0;
-  background:var(--bg2);
-  border-right:1px solid var(--border);
-  min-height:calc(100vh - 90px);
-  padding:16px 0;
-}
-.sidebar-title {
-  font-size:10px;
-  font-weight:600;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:var(--muted2);
-  padding:0 14px 8px;
-}
-.sidebar-link {
+/* Part 1 — About */
+.about-text{color:var(--muted);font-size:11px;line-height:1.8;}
+.about-text strong{color:var(--text);}
+
+/* Part 2+3 — Vote */
+.vote-question{font-size:11px;color:var(--text);line-height:1.6;margin-bottom:12px;font-weight:500;}
+.vote-btn{
   display:block;
-  color:var(--muted);
-  text-decoration:none;
-  padding:7px 14px;
-  font-size:12px;
-  font-weight:500;
-  transition:all 0.15s;
-  border-left:2px solid transparent;
-}
-.sidebar-link:hover, .sidebar-link.active {
-  color:var(--text);
+  width:100%;
+  padding:9px 10px;
+  border:1px solid var(--border);
   background:var(--bg3);
-  border-left-color:var(--red);
+  color:var(--muted);
+  font-family:'Montserrat',sans-serif;
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+  text-align:left;
+  transition:all .2s;
+  margin-bottom:6px;
+  position:relative;
+  overflow:hidden;
 }
-.sidebar-divider {
-  height:1px;
-  background:var(--border);
-  margin:10px 14px;
+.vote-btn:hover{border-color:var(--red);color:#fff;}
+.vote-btn.voted-real{border-color:#4caf50;color:#4caf50;}
+.vote-btn.voted-fake{border-color:var(--muted2);color:var(--muted2);}
+.vote-bar{
+  position:absolute;
+  left:0;top:0;height:100%;
+  background:rgba(76,175,80,0.12);
+  transition:width .5s ease;
+  pointer-events:none;
 }
+.vote-bar.fake-bar{background:rgba(100,100,100,0.12);}
+.vote-pct{float:right;font-weight:700;}
+.vote-total{font-size:10px;color:var(--muted2);margin-top:4px;text-align:center;}
+
+/* Part 4 — Lollipop */
+.lolly-wrap{text-align:center;}
+.lolly-img{font-size:40px;display:block;margin-bottom:8px;}
+.lolly-text{font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.lolly-btn{
+  display:block;
+  width:100%;
+  background:linear-gradient(135deg,#e91e8c,#ff6b35);
+  border:none;
+  color:#fff;
+  padding:10px;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  letter-spacing:.5px;
+  transition:opacity .2s;
+}
+.lolly-btn:hover{opacity:.85;}
+.lolly-thanks{font-size:13px;color:#e91e8c;margin-top:8px;min-height:20px;text-align:center;}
 
 /* ── MAIN ── */
-.main { flex:1; min-width:0; padding:14px 16px; }
+.main{flex:1;min-width:0;}
 
-/* ── SECTION HEADER ── */
-.section-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin-bottom:12px;
-  margin-top:20px;
-}
-.section-header:first-child { margin-top:0; }
-.section-title {
+/* Section header */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sec-title{
   font-family:'Bebas Neue',sans-serif;
-  font-size:22px;
+  font-size:20px;
   letter-spacing:2px;
-  color:var(--text);
   display:flex;
   align-items:center;
-  gap:10px;
-}
-.section-title::before {
-  content:'';
-  display:block;
-  width:4px;
-  height:20px;
-  background:var(--red);
-}
-.section-more {
-  color:var(--red);
-  text-decoration:none;
-  font-size:11px;
-  font-weight:600;
-  letter-spacing:1px;
-  text-transform:uppercase;
-}
-.section-more:hover { color:var(--red2); }
-
-/* ── VIDEO GRID ── */
-.video-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
-  gap:10px;
-  margin-bottom:24px;
-}
-.video-grid.large {
-  grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
-}
-
-/* ── VIDEO CARD ── */
-.vcard {
-  cursor:pointer;
-  transition:transform 0.15s;
-}
-.vcard:hover { transform:translateY(-2px); }
-.vcard-thumb {
-  position:relative;
-  width:100%;
-  padding-bottom:var(--thumb-ratio);
-  background:var(--bg3);
-  overflow:hidden;
-}
-.vcard-thumb img {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transition:transform 0.3s;
-}
-.vcard:hover .vcard-thumb img { transform:scale(1.05); }
-.vcard-duration {
-  position:absolute;
-  bottom:5px;
-  right:5px;
-  background:rgba(0,0,0,0.85);
-  color:#fff;
-  font-size:11px;
-  font-weight:600;
-  padding:1px 5px;
-  border-radius:2px;
-}
-.vcard-hd {
-  position:absolute;
-  top:5px;
-  left:5px;
-  background:var(--red);
-  color:#fff;
-  font-size:9px;
-  font-weight:700;
-  padding:1px 4px;
-  letter-spacing:1px;
-}
-.vcard-new {
-  position:absolute;
-  top:5px;
-  right:5px;
-  background:#f5a623;
-  color:#000;
-  font-size:9px;
-  font-weight:700;
-  padding:1px 4px;
-  letter-spacing:1px;
-}
-.vcard-overlay {
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,0.35);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  transition:opacity 0.2s;
-}
-.vcard:hover .vcard-overlay { opacity:1; }
-.vcard-play {
-  width:44px;
-  height:44px;
-  background:rgba(224,32,32,0.9);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.vcard-play::after {
-  content:'';
-  width:0; height:0;
-  border-top:8px solid transparent;
-  border-bottom:8px solid transparent;
-  border-left:15px solid #fff;
-  margin-left:3px;
-}
-.vcard-info { padding:6px 2px 2px; }
-.vcard-title {
-  font-size:12px;
-  font-weight:500;
-  color:var(--text);
-  line-height:1.4;
-  margin-bottom:3px;
-  overflow:hidden;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-}
-.vcard-meta {
-  display:flex;
   gap:8px;
-  color:var(--muted);
-  font-size:11px;
 }
-.vcard-views { color:var(--muted); }
-.vcard-channel { color:var(--red); font-weight:500; }
+.sec-title::before{content:'';display:block;width:3px;height:18px;background:var(--red);}
 
-/* ── CATEGORY PILLS ── */
-.cat-pills {
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
-  margin-bottom:16px;
+/* Search results label */
+.search-label{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.search-label span{color:var(--red);font-weight:600;}
+
+/* Video grid */
+.vgrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:20px;
 }
-.cat-pill {
+@media(max-width:1100px){.vgrid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:700px){.vgrid{grid-template-columns:repeat(2,1fr);}}
+
+/* Video card */
+.vcard{cursor:pointer;transition:transform .15s;}
+.vcard:hover{transform:translateY(-2px);}
+.vthumb{position:relative;width:100%;padding-bottom:56.25%;background:var(--bg3);overflow:hidden;}
+.vthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.vcard:hover .vthumb img{transform:scale(1.05);}
+.voverlay{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;}
+.vcard:hover .voverlay{opacity:1;}
+.vplay{width:40px;height:40px;background:rgba(224,32,32,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.vplay::after{content:'';width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:13px solid #fff;margin-left:3px;}
+.vdur{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.85);color:#fff;font-size:10px;font-weight:600;padding:1px 5px;}
+.vhd{position:absolute;top:4px;left:4px;background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:1px 4px;letter-spacing:.5px;}
+.vnew{position:absolute;top:4px;right:4px;background:#f5a623;color:#000;font-size:9px;font-weight:700;padding:1px 4px;}
+.vinfo{padding:5px 2px 2px;}
+.vtitle{font-size:11px;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:2px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.vmeta{font-size:10px;color:var(--muted);}
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:center;gap:4px;padding:16px 0 8px;}
+.pg-btn{
   background:var(--bg3);
   border:1px solid var(--border);
   color:var(--muted);
-  padding:5px 12px;
-  font-size:11px;
-  font-weight:500;
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
   cursor:pointer;
-  border-radius:2px;
-  transition:all 0.15s;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:600;
+  transition:all .2s;
 }
-.cat-pill:hover, .cat-pill.active {
-  background:var(--red);
-  border-color:var(--red);
-  color:#fff;
-}
+.pg-btn:hover,.pg-btn.active{background:var(--red);border-color:var(--red);color:#fff;}
+.pg-btn.disabled{opacity:.3;cursor:not-allowed;pointer-events:none;}
+.pg-dots{color:var(--muted2);font-size:12px;padding:0 4px;}
 
-/* ── FEATURED BANNER ── */
-.featured-banner {
-  position:relative;
-  width:100%;
-  padding-bottom:35%;
-  background:var(--bg3);
-  overflow:hidden;
-  margin-bottom:20px;
-  cursor:pointer;
-}
-.featured-banner img {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-.featured-banner::after {
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to right, rgba(0,0,0,0.8) 0%, transparent 60%);
-}
-.featured-info {
-  position:absolute;
-  left:32px;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:2;
-  max-width:400px;
-}
-.featured-tag {
-  background:var(--red);
-  color:#fff;
-  font-size:10px;
-  font-weight:700;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  padding:3px 8px;
-  display:inline-block;
-  margin-bottom:8px;
-}
-.featured-title {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:32px;
-  letter-spacing:2px;
-  color:#fff;
-  line-height:1.1;
-  margin-bottom:6px;
-}
-.featured-meta { color:#aaa; font-size:12px; }
-.featured-play {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  z-index:2;
-  width:60px;
-  height:60px;
-  background:rgba(224,32,32,0.9);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  transition:opacity 0.2s;
-}
-.featured-banner:hover .featured-play { opacity:1; }
-.featured-play::after {
-  content:'';
-  width:0; height:0;
-  border-top:10px solid transparent;
-  border-bottom:10px solid transparent;
-  border-left:20px solid #fff;
-  margin-left:4px;
-}
+/* No results */
+.no-results{color:var(--muted);padding:32px;text-align:center;font-size:13px;}
 
-/* ── MODAL ── */
-.modal-overlay {
+/* ── CATEGORIES DRAWER ── */
+.cat-overlay{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.95);
-  z-index:1000;
-  align-items:center;
-  justify-content:center;
-  padding:12px;
+  background:rgba(0,0,0,.7);
+  z-index:400;
+  align-items:flex-end;
 }
-.modal-overlay.open { display:flex; }
-.modal {
-  background:#000;
-  border:1px solid var(--border);
-  width:100%;
-  max-width:1000px;
-}
-.modal-header {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 14px;
+.cat-overlay.open{display:flex;}
+.cat-drawer{
   background:var(--bg2);
-  border-bottom:1px solid var(--border);
+  border-top:2px solid var(--red);
+  width:100%;
+  max-height:70vh;
+  overflow-y:auto;
+  padding:20px 24px;
+  animation:slideUp .25s ease;
 }
-.modal-title {
-  font-size:14px;
-  font-weight:600;
-  color:var(--text);
-  overflow:hidden;
-  white-space:nowrap;
-  text-overflow:ellipsis;
-  max-width:80%;
-}
-.modal-close {
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.cat-drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cat-drawer-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--text);}
+.cat-close{background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
+.cat-close:hover{color:#fff;background:var(--red);border-color:var(--red);}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+.cat-card{
   background:var(--bg3);
   border:1px solid var(--border);
-  color:var(--muted);
-  width:30px;
-  height:30px;
+  padding:14px 12px;
   cursor:pointer;
-  font-size:16px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:all 0.2s;
-  flex-shrink:0;
-}
-.modal-close:hover { color:#fff; background:var(--red); border-color:var(--red); }
-.modal-body {
-  position:relative;
-  width:100%;
-  padding-bottom:56.25%;
-}
-.modal-body iframe {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  border:none;
-  background:#000;
-}
-.modal-footer {
-  padding:8px 14px;
-  background:var(--bg2);
-  border-top:1px solid var(--border);
-  font-size:11px;
-  color:var(--muted);
-  display:flex;
-  gap:12px;
-}
-
-/* ── AGE GATE / COMING SOON ── */
-.age-gate {
-  position:fixed;
-  inset:0;
-  background:#0a0a0a;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow-y:auto;
-  padding:20px;
-}
-.age-box {
+  transition:all .2s;
   text-align:center;
-  width:100%;
-  max-width:500px;
-  padding:40px 36px;
-  background:var(--bg2);
-  border:1px solid var(--border);
-  border-top:3px solid var(--red);
 }
-.age-logo { margin-bottom:20px; }
-.age-logo .l1 { font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--red); letter-spacing:3px; }
-.age-logo .l2 { font-family:'Bebas Neue',sans-serif; font-size:36px; color:#fff; letter-spacing:3px; }
-.age-logo .l3 { font-family:'Playfair Display',serif; font-style:italic; font-size:16px; color:var(--muted); display:block; margin-top:-4px; }
-.age-box h3 { font-size:13px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:var(--text); margin-bottom:8px; }
-.age-box .warning-text { color:var(--muted); font-size:12px; line-height:1.7; margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid var(--border); }
-.countdown-wrap { margin-bottom:24px; }
-.countdown-label { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--muted2); margin-bottom:10px; }
-.countdown { display:flex; justify-content:center; gap:8px; }
-.cd-unit { background:var(--bg3); border:1px solid var(--border); padding:10px 14px; min-width:64px; }
-.cd-num { font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--red); line-height:1; display:block; }
-.cd-lbl { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--muted2); display:block; margin-top:2px; }
-.msg-wrap { text-align:left; margin-bottom:16px; }
-.msg-wrap label { display:block; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-.msg-wrap textarea {
-  width:100%; background:var(--bg3); border:1px solid var(--border);
-  color:var(--text); font-family:'Montserrat',sans-serif; font-size:12px;
-  padding:10px 12px; resize:none; outline:none; line-height:1.6; transition:border-color 0.2s;
-}
-.msg-wrap textarea:focus { border-color:var(--red); }
-.msg-wrap textarea::placeholder { color:var(--muted2); }
-.msg-wrap input[type=email] {
-  width:100%; background:var(--bg3); border:1px solid var(--border);
-  color:var(--text); font-family:'Montserrat',sans-serif; font-size:12px;
-  padding:9px 12px; outline:none; transition:border-color 0.2s; margin-top:8px;
-}
-.msg-wrap input[type=email]:focus { border-color:var(--red); }
-.msg-wrap input[type=email]::placeholder { color:var(--muted2); }
-.btn-send {
-  display:block; width:100%; background:var(--red); border:none; color:#fff;
-  padding:13px; font-family:'Montserrat',sans-serif; font-size:13px;
-  font-weight:700; letter-spacing:1px; text-transform:uppercase;
-  cursor:pointer; transition:background 0.2s; margin-top:12px;
-}
-.btn-send:hover { background:var(--red2); }
-.btn-send:disabled { background:var(--muted2); cursor:not-allowed; }
-.send-status { font-size:12px; margin-top:10px; min-height:18px; }
-.send-status.ok { color:#4caf50; }
-.send-status.err { color:var(--red); }
+.cat-card:hover{border-color:var(--red);background:#1f1212;}
+.cat-card-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--text);display:block;margin-bottom:2px;}
+.cat-card-count{font-size:10px;color:var(--muted);}
+.cat-card-count.empty{color:var(--muted2);}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;align-items:center;justify-content:center;padding:12px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#000;border:1px solid var(--border);width:100%;max-width:960px;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.modal-title{font-size:13px;font-weight:600;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:85%;}
+.modal-close{background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.modal-close:hover{color:#fff;background:var(--red);border-color:var(--red);}
+.modal-body{position:relative;width:100%;padding-bottom:56.25%;}
+.modal-body iframe{position:absolute;inset:0;width:100%;height:100%;border:none;background:#000;}
+.modal-foot{padding:7px 14px;background:var(--bg2);border-top:1px solid var(--border);font-size:11px;color:var(--muted);}
+
+/* ── COMING SOON / AGE GATE ── */
+.age-gate{position:fixed;inset:0;background:#0a0a0a;z-index:9999;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px;}
+.age-box{text-align:center;width:100%;max-width:500px;padding:40px 36px;background:var(--bg2);border:1px solid var(--border);border-top:3px solid var(--red);}
+.age-logo{margin-bottom:20px;}
+.age-logo .l1{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--red);letter-spacing:3px;}
+.age-logo .l2{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;letter-spacing:3px;}
+.age-logo .l3{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--muted);display:block;margin-top:-4px;}
+.age-box h3{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:8px;}
+.warning-text{color:var(--muted);font-size:12px;line-height:1.7;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.countdown-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px;}
+.countdown{display:flex;justify-content:center;gap:8px;margin-bottom:24px;}
+.cd-unit{background:var(--bg3);border:1px solid var(--border);padding:10px 14px;min-width:64px;}
+.cd-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--red);line-height:1;display:block;}
+.cd-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);display:block;margin-top:2px;}
+.msg-wrap{text-align:left;margin-bottom:16px;}
+.msg-wrap label{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.msg-wrap textarea{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:10px 12px;resize:none;outline:none;line-height:1.6;transition:border-color .2s;}
+.msg-wrap textarea:focus{border-color:var(--red);}
+.msg-wrap textarea::placeholder{color:var(--muted2);}
+.msg-wrap input[type=email]{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:9px 12px;outline:none;transition:border-color .2s;margin-top:8px;}
+.msg-wrap input[type=email]:focus{border-color:var(--red);}
+.msg-wrap input[type=email]::placeholder{color:var(--muted2);}
+.btn-send{display:block;width:100%;background:var(--red);border:none;color:#fff;padding:13px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:12px;}
+.btn-send:hover{background:var(--red2);}
+.btn-send:disabled{background:var(--muted2);cursor:not-allowed;}
+.send-status{font-size:12px;margin-top:10px;min-height:18px;}
+.send-status.ok{color:#4caf50;}
+.send-status.err{color:var(--red);}
 
 /* ── FOOTER ── */
-.site-footer {
-  background:#000;
-  border-top:1px solid var(--border);
-  padding:20px 16px;
-  text-align:center;
-  color:var(--muted2);
-  font-size:11px;
-  margin-top:32px;
-}
-.site-footer a { color:var(--muted); text-decoration:none; margin:0 8px; }
-.site-footer a:hover { color:var(--red); }
+.site-footer{background:#000;border-top:1px solid var(--border);padding:16px;text-align:center;color:var(--muted2);font-size:11px;margin-top:24px;}
+.site-footer a{color:var(--muted);text-decoration:none;margin:0 8px;}
+.site-footer a:hover{color:var(--red);}
 
-@media(max-width:900px) {
-  .sidebar { display:none; }
-  .video-grid { grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:8px; }
-  .featured-banner { padding-bottom:50%; }
-  .featured-info { display:none; }
-}
-@media(max-width:600px) {
-  .video-grid { grid-template-columns:repeat(2,1fr); }
-  .header-actions { display:none; }
+@media(max-width:900px){
+  .left-panel{display:none;}
+  .page{padding:10px;}
 }
 </style>
 </head>
 <body>
 
-<!-- AGE GATE / COMING SOON -->
+<!-- AGE GATE -->
 <div class="age-gate" id="ageGate">
   <div class="age-box">
     <div class="age-logo">
@@ -620,20 +324,16 @@ body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-se
     </div>
     <h3>Adult Content Warning</h3>
     <p class="warning-text">This website contains explicit adult content intended for mature audiences only. By entering you confirm you are at least 18 years of age and it is legal to view such material in your location.</p>
-
-    <div class="countdown-wrap">
-      <div class="countdown-label">Site launches in</div>
-      <div class="countdown">
-        <div class="cd-unit"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">Days</span></div>
-        <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">Hours</span></div>
-        <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">Min</span></div>
-        <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">Sec</span></div>
-      </div>
+    <div class="countdown-label">Site launches in</div>
+    <div class="countdown">
+      <div class="cd-unit"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">Days</span></div>
+      <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">Hours</span></div>
+      <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">Min</span></div>
+      <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">Sec</span></div>
     </div>
-
     <div class="msg-wrap">
       <label>What do you want to see? Leave us a message:</label>
-      <textarea id="msgText" rows="3" placeholder="Tell us what you want to see... Boss didn't give you a raise? Neighbour's dog messing up your garden? Vent here. Leave your email below if you want to be notified when we launch."></textarea>
+      <textarea id="msgText" rows="3" placeholder="Tell us what you want to see... Boss didn't give you a raise? Neighbour's dog ruining your garden? Vent here. Leave your email below if you want to be notified when we launch."></textarea>
       <input type="email" id="msgEmail" placeholder="your@email.com (optional)">
     </div>
     <div class="send-status" id="sendStatus"></div>
@@ -642,121 +342,108 @@ body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-se
 </div>
 
 <!-- HEADER -->
-<div class="header-top">
-  <a class="logo" href="#">
-    <span class="logo-naughty">Naughty</span>
-    <span class="logo-video">Video</span>
-    <span class="logo-club">Club</span>
+<div class="header">
+  <a class="logo" href="#" onclick="setTab('home');return false;">
+    <span class="logo-n">Naughty</span>
+    <span class="logo-v">Video</span>
+    <span class="logo-c">Club</span>
   </a>
-  <div class="search-bar">
-    <input type="text" placeholder="Search videos...">
-    <button>🔍</button>
-  </div>
-  <div class="header-actions">
-    <button class="btn-login">Login</button>
-    <button class="btn-signup">Sign Up Free</button>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search videos..." oninput="doSearch(this.value)">
+    <button onclick="doSearch(document.getElementById('searchInput').value)">🔍</button>
   </div>
 </div>
 
 <!-- NAV -->
-<div class="nav-bar">
-  <a class="nav-link active" href="#" onclick="filterVideos('all',this);return false;">Home</a>
-  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Videos</a>
-  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Categories</a>
-  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Most Viewed</a>
-  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Top Rated</a>
-  <a class="nav-link" href="#" onclick="filterVideos('all',this);return false;">Newest</a>
-  <a class="nav-link" href="#" onclick="filterVideos('compilation',this);return false;">Long Videos</a>
-  <a class="nav-link" href="#" onclick="filterVideos('hd',this);return false;">HD</a>
+<div class="nav">
+  <button class="nav-link active" id="tab-home"     onclick="setTab('home')">Home</button>
+  <button class="nav-link"        id="tab-trending"  onclick="setTab('trending')">Trending Today</button>
+  <button class="nav-link"        id="tab-newest"    onclick="setTab('newest')">Newest</button>
+  <button class="nav-link"        id="tab-categories" onclick="openCats()">Categories</button>
 </div>
 
 <!-- PAGE -->
 <div class="page">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <div class="sidebar-title">Categories</div>
-    <a class="sidebar-link active" href="#" onclick="filterVideos('all',this);return false;">All Videos</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('amateur',this);return false;">Amateur</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('milf',this);return false;">MILF</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('teen',this);return false;">Teen (18+)</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('lesbian',this);return false;">Lesbian</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('asian',this);return false;">Asian</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('latina',this);return false;">Latina</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('bbw',this);return false;">BBW</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('anal',this);return false;">Anal</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('compilation',this);return false;">Compilation</a>
-    <a class="sidebar-link" href="#" onclick="filterVideos('hd',this);return false;">HD Videos</a>
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-title">Popular Tags</div>
-    <a class="sidebar-link" href="#">Homemade</a>
-    <a class="sidebar-link" href="#">POV</a>
-    <a class="sidebar-link" href="#">Creampie</a>
-    <a class="sidebar-link" href="#">Blowjob</a>
-    <a class="sidebar-link" href="#">Solo</a>
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+
+    <!-- Part 1: About -->
+    <div class="panel-block">
+      <h4>About Us</h4>
+      <p class="about-text">
+        We built this with limited tools and zero budget.<br><br>
+        The internet has <strong>millions of porn sites</strong> pushing algorithmically selected content — optimized for clicks, not authenticity.<br><br>
+        We do something different: <strong>every video here is hand-picked by a human editor</strong> who values real moments over polished production.<br><br>
+        No studios. No scripts. No fake moaning on cue.
+      </p>
+    </div>
+
+    <!-- Part 2+3: Vote -->
+    <div class="panel-block">
+      <h4>Your Taste</h4>
+      <p class="vote-question">Which do you prefer?</p>
+      <button class="vote-btn" id="vbtn-real" onclick="castVote('real')">
+        <div class="vote-bar" id="vbar-real"></div>
+        🎥 Real &amp; Amateur
+        <span class="vote-pct" id="vpct-real">–</span>
+      </button>
+      <button class="vote-btn" id="vbtn-fake" onclick="castVote('fake')">
+        <div class="vote-bar fake-bar" id="vbar-fake"></div>
+        🎬 Studio &amp; Produced
+        <span class="vote-pct" id="vpct-fake">–</span>
+      </button>
+      <div class="vote-total" id="vote-total"></div>
+    </div>
+
+    <!-- Part 4: Lollipop -->
+    <div class="panel-block">
+      <div class="lolly-wrap">
+        <h4>Support Us</h4>
+        <span class="lolly-img">🍭</span>
+        <p class="lolly-text">Like what we're building? Buy us a lollipop. Seriously, that's all we ask.</p>
+        <button class="lolly-btn" id="lollyBtn" onclick="buyLolly()">BUY ME A LOLLIPOP — $0.99</button>
+        <div class="lolly-thanks" id="lollyThanks"></div>
+        <div id="lollyStats" style="display:none;margin-top:10px;background:var(--bg);border:1px solid var(--border);padding:10px;text-align:left;font-size:11px;color:var(--muted);line-height:1.9;"></div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- MAIN -->
-  <div class="main">
-
-    <!-- FEATURED -->
-    <div class="featured-banner" onclick="openVideo(1)">
-      <img src="https://picsum.photos/seed/feat/1200/400" alt="Featured">
-      <div class="featured-info">
-        <span class="featured-tag">⚡ Trending Now</span>
-        <div class="featured-title">Today's Most Watched</div>
-        <div class="featured-meta">2.4M views &nbsp;•&nbsp; 18:22 &nbsp;•&nbsp; HD</div>
-      </div>
-      <div class="featured-play"></div>
+  <!-- MAIN CONTENT -->
+  <div class="main" id="mainContent">
+    <div class="sec-head">
+      <div class="sec-title" id="secTitle">Home</div>
     </div>
+    <div id="searchLabel" class="search-label" style="display:none"></div>
+    <div class="vgrid" id="videoGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </div>
 
-    <!-- CATEGORY PILLS -->
-    <div class="cat-pills" id="catPills">
-      <button class="cat-pill active" onclick="filterVideos('all',this)">All</button>
-      <button class="cat-pill" onclick="filterVideos('amateur',this)">Amateur</button>
-      <button class="cat-pill" onclick="filterVideos('milf',this)">MILF</button>
-      <button class="cat-pill" onclick="filterVideos('teen',this)">Teen (18+)</button>
-      <button class="cat-pill" onclick="filterVideos('lesbian',this)">Lesbian</button>
-      <button class="cat-pill" onclick="filterVideos('asian',this)">Asian</button>
-      <button class="cat-pill" onclick="filterVideos('hd',this)">HD</button>
-      <button class="cat-pill" onclick="filterVideos('compilation',this)">Compilation</button>
+</div>
+
+<!-- CATEGORIES DRAWER -->
+<div class="cat-overlay" id="catOverlay" onclick="closeCatsIfBg(event)">
+  <div class="cat-drawer">
+    <div class="cat-drawer-head">
+      <span class="cat-drawer-title">Categories</span>
+      <button class="cat-close" onclick="closeCats()">✕</button>
     </div>
-
-    <!-- TRENDING -->
-    <div class="section-header">
-      <div class="section-title">Trending Videos</div>
-      <a href="#" class="section-more">View All →</a>
-    </div>
-    <div class="video-grid large" id="trendingGrid"></div>
-
-    <!-- NEWEST -->
-    <div class="section-header">
-      <div class="section-title">Newest Uploads</div>
-      <a href="#" class="section-more">View All →</a>
-    </div>
-    <div class="video-grid" id="newestGrid"></div>
-
-    <!-- MOST VIEWED -->
-    <div class="section-header">
-      <div class="section-title">Most Viewed</div>
-      <a href="#" class="section-more">View All →</a>
-    </div>
-    <div class="video-grid" id="popularGrid"></div>
-
+    <div class="cat-grid" id="catGrid"></div>
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- VIDEO MODAL -->
 <div class="modal-overlay" id="videoModal">
   <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title" id="modalTitle">Video</span>
+    <div class="modal-head">
+      <span class="modal-title" id="modalTitle"></span>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
       <iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe>
     </div>
-    <div class="modal-footer" id="modalMeta"></div>
+    <div class="modal-foot" id="modalFoot"></div>
   </div>
 </div>
 
@@ -772,141 +459,261 @@ body { background:var(--bg); color:var(--text); font-family:'Montserrat',sans-se
 </div>
 
 <script>
-// ── VIDEO DATA ─────────────────────────────────────
+// ── VIDEO DATA ────────────────────────────────────────────────
 const videos = [
-  { id:1,  title:"Big black cock and innocent white girl – painful fucking",    cat:"anal",        views:"1.1M",  duration:"11 min", hd:true, isNew:true,  xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
-  { id:2,  title:"Llorando y gritando en anal doloroso",                        cat:"anal",        views:"5.1M",  duration:"10 min", hd:true, isNew:true,  xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
-  { id:3,  title:"18 years old first anal is so painful",                       cat:"anal",        views:"5.9M",  duration:"10 min", hd:true, isNew:true,  xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
-  { id:4,  title:"She didn't want it but finally gave in",                      cat:"anal",        views:"9.1M",  duration:"5 min",  hd:true, isNew:true,  xvId:"uevccib4df4", embedUrl:"https://www.xvideos.com/embedframe/uevccib4df4" },
-  { id:5,  title:"Girlfriend was crying taking big cock in her small ass",      cat:"amateur",     views:"91.8K", duration:"10 min", hd:true, isNew:true,  xvId:"ufefuhb5ff6", embedUrl:"https://www.xvideos.com/embedframe/ufefuhb5ff6" },
-  { id:6,  title:"Destroy my ass – World's Most Painful Anal – Kristal Ass",   cat:"anal",        views:"1.3M",  duration:"10 min", hd:true, isNew:false, xvId:"ulcmbad1219", embedUrl:"https://www.xvideos.com/embedframe/ulcmbad1219" },
-  { id:7,  title:"Stepfather fucks stepdaughter – rough painful hotel bathroom",cat:"anal",        views:"1.6M",  duration:"15 min", hd:true, isNew:false, xvId:"uufiuet5bc2", embedUrl:"https://www.xvideos.com/embedframe/uufiuet5bc2" },
-  { id:8,  title:"Painful anal for this white woman",                           cat:"anal",        views:"403.1K",duration:"14 min", hd:true, isNew:false, xvId:"kpbkied68f0", embedUrl:"https://www.xvideos.com/embedframe/kpbkied68f0" },
-  { id:9,  title:"French amateur teen tries painful anal homemade",             cat:"amateur",     views:"778.6K",duration:"30 min", hd:true, isNew:false, xvId:"kfdlodfc301", embedUrl:"https://www.xvideos.com/embedframe/kfdlodfc301" },
-  { id:10, title:"19yo girl with big ass gets rough painful anal sex",          cat:"anal",        views:"14.6M", duration:"13 min", hd:true, isNew:false, xvId:"klekcih2186", embedUrl:"https://www.xvideos.com/embedframe/klekcih2186" },
-  { id:11, title:"Devote hausfrau gets painful BDSM casting",                  cat:"anal",        views:"309.1K",duration:"81 min", hd:true, isNew:false, xvId:"uoceokb77af", embedUrl:"https://www.xvideos.com/embedframe/uoceokb77af" },
-  { id:12, title:"Compilation – deep and painful anal sex",                    cat:"compilation", views:"875.7K",duration:"42 min", hd:true, isNew:false, xvId:"otlpiad3974", embedUrl:"https://www.xvideos.com/embedframe/otlpiad3974" },
-  { id:13, title:"Painful anal with my lover",                                 cat:"anal",        views:"489.5K",duration:"11 min", hd:true, isNew:false, xvId:"ufbevldc98a", embedUrl:"https://www.xvideos.com/embedframe/ufbevldc98a" },
-  { id:14, title:"18yo girl first time painful anal with stepbrother",         cat:"amateur",     views:"469.9K",duration:"6 min",  hd:true, isNew:false, xvId:"ottlcmo0522", embedUrl:"https://www.xvideos.com/embedframe/ottlcmo0522" },
-  { id:15, title:"Stepdaughter wants anal but it's very painful",              cat:"anal",        views:"811.2K",duration:"23 min", hd:true, isNew:false, xvId:"udidcah7fdd", embedUrl:"https://www.xvideos.com/embedframe/udidcah7fdd" },
-  { id:16, title:"Make me scream – I want a painful anal orgasm",              cat:"anal",        views:"174.2K",duration:"6 min",  hd:true, isNew:false, xvId:"ubavlpd4e7c", embedUrl:"https://www.xvideos.com/embedframe/ubavlpd4e7c" },
-  { id:17, title:"IT HURTS – Rough painful anal makes young girl scream",      cat:"anal",        views:"18.2M", duration:"10 min", hd:true, isNew:false, xvId:"uioacfoc8a6", embedUrl:"https://www.xvideos.com/embedframe/uioacfoc8a6" },
-  { id:18, title:"Too painful to finish – cowgirl big cock",                   cat:"amateur",     views:"182.8K",duration:"10 min", hd:true, isNew:false, xvId:"ohvbloh6357", embedUrl:"https://www.xvideos.com/embedframe/ohvbloh6357" },
-  { id:19, title:"Please cum it's painful – you said it would be quick",       cat:"anal",        views:"13.1M", duration:"5 min",  hd:true, isNew:false, xvId:"keabmtm9159", embedUrl:"https://www.xvideos.com/embedframe/keabmtm9159" },
-  { id:20, title:"Painful doggystyle to stepsister",                           cat:"anal",        views:"9.3M",  duration:"5 min",  hd:true, isNew:false, xvId:"kbpkluo661a", embedUrl:"https://www.xvideos.com/embedframe/kbpkluo661a" },
-  { id:21, title:"Painful anal with huge orgasm and yells",                    cat:"anal",        views:"37.8M", duration:"5 min",  hd:true, isNew:false, xvId:"kbabulo578b", embedUrl:"https://www.xvideos.com/embedframe/kbabulo578b" },
-  { id:22, title:"Rough slow painful anal",                                    cat:"amateur",     views:"29.9K", duration:"9 min",  hd:true, isNew:false, xvId:"oilbfiv8527", embedUrl:"https://www.xvideos.com/embedframe/oilbfiv8527" },
-  { id:23, title:"ASS DESTRUCTION – Rough painful anal blonde teen",           cat:"anal",        views:"25.4M", duration:"10 min", hd:true, isNew:false, xvId:"uiluuad549c", embedUrl:"https://www.xvideos.com/embedframe/uiluuad549c" },
-  { id:24, title:"Get off me my ass is burning",                               cat:"anal",        views:"187.3K",duration:"6 min",  hd:true, isNew:false, xvId:"oukvidc2ecb", embedUrl:"https://www.xvideos.com/embedframe/oukvidc2ecb" },
-  { id:25, title:"She could hardly withstand this anal penetration",           cat:"amateur",     views:"87K",   duration:"9 min",  hd:true, isNew:false, xvId:"oukklap3283", embedUrl:"https://www.xvideos.com/embedframe/oukklap3283" },
+  { id:1,  title:"Big black cock and innocent white girl – painful fucking",    cat:"anal",    views:"1.1M",  duration:"11 min", hd:true,  isNew:true,  addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
+  { id:2,  title:"Llorando y gritando en anal doloroso",                        cat:"anal",    views:"5.1M",  duration:"10 min", hd:true,  isNew:true,  addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
+  { id:3,  title:"18 years old first anal is so painful",                       cat:"anal",    views:"5.9M",  duration:"10 min", hd:true,  isNew:true,  addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
+  { id:4,  title:"She didn't want it but finally gave in",                      cat:"anal",    views:"9.1M",  duration:"5 min",  hd:true,  isNew:true,  addedAt:22, xvId:"uevccib4df4", embedUrl:"https://www.xvideos.com/embedframe/uevccib4df4" },
+  { id:5,  title:"Girlfriend was crying taking big cock in her small ass",      cat:"amateur", views:"91.8K", duration:"10 min", hd:true,  isNew:true,  addedAt:21, xvId:"ufefuhb5ff6", embedUrl:"https://www.xvideos.com/embedframe/ufefuhb5ff6" },
+  { id:6,  title:"Destroy my ass – World's Most Painful Anal – Kristal Ass",   cat:"anal",    views:"1.3M",  duration:"10 min", hd:true,  isNew:false, addedAt:20, xvId:"ulcmbad1219", embedUrl:"https://www.xvideos.com/embedframe/ulcmbad1219" },
+  { id:7,  title:"Stepfather fucks stepdaughter – rough painful hotel bathroom",cat:"anal",    views:"1.6M",  duration:"15 min", hd:true,  isNew:false, addedAt:19, xvId:"uufiuet5bc2", embedUrl:"https://www.xvideos.com/embedframe/uufiuet5bc2" },
+  { id:8,  title:"Painful anal for this white woman",                           cat:"anal",    views:"403.1K",duration:"14 min", hd:true,  isNew:false, addedAt:18, xvId:"kpbkied68f0", embedUrl:"https://www.xvideos.com/embedframe/kpbkied68f0" },
+  { id:9,  title:"French amateur teen tries painful anal homemade",             cat:"amateur", views:"778.6K",duration:"30 min", hd:true,  isNew:false, addedAt:17, xvId:"kfdlodfc301", embedUrl:"https://www.xvideos.com/embedframe/kfdlodfc301" },
+  { id:10, title:"19yo girl with big ass gets rough painful anal sex",          cat:"anal",    views:"14.6M", duration:"13 min", hd:true,  isNew:false, addedAt:16, xvId:"klekcih2186", embedUrl:"https://www.xvideos.com/embedframe/klekcih2186" },
+  { id:11, title:"Devote hausfrau gets painful BDSM casting",                  cat:"anal",    views:"309.1K",duration:"81 min", hd:true,  isNew:false, addedAt:15, xvId:"uoceokb77af", embedUrl:"https://www.xvideos.com/embedframe/uoceokb77af" },
+  { id:12, title:"Compilation – deep and painful anal sex",                    cat:"compilation",views:"875.7K",duration:"42 min",hd:true, isNew:false, addedAt:14, xvId:"otlpiad3974", embedUrl:"https://www.xvideos.com/embedframe/otlpiad3974" },
+  { id:13, title:"Painful anal with my lover",                                 cat:"anal",    views:"489.5K",duration:"11 min", hd:true,  isNew:false, addedAt:13, xvId:"ufbevldc98a", embedUrl:"https://www.xvideos.com/embedframe/ufbevldc98a" },
+  { id:14, title:"18yo girl first time painful anal with stepbrother",         cat:"amateur", views:"469.9K",duration:"6 min",  hd:true,  isNew:false, addedAt:12, xvId:"ottlcmo0522", embedUrl:"https://www.xvideos.com/embedframe/ottlcmo0522" },
+  { id:15, title:"Stepdaughter wants anal but it's very painful",              cat:"anal",    views:"811.2K",duration:"23 min", hd:true,  isNew:false, addedAt:11, xvId:"udidcah7fdd", embedUrl:"https://www.xvideos.com/embedframe/udidcah7fdd" },
+  { id:16, title:"Make me scream – I want a painful anal orgasm",              cat:"anal",    views:"174.2K",duration:"6 min",  hd:true,  isNew:false, addedAt:10, xvId:"ubavlpd4e7c", embedUrl:"https://www.xvideos.com/embedframe/ubavlpd4e7c" },
+  { id:17, title:"IT HURTS – Rough painful anal makes young girl scream",      cat:"anal",    views:"18.2M", duration:"10 min", hd:true,  isNew:false, addedAt:9,  xvId:"uioacfoc8a6", embedUrl:"https://www.xvideos.com/embedframe/uioacfoc8a6" },
+  { id:18, title:"Too painful to finish – cowgirl big cock",                   cat:"amateur", views:"182.8K",duration:"10 min", hd:true,  isNew:false, addedAt:8,  xvId:"ohvbloh6357", embedUrl:"https://www.xvideos.com/embedframe/ohvbloh6357" },
+  { id:19, title:"Please cum it's painful – you said it would be quick",       cat:"anal",    views:"13.1M", duration:"5 min",  hd:true,  isNew:false, addedAt:7,  xvId:"keabmtm9159", embedUrl:"https://www.xvideos.com/embedframe/keabmtm9159" },
+  { id:20, title:"Painful doggystyle to stepsister",                           cat:"anal",    views:"9.3M",  duration:"5 min",  hd:true,  isNew:false, addedAt:6,  xvId:"kbpkluo661a", embedUrl:"https://www.xvideos.com/embedframe/kbpkluo661a" },
+  { id:21, title:"Painful anal with huge orgasm and yells",                    cat:"anal",    views:"37.8M", duration:"5 min",  hd:true,  isNew:false, addedAt:5,  xvId:"kbabulo578b", embedUrl:"https://www.xvideos.com/embedframe/kbabulo578b" },
+  { id:22, title:"Rough slow painful anal",                                    cat:"amateur", views:"29.9K", duration:"9 min",  hd:true,  isNew:false, addedAt:4,  xvId:"oilbfiv8527", embedUrl:"https://www.xvideos.com/embedframe/oilbfiv8527" },
+  { id:23, title:"ASS DESTRUCTION – Rough painful anal blonde teen",           cat:"anal",    views:"25.4M", duration:"10 min", hd:true,  isNew:false, addedAt:3,  xvId:"uiluuad549c", embedUrl:"https://www.xvideos.com/embedframe/uiluuad549c" },
+  { id:24, title:"Get off me my ass is burning",                               cat:"anal",    views:"187.3K",duration:"6 min",  hd:true,  isNew:false, addedAt:2,  xvId:"oukvidc2ecb", embedUrl:"https://www.xvideos.com/embedframe/oukvidc2ecb" },
+  { id:25, title:"She could hardly withstand this anal penetration",           cat:"amateur", views:"87K",   duration:"9 min",  hd:true,  isNew:false, addedAt:1,  xvId:"oukklap3283", embedUrl:"https://www.xvideos.com/embedframe/oukklap3283" },
 ];
 
-// Bilinen UUID'ler — her video için sayfa fetch edilip çıkarıldı
+// ── THUMBNAILS ────────────────────────────────────────────────
 const XV_THUMBS = {
-  "uudotvpe2d5": "https://thumb-cdn77.xvideos-cdn.com/d87192f0-3d9c-4398-ab69-a78fa13645e8/0/xv_15_t.jpg",
-  "kdatkmhd92c": "https://thumb-cdn77.xvideos-cdn.com/e45152e0-1792-4c1c-a567-0e47ae0ea543/0/xv_5_t.jpg",
-  "uebpaim777c": "https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
-  "klekcih2186": "https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
-  "kbabulo578b": "https://thumb-cdn77.xvideos-cdn.com/fc572b6a-9b48-43f7-8966-5eddc997c661/0/xv_27_t.jpg",
+  "uudotvpe2d5":"https://thumb-cdn77.xvideos-cdn.com/d87192f0-3d9c-4398-ab69-a78fa13645e8/0/xv_15_t.jpg",
+  "kdatkmhd92c":"https://thumb-cdn77.xvideos-cdn.com/e45152e0-1792-4c1c-a567-0e47ae0ea543/0/xv_5_t.jpg",
+  "uebpaim777c":"https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
+  "klekcih2186":"https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
+  "kbabulo578b":"https://thumb-cdn77.xvideos-cdn.com/fc572b6a-9b48-43f7-8966-5eddc997c661/0/xv_27_t.jpg",
 };
 
-// Thumbnail al — bilinen UUID varsa direkt, yoksa allorigins proxy ile çek
 async function fetchThumb(xvId) {
   if (XV_THUMBS[xvId]) return XV_THUMBS[xvId];
   try {
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.' + xvId + '/')}`;
-    const res = await fetch(proxyUrl);
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.'+xvId+'/')}`);
     const data = await res.json();
     const match = data.contents.match(/thumb-cdn[^"]+xv_\d+_t\.jpg/);
-    if (match) {
-      const url = 'https://' + match[0];
-      XV_THUMBS[xvId] = url;
-      return url;
-    }
-  } catch(e) {}
+    if (match) { XV_THUMBS[xvId] = 'https://'+match[0]; return XV_THUMBS[xvId]; }
+  } catch(e){}
   return null;
 }
 
+async function loadMissingThumbs() {
+  for (const v of videos.filter(v => !XV_THUMBS[v.xvId])) {
+    const url = await fetchThumb(v.xvId);
+    if (url) document.querySelectorAll(`#th-${v.xvId}`).forEach(i => i.src = url);
+    await new Promise(r => setTimeout(r, 300));
+  }
+}
+
+// ── UTILITIES ────────────────────────────────────────────────
+function parseViews(s) {
+  if (!s) return 0;
+  s = s.toUpperCase().replace(/,/g,'');
+  if (s.endsWith('M')) return parseFloat(s)*1e6;
+  if (s.endsWith('K')) return parseFloat(s)*1e3;
+  return parseFloat(s)||0;
+}
+
+// Daily seed — changes at UTC 05:00
+function dailySeed() {
+  const now = new Date();
+  const utc5 = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 5, 0, 0));
+  if (now < utc5) utc5.setUTCDate(utc5.getUTCDate()-1);
+  return utc5.getTime();
+}
+
+function seededRandom(seed) {
+  let s = seed;
+  return function() {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    return (s >>> 0) / 0xffffffff;
+  };
+}
+
+function shuffleWithSeed(arr, seed) {
+  const a = [...arr];
+  const rng = seededRandom(seed);
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(rng() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── PAGINATION ────────────────────────────────────────────────
+const PER_PAGE = 20;
+let currentList = [];
+let currentPage = 1;
+let currentTab = 'home';
+
 function makeCard(v) {
-  const placeholder = `https://picsum.photos/seed/${v.xvId}/400/225`;
-  const knownThumb = XV_THUMBS[v.xvId] || placeholder;
+  const thumb = XV_THUMBS[v.xvId] || `https://picsum.photos/seed/${v.xvId}/400/225`;
+  const fallback = `https://picsum.photos/seed/${v.xvId}/400/225`;
   return `
   <div class="vcard" onclick="openVideo(${v.id})">
-    <div class="vcard-thumb">
-      <img src="${knownThumb}" alt="${v.title}" loading="lazy" id="thumb-${v.xvId}"
-           onerror="this.onerror=null;this.src='${placeholder}'">
-      <div class="vcard-overlay"><div class="vcard-play"></div></div>
-      <span class="vcard-duration">${v.duration}</span>
-      ${v.hd ? '<span class="vcard-hd">HD</span>' : ''}
-      ${v.isNew ? '<span class="vcard-new">NEW</span>' : ''}
+    <div class="vthumb">
+      <img src="${thumb}" id="th-${v.xvId}" alt="${v.title}" loading="lazy" onerror="this.onerror=null;this.src='${fallback}'">
+      <div class="voverlay"><div class="vplay"></div></div>
+      <span class="vdur">${v.duration}</span>
+      ${v.hd?'<span class="vhd">HD</span>':''}
+      ${v.isNew?'<span class="vnew">NEW</span>':''}
     </div>
-    <div class="vcard-info">
-      <div class="vcard-title">${v.title}</div>
-      <div class="vcard-meta">
-        <span class="vcard-views">${v.views} views</span>
-      </div>
+    <div class="vinfo">
+      <div class="vtitle">${v.title}</div>
+      <div class="vmeta">${v.views} views • ${v.cat}</div>
     </div>
   </div>`;
 }
 
-// Bilinmeyen thumbnail'leri arka planda yükle
-async function loadMissingThumbs() {
-  const unknown = videos.filter(v => !XV_THUMBS[v.xvId]);
-  for (const v of unknown) {
-    const url = await fetchThumb(v.xvId);
-    if (url) {
-      document.querySelectorAll(`#thumb-${v.xvId}`).forEach(img => {
-        img.src = url;
-      });
-    }
-    await new Promise(r => setTimeout(r, 300)); // rate limit önlemi
-  }
-}
-
-function parseViews(str) {
-  if (!str) return 0;
-  const s = str.toUpperCase().replace(/,/g,'');
-  if (s.endsWith('M')) return parseFloat(s) * 1000000;
-  if (s.endsWith('K')) return parseFloat(s) * 1000;
-  return parseFloat(s) || 0;
-}
-
-function renderAll(filter) {
-  const list = filter === 'all' ? videos : videos.filter(v => v.cat === filter);
-  if (!list.length) {
-    document.getElementById('trendingGrid').innerHTML = '<p style="color:var(--muted);padding:12px">No videos in this category yet.</p>';
-    document.getElementById('newestGrid').innerHTML = '';
-    document.getElementById('popularGrid').innerHTML = '';
+function renderPage() {
+  const start = (currentPage-1)*PER_PAGE;
+  const slice = currentList.slice(start, start+PER_PAGE);
+  const grid = document.getElementById('videoGrid');
+  if (!slice.length) {
+    grid.innerHTML = '<div class="no-results">No videos found.</div>';
+    document.getElementById('pagination').innerHTML = '';
     return;
   }
-  const byViews = [...list].sort((a,b) => parseViews(b.views) - parseViews(a.views));
-  const trending = byViews.slice(0, 6);
-  const newest = [...list].filter(v => v.isNew).concat(list.filter(v => !v.isNew)).slice(0, 8);
-  const popular = byViews.slice(0, 8);
-
-  document.getElementById('trendingGrid').innerHTML = trending.map(makeCard).join('');
-  document.getElementById('newestGrid').innerHTML = newest.map(makeCard).join('');
-  document.getElementById('popularGrid').innerHTML = popular.map(makeCard).join('');
-
-  // Render sonrası bilinen thumb'ları uygula
-  Object.entries(XV_THUMBS).forEach(([xvId, url]) => {
-    document.querySelectorAll(`#thumb-${xvId}`).forEach(img => { img.src = url; });
+  grid.innerHTML = slice.map(makeCard).join('');
+  // Apply known thumbs
+  Object.entries(XV_THUMBS).forEach(([id,url]) => {
+    document.querySelectorAll(`#th-${id}`).forEach(i => i.src = url);
   });
+  renderPagination();
 }
 
-function filterVideos(cat, el) {
-  currentFilter = cat;
-  document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('active'));
-  if (el) el.classList.add('active');
-  renderAll(cat);
+function renderPagination() {
+  const total = Math.ceil(currentList.length / PER_PAGE);
+  if (total <= 1) { document.getElementById('pagination').innerHTML=''; return; }
+  let html = '';
+  html += `<button class="pg-btn${currentPage===1?' disabled':''}" onclick="goPage(${currentPage-1})">‹</button>`;
+  for (let i=1; i<=total; i++) {
+    if (total > 7 && i > 3 && i < total-1 && Math.abs(i-currentPage) > 1) {
+      if (i===4 || i===total-2) html += '<span class="pg-dots">…</span>';
+      continue;
+    }
+    html += `<button class="pg-btn${i===currentPage?' active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  html += `<button class="pg-btn${currentPage===total?' disabled':''}" onclick="goPage(${currentPage+1})">›</button>`;
+  document.getElementById('pagination').innerHTML = html;
 }
 
+function goPage(p) {
+  const total = Math.ceil(currentList.length/PER_PAGE);
+  if (p < 1 || p > total) return;
+  currentPage = p;
+  renderPage();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function setTab(tab, catFilter) {
+  currentTab = tab;
+  currentPage = 1;
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('tab-'+tab);
+  if (btn) btn.classList.add('active');
+
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchLabel').style.display = 'none';
+
+  const seed = dailySeed();
+
+  if (tab === 'home') {
+    document.getElementById('secTitle').textContent = 'Home';
+    currentList = shuffleWithSeed(videos, seed);
+  } else if (tab === 'trending') {
+    document.getElementById('secTitle').textContent = 'Trending Today';
+    // Ağırlıklı: view skoru + günlük seed shuffle ile hafif karışım
+    const scored = videos.map(v => ({...v, score: parseViews(v.views) * (0.7 + 0.3 * seededRandom(seed + v.id)())}));
+    currentList = scored.sort((a,b) => b.score - a.score);
+  } else if (tab === 'newest') {
+    document.getElementById('secTitle').textContent = 'Newest';
+    currentList = [...videos].sort((a,b) => b.addedAt - a.addedAt);
+  } else if (tab === 'cat' && catFilter) {
+    document.getElementById('secTitle').textContent = catFilter.charAt(0).toUpperCase()+catFilter.slice(1);
+    currentList = [...videos].filter(v => v.cat === catFilter).sort((a,b) => parseViews(b.views)-parseViews(a.views));
+  }
+
+  renderPage();
+}
+
+// ── SEARCH ────────────────────────────────────────────────────
+let searchTimer;
+function doSearch(q) {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    q = q.trim().toLowerCase();
+    const label = document.getElementById('searchLabel');
+    if (!q) { label.style.display='none'; setTab(currentTab); return; }
+    currentPage = 1;
+    currentList = videos.filter(v =>
+      v.title.toLowerCase().includes(q) || v.cat.toLowerCase().includes(q)
+    );
+    document.getElementById('secTitle').textContent = 'Search Results';
+    label.style.display = 'block';
+    label.innerHTML = `Showing results for <span>"${q}"</span> — ${currentList.length} video${currentList.length!==1?'s':''}`;
+    document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+    renderPage();
+  }, 250);
+}
+
+// ── CATEGORIES ────────────────────────────────────────────────
+const CAT_LABELS = {
+  anal:'Anal', amateur:'Amateur', milf:'MILF', teen:'Teen (18+)',
+  lesbian:'Lesbian', asian:'Asian', latina:'Latina', bbw:'BBW',
+  compilation:'Compilation', hd:'HD'
+};
+
+function openCats() {
+  const counts = {};
+  videos.forEach(v => { counts[v.cat] = (counts[v.cat]||0)+1; });
+  const allCats = Object.keys(CAT_LABELS);
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = allCats.map(cat => {
+    const count = counts[cat] || 0;
+    const label = CAT_LABELS[cat];
+    return `<div class="cat-card" onclick="selectCat('${cat}')">
+      <span class="cat-card-name">${label}</span>
+      <span class="cat-card-count${!count?' empty':''}">${count ? count+' video'+(count!==1?'s':'') : 'Coming soon'}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('catOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function selectCat(cat) {
+  closeCats();
+  setTab('cat', cat);
+  document.getElementById('tab-categories').classList.add('active');
+}
+
+function closeCats() {
+  document.getElementById('catOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeCatsIfBg(e) {
+  if (e.target === document.getElementById('catOverlay')) closeCats();
+}
+
+// ── MODAL ────────────────────────────────────────────────────
 function openVideo(id) {
-  const v = videos.find(x => x.id === id);
+  const v = videos.find(x => x.id===id);
   if (!v) return;
   document.getElementById('modalTitle').textContent = v.title;
-  document.getElementById('modalMeta').textContent = `${v.cat} • ${v.views} views • ${v.duration}${v.hd?' • HD':''}`;
+  document.getElementById('modalFoot').textContent = `${v.cat} • ${v.views} views • ${v.duration}${v.hd?' • HD':''}`;
   document.getElementById('videoFrame').src = v.embedUrl;
   document.getElementById('videoModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -918,28 +725,120 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
-document.getElementById('videoModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('videoModal').addEventListener('click', function(e) { if (e.target===this) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key==='Escape') { closeModal(); closeCats(); }});
 
-// Secret password to enter site
+// ── VOTE ─────────────────────────────────────────────────────
+function initVote() {
+  let real = parseInt(localStorage.getItem('nvc_vote_real')||'0');
+  let fake = parseInt(localStorage.getItem('nvc_vote_fake')||'0');
+  const voted = localStorage.getItem('nvc_voted');
+  updateVoteUI(real, fake, voted);
+}
+
+function castVote(type) {
+  if (localStorage.getItem('nvc_voted')) return;
+  let real = parseInt(localStorage.getItem('nvc_vote_real')||'0');
+  let fake = parseInt(localStorage.getItem('nvc_vote_fake')||'0');
+  if (type==='real') real++; else fake++;
+  localStorage.setItem('nvc_vote_real', real);
+  localStorage.setItem('nvc_vote_fake', fake);
+  localStorage.setItem('nvc_voted', type);
+  updateVoteUI(real, fake, type);
+}
+
+function updateVoteUI(real, fake, voted) {
+  const total = real + fake;
+  const rPct = total ? Math.round(real/total*100) : 0;
+  const fPct = total ? Math.round(fake/total*100) : 0;
+  document.getElementById('vpct-real').textContent = total ? rPct+'%' : '–';
+  document.getElementById('vpct-fake').textContent = total ? fPct+'%' : '–';
+  document.getElementById('vbar-real').style.width = total ? rPct+'%' : '0%';
+  document.getElementById('vbar-fake').style.width = total ? fPct+'%' : '0%';
+  document.getElementById('vote-total').textContent = total ? total+' vote'+(total!==1?'s':'') : '';
+  if (voted==='real') { document.getElementById('vbtn-real').classList.add('voted-real'); }
+  if (voted==='fake') { document.getElementById('vbtn-fake').classList.add('voted-fake'); }
+}
+
+// ── LOLLIPOP ─────────────────────────────────────────────────
+let lollyClickCount = 0;
+let lollyClickTimer;
+
+async function buyLolly() {
+  const now = new Date();
+
+  // localStorage — yerel sayaç
+  const clicks = parseInt(localStorage.getItem('nvc_lolly_clicks')||'0') + 1;
+  const history = JSON.parse(localStorage.getItem('nvc_lolly_history')||'[]');
+  history.unshift(now.toISOString());
+  if (history.length > 20) history.pop();
+  localStorage.setItem('nvc_lolly_clicks', clicks);
+  localStorage.setItem('nvc_lolly_last', now.toISOString());
+  localStorage.setItem('nvc_lolly_history', JSON.stringify(history));
+
+  // Formspree — sessiz bildirim
+  const info = {
+    _subject: '🍭 Lollipop Click #' + clicks,
+    event: 'lollipop_click',
+    click_number: clicks,
+    timestamp: now.toUTCString(),
+    local_time: now.toLocaleString(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    language: navigator.language || 'unknown',
+    screen: window.screen.width + 'x' + window.screen.height,
+    referrer: document.referrer || 'direct',
+    page_url: window.location.href,
+  };
+  fetch('https://formspree.io/f/xojkngpw', {
+    method: 'POST',
+    body: JSON.stringify(info),
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+  }).catch(() => {}); // sessiz — hata olsa bile kullanıcı görmez
+
+  // Teşekkür mesajı
+  document.getElementById('lollyThanks').textContent = 'Thank you! Maybe later 😄';
+  setTimeout(() => { document.getElementById('lollyThanks').textContent = ''; }, 3000);
+
+  // Gizli panel — 5 hızlı tıklama
+  lollyClickCount++;
+  clearTimeout(lollyClickTimer);
+  lollyClickTimer = setTimeout(() => { lollyClickCount = 0; }, 1500);
+  if (lollyClickCount >= 5) {
+    lollyClickCount = 0;
+    showLollyStats();
+  }
+}
+
+function showLollyStats() {
+  const clicks = localStorage.getItem('nvc_lolly_clicks') || '0';
+  const last = localStorage.getItem('nvc_lolly_last');
+  const history = JSON.parse(localStorage.getItem('nvc_lolly_history')||'[]');
+  const lastStr = last ? new Date(last).toLocaleString() : 'never';
+  const historyStr = history.slice(0,5).map((t,i) => `#${i+1}: ${new Date(t).toLocaleString()}`).join('<br>');
+  const panel = document.getElementById('lollyStats');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  panel.innerHTML = `
+    <strong style="color:var(--red);letter-spacing:1px;">🍭 LOLLIPOP STATS</strong><br>
+    Total clicks: <strong style="color:var(--text)">${clicks}</strong><br>
+    Last click: <strong style="color:var(--text)">${lastStr}</strong><br>
+    <br><strong style="color:var(--muted2);font-size:10px;">RECENT CLICKS:</strong><br>
+    ${historyStr || 'none yet'}
+    <br><br>
+    <span style="color:var(--muted2);font-size:10px;">Click 5x again to close</span>
+  `;
+}
+
+// ── AGE GATE ─────────────────────────────────────────────────
 const SECRET = 'claude1258108+';
 
-// Countdown to 27 March 2026 21:30 UTC
 function updateCountdown() {
   const target = new Date('2026-03-27T21:30:00Z').getTime();
-  const now = Date.now();
-  const diff = Math.max(0, target - now);
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  const pad = n => String(n).padStart(2,'0');
-  document.getElementById('cd-d').textContent = pad(d);
-  document.getElementById('cd-h').textContent = pad(h);
-  document.getElementById('cd-m').textContent = pad(m);
-  document.getElementById('cd-s').textContent = pad(s);
+  const diff = Math.max(0, target - Date.now());
+  const pad = n => String(Math.floor(n)).padStart(2,'0');
+  document.getElementById('cd-d').textContent = pad(diff/86400000);
+  document.getElementById('cd-h').textContent = pad((diff%86400000)/3600000);
+  document.getElementById('cd-m').textContent = pad((diff%3600000)/60000);
+  document.getElementById('cd-s').textContent = pad((diff%60000)/1000);
 }
 updateCountdown();
 setInterval(updateCountdown, 1000);
@@ -950,28 +849,19 @@ async function submitMsg() {
   const btn = document.getElementById('sendBtn');
   const status = document.getElementById('sendStatus');
 
-  // Şifre kontrolü
   if (msg === SECRET) {
-    localStorage.setItem('nvc_age', '1');
+    localStorage.setItem('nvc_age','1');
     document.getElementById('ageGate').style.display = 'none';
     return;
   }
+  if (!msg) { status.textContent='Please write something first.'; status.className='send-status err'; return; }
 
-  if (!msg) {
-    status.textContent = 'Please write something first.';
-    status.className = 'send-status err';
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = 'SENDING...';
-  status.textContent = '';
-
+  btn.disabled = true; btn.textContent = 'SENDING...'; status.textContent = '';
   try {
     const res = await fetch('https://formspree.io/f/xojkngpw', {
-      method: 'POST',
-      body: JSON.stringify({ message: msg, _replyto: email || '', email: email || 'visitor@unknown.com' }),
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+      method:'POST',
+      body: JSON.stringify({ message: msg, _replyto: email||'', email: email||'visitor@unknown.com' }),
+      headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }
     });
     const data = await res.json();
     if (res.ok) {
@@ -980,14 +870,11 @@ async function submitMsg() {
       document.getElementById('msgText').value = '';
       document.getElementById('msgEmail').value = '';
       btn.textContent = 'SENT ✓';
-    } else {
-      throw new Error(data.error || JSON.stringify(data));
-    }
+    } else { throw new Error(data.error||'fail'); }
   } catch(e) {
-    status.textContent = 'Error: ' + e.message;
+    status.textContent = 'Error: '+e.message;
     status.className = 'send-status err';
-    btn.disabled = false;
-    btn.textContent = 'SEND MESSAGE';
+    btn.disabled = false; btn.textContent = 'SEND MESSAGE';
   }
 }
 
@@ -995,7 +882,9 @@ if (localStorage.getItem('nvc_age')) {
   document.getElementById('ageGate').style.display = 'none';
 }
 
-renderAll('all');
+// ── INIT ─────────────────────────────────────────────────────
+initVote();
+setTab('home');
 loadMissingThumbs();
 </script>
 </body>
