@@ -307,6 +307,49 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .site-footer a{color:var(--muted);text-decoration:none;margin:0 8px;}
 .site-footer a:hover{color:var(--red);}
 
+/* ── ADMIN PANEL ── */
+.admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9000;overflow-y:auto;padding:20px;}
+.admin-overlay.open{display:block;}
+.admin-wrap{max-width:760px;margin:0 auto;}
+.admin-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--red);}
+.admin-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--red);}
+.admin-close{background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:6px 14px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:12px;}
+.admin-close:hover{color:#fff;border-color:var(--red);}
+.admin-section{background:var(--bg2);border:1px solid var(--border);padding:20px;margin-bottom:16px;}
+.admin-section h3{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);margin-bottom:14px;}
+.admin-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.admin-row label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px;}
+.admin-field{flex:1;}
+.admin-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:9px 12px;outline:none;transition:border-color .2s;}
+.admin-input:focus{border-color:var(--red);}
+.admin-input::placeholder{color:var(--muted2);}
+.admin-select{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:9px 12px;outline:none;cursor:pointer;}
+.admin-btn{background:var(--red);border:none;color:#fff;padding:9px 18px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .2s;}
+.admin-btn:hover{background:var(--red2);}
+.admin-btn:disabled{background:var(--muted2);cursor:not-allowed;}
+.admin-btn.secondary{background:var(--bg3);border:1px solid var(--border);color:var(--muted);}
+.admin-btn.secondary:hover{border-color:var(--red);color:#fff;}
+.admin-preview{display:none;gap:14px;background:var(--bg3);border:1px solid var(--border);padding:12px;margin-top:10px;}
+.admin-preview.show{display:flex;}
+.admin-preview img{width:160px;height:90px;object-fit:cover;flex-shrink:0;border:1px solid var(--border);}
+.admin-preview-info{font-size:11px;color:var(--muted);line-height:2;}
+.admin-preview-info strong{color:var(--text);}
+.admin-status{font-size:12px;margin-top:10px;min-height:18px;padding:8px 12px;display:none;}
+.admin-status.ok{display:block;background:rgba(76,175,80,.1);border:1px solid #4caf50;color:#4caf50;}
+.admin-status.err{display:block;background:rgba(224,32,32,.1);border:1px solid var(--red);color:var(--red);}
+.admin-status.info{display:block;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);}
+.admin-vidlist{max-height:300px;overflow-y:auto;}
+.admin-vidlist table{width:100%;border-collapse:collapse;font-size:11px;}
+.admin-vidlist th{text-align:left;color:var(--muted2);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:1px;text-transform:uppercase;}
+.admin-vidlist td{padding:6px 8px;border-bottom:1px solid #1e1e1e;color:var(--muted);vertical-align:middle;}
+.admin-vidlist td:first-child{color:var(--text);}
+.admin-vidlist tr:hover td{background:var(--bg3);}
+.del-btn{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:13px;padding:2px 6px;}
+.del-btn:hover{color:var(--red);}
+.thumb-status{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--muted2);margin-right:4px;}
+.thumb-status.ok{background:#4caf50;}
+.thumb-status.missing{background:#f5a623;}
+
 @media(max-width:900px){
   .left-panel{display:none;}
   .page{padding:10px;}
@@ -447,8 +490,91 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
   </div>
 </div>
 
+<!-- ADMIN PANEL -->
+<div class="admin-overlay" id="adminPanel">
+  <div class="admin-wrap">
+    <div class="admin-head">
+      <span class="admin-title">⚙ NVC Admin</span>
+      <button class="admin-close" onclick="closeAdmin()">✕ CLOSE</button>
+    </div>
+
+    <!-- Video Ekle -->
+    <div class="admin-section">
+      <h3>Add New Video</h3>
+      <div class="admin-row">
+        <div class="admin-field">
+          <label>XVideos ID (URL'den — video.<strong>bu kısım</strong>/...)</label>
+          <div style="display:flex;gap:8px;">
+            <input class="admin-input" id="a-xvid" placeholder="örn: uioacfoc8a6" style="flex:1">
+            <button class="admin-btn secondary" onclick="fetchVideoInfo()">FETCH INFO</button>
+          </div>
+        </div>
+      </div>
+      <div class="admin-status" id="fetchStatus"></div>
+
+      <div class="admin-preview" id="videoPreview">
+        <img id="previewThumb" src="" alt="thumb">
+        <div class="admin-preview-info" id="previewInfo"></div>
+      </div>
+
+      <div id="addForm" style="display:none;margin-top:14px;">
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Title</label>
+            <input class="admin-input" id="a-title" placeholder="Video başlığı">
+          </div>
+        </div>
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Category</label>
+            <select class="admin-select" id="a-cat">
+              <option value="anal">Anal</option>
+              <option value="amateur">Amateur</option>
+              <option value="milf">MILF</option>
+              <option value="teen">Teen (18+)</option>
+              <option value="lesbian">Lesbian</option>
+              <option value="asian">Asian</option>
+              <option value="latina">Latina</option>
+              <option value="bbw">BBW</option>
+              <option value="compilation">Compilation</option>
+            </select>
+          </div>
+          <div class="admin-field">
+            <label>Duration</label>
+            <input class="admin-input" id="a-dur" placeholder="örn: 12 min">
+          </div>
+          <div class="admin-field">
+            <label>Views</label>
+            <input class="admin-input" id="a-views" placeholder="örn: 1.2M">
+          </div>
+        </div>
+        <div class="admin-row">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:11px;">
+            <input type="checkbox" id="a-hd" checked> HD
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:11px;margin-left:16px;">
+            <input type="checkbox" id="a-new"> Mark as NEW
+          </label>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px;">
+          <button class="admin-btn" onclick="saveVideo()">💾 SAVE & PUBLISH</button>
+          <button class="admin-btn secondary" onclick="resetAddForm()">RESET</button>
+        </div>
+        <div class="admin-status" id="saveStatus"></div>
+      </div>
+    </div>
+
+    <!-- Video Listesi -->
+    <div class="admin-section">
+      <h3>Current Videos (<span id="videoCount">0</span>)</h3>
+      <div class="admin-vidlist" id="adminVidList"></div>
+    </div>
+
+  </div>
+</div>
+
 <!-- FOOTER -->
-<div class="site-footer">
+<div class="site-footer" onclick="adminTap()">
   <p>© 2025 NaughtyVideoClub.com &nbsp;|&nbsp;
     <a href="dmca.html">DMCA</a>
     <a href="dmca.html">Privacy Policy</a>
@@ -880,6 +1006,245 @@ async function submitMsg() {
 
 if (localStorage.getItem('nvc_age')) {
   document.getElementById('ageGate').style.display = 'none';
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────
+const GITHUB_TOKEN = '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';
+const GITHUB_REPO  = 'newborndigitalarts/adult-videos';
+const GITHUB_FILE  = 'index.html';
+const ADMIN_PASS   = 'claude1258108+';
+
+let adminUnlockCount = 0;
+let adminUnlockTimer;
+
+// Gizli giriş: footer'a 7x hızlı tıklama
+function adminTap() {
+  adminUnlockCount++;
+  clearTimeout(adminUnlockTimer);
+  adminUnlockTimer = setTimeout(() => { adminUnlockCount = 0; }, 2000);
+  if (adminUnlockCount >= 7) {
+    adminUnlockCount = 0;
+    const pw = prompt('Admin password:');
+    if (pw === ADMIN_PASS) openAdmin();
+  }
+}
+
+function openAdmin() {
+  document.getElementById('adminPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderAdminList();
+}
+
+function closeAdmin() {
+  document.getElementById('adminPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setFetchStatus(msg, type) {
+  const el = document.getElementById('fetchStatus');
+  el.textContent = msg; el.className = 'admin-status ' + type;
+}
+
+function setSaveStatus(msg, type) {
+  const el = document.getElementById('saveStatus');
+  el.textContent = msg; el.className = 'admin-status ' + type;
+}
+
+async function fetchVideoInfo() {
+  const xvId = document.getElementById('a-xvid').value.trim();
+  if (!xvId) { setFetchStatus('xvId gir.', 'err'); return; }
+
+  setFetchStatus('XVideos sayfası çekiliyor...', 'info');
+  document.getElementById('videoPreview').classList.remove('show');
+  document.getElementById('addForm').style.display = 'none';
+
+  try {
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.' + xvId + '/')}`;
+    const res = await fetch(proxyUrl);
+    const data = await res.json();
+    const html = data.contents;
+
+    // Başlık
+    const titleMatch = html.match(/<title>([^<]+)<\/title>/);
+    let title = titleMatch ? titleMatch[1].replace(/ - XVIDEOS\.COM/i,'').trim() : '';
+
+    // UUID / thumbnail
+    const thumbMatch = html.match(/thumb-cdn[^"']+xv_\d+_t\.jpg/);
+    let thumbUrl = thumbMatch ? 'https://' + thumbMatch[0] : null;
+    let uuid = null;
+    if (thumbMatch) {
+      const uuidMatch = thumbMatch[0].match(/\/([a-f0-9-]{36})\//);
+      if (uuidMatch) uuid = uuidMatch[1];
+    }
+
+    // Süre
+    const durMatch = html.match(/(\d+)\s*min/i);
+    const duration = durMatch ? durMatch[1] + ' min' : '';
+
+    // Views — sayfa içindeki view sayısı
+    const viewMatch = html.match(/"video_watched":(\d+)/);
+    let views = '';
+    if (viewMatch) {
+      const n = parseInt(viewMatch[1]);
+      if (n >= 1e6) views = (n/1e6).toFixed(1).replace('.0','') + 'M';
+      else if (n >= 1e3) views = (n/1e3).toFixed(1).replace('.0','') + 'K';
+      else views = String(n);
+    }
+
+    // Önizleme göster
+    if (thumbUrl) {
+      XV_THUMBS[xvId] = thumbUrl;
+      document.getElementById('previewThumb').src = thumbUrl;
+    } else {
+      document.getElementById('previewThumb').src = `https://picsum.photos/seed/${xvId}/320/180`;
+    }
+
+    document.getElementById('previewInfo').innerHTML =
+      `<strong>ID:</strong> ${xvId}<br>
+       <strong>Title:</strong> ${title||'—'}<br>
+       <strong>Duration:</strong> ${duration||'—'}<br>
+       <strong>Views:</strong> ${views||'—'}<br>
+       <strong>UUID:</strong> ${uuid||'not found'}`;
+
+    document.getElementById('videoPreview').classList.add('show');
+
+    // Formu doldur
+    document.getElementById('a-title').value = title;
+    document.getElementById('a-dur').value = duration;
+    document.getElementById('a-views').value = views;
+    document.getElementById('addForm').style.display = 'block';
+
+    setFetchStatus('✓ Bilgiler çekildi. Kontrol et ve kaydet.', 'ok');
+
+  } catch(e) {
+    setFetchStatus('Hata: ' + e.message, 'err');
+  }
+}
+
+async function saveVideo() {
+  const xvId   = document.getElementById('a-xvid').value.trim();
+  const title  = document.getElementById('a-title').value.trim();
+  const cat    = document.getElementById('a-cat').value;
+  const dur    = document.getElementById('a-dur').value.trim();
+  const views  = document.getElementById('a-views').value.trim();
+  const hd     = document.getElementById('a-hd').checked;
+  const isNew  = document.getElementById('a-new').checked;
+
+  if (!xvId || !title) { setSaveStatus('xvId ve title zorunlu.', 'err'); return; }
+
+  // Duplicate kontrol
+  if (videos.find(v => v.xvId === xvId)) {
+    setSaveStatus('Bu video zaten listede!', 'err'); return;
+  }
+
+  setSaveStatus('GitHub\'a kaydediliyor...', 'info');
+  document.querySelector('#addForm .admin-btn').disabled = true;
+
+  try {
+    // Yeni video objesi
+    const newId = Math.max(...videos.map(v=>v.id)) + 1;
+    const newAddedAt = Math.max(...videos.map(v=>v.addedAt)) + 1;
+    const newVideo = { id:newId, title, cat, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl:`https://www.xvideos.com/embedframe/${xvId}` };
+    videos.push(newVideo);
+
+    // UUID varsa ekle
+    const thumbUrl = XV_THUMBS[xvId];
+
+    // HTML dosyasını GitHub'dan çek
+    const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const fileData = await fileRes.json();
+    const currentContent = atob(fileData.content.replace(/\n/g,''));
+    const sha = fileData.sha;
+
+    // videos array'ini güncelle — son satırı bul ve yeni video ekle
+    const videoLine = `  { id:${newId}, title:${JSON.stringify(title)}, cat:${JSON.stringify(cat)}, views:${JSON.stringify(views)}, duration:${JSON.stringify(dur)}, hd:${hd}, isNew:${isNew}, addedAt:${newAddedAt}, xvId:${JSON.stringify(xvId)}, embedUrl:"https://www.xvideos.com/embedframe/${xvId}" },`;
+    const updatedContent = currentContent.replace(
+      /(\{ id:\d+, title:[^\n]+addedAt:\d+[^\n]+\n)(];)/,
+      `$1${videoLine}\n$2`
+    );
+
+    // UUID varsa XV_THUMBS'a da ekle
+    let finalContent = updatedContent;
+    if (thumbUrl) {
+      finalContent = updatedContent.replace(
+        /(const XV_THUMBS = \{)/,
+        `$1\n  "${xvId}":"${thumbUrl}",`
+      );
+    }
+
+    // GitHub'a commit at
+    const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Add video: ${xvId} — ${title.substring(0,50)}`,
+        content: btoa(unescape(encodeURIComponent(finalContent))),
+        sha
+      })
+    });
+
+    if (!updateRes.ok) {
+      const err = await updateRes.json();
+      throw new Error(err.message || 'GitHub API hatası');
+    }
+
+    setSaveStatus(`✓ "${title.substring(0,40)}..." eklendi ve GitHub'a gönderildi!`, 'ok');
+    renderAdminList();
+    resetAddForm();
+
+  } catch(e) {
+    // Hata olsa da lokalde göster
+    setSaveStatus('GitHub hatası: ' + e.message, 'err');
+  } finally {
+    document.querySelector('#addForm .admin-btn').disabled = false;
+  }
+}
+
+function resetAddForm() {
+  document.getElementById('a-xvid').value = '';
+  document.getElementById('a-title').value = '';
+  document.getElementById('a-dur').value = '';
+  document.getElementById('a-views').value = '';
+  document.getElementById('a-hd').checked = true;
+  document.getElementById('a-new').checked = false;
+  document.getElementById('videoPreview').classList.remove('show');
+  document.getElementById('addForm').style.display = 'none';
+  document.getElementById('fetchStatus').className = 'admin-status';
+  document.getElementById('saveStatus').className = 'admin-status';
+}
+
+function renderAdminList() {
+  document.getElementById('videoCount').textContent = videos.length;
+  const sorted = [...videos].sort((a,b) => b.addedAt - a.addedAt);
+  document.getElementById('adminVidList').innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Title</th><th>Cat</th><th>Views</th><th>Thumb</th><th></th>
+      </tr></thead>
+      <tbody>${sorted.map(v => `
+        <tr>
+          <td>${v.title.substring(0,45)}${v.title.length>45?'…':''}</td>
+          <td>${v.cat}</td>
+          <td>${v.views}</td>
+          <td><span class="thumb-status ${XV_THUMBS[v.xvId]?'ok':'missing'}"></span>${XV_THUMBS[v.xvId]?'✓':'missing'}</td>
+          <td><button class="del-btn" onclick="deleteVideo(${v.id})" title="Sil">🗑</button></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function deleteVideo(id) {
+  const v = videos.find(x => x.id===id);
+  if (!v) return;
+  if (!confirm(`Sil: "${v.title.substring(0,50)}..."`)) return;
+
+  videos.splice(videos.findIndex(x=>x.id===id), 1);
+  renderAdminList();
+  setTab(currentTab);
+  // GitHub commit — basit bildirim
+  alert('Lokal silindi. GitHub\'a commit için sayfayı kaydet ve manuel push yap, ya da bir sonraki video eklemede otomatik sync olur.');
 }
 
 // ── INIT ─────────────────────────────────────────────────────
