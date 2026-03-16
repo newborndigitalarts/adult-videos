@@ -973,6 +973,7 @@ async function submitMsg() {
       body: JSON.stringify({ message: msg, email: email || 'not provided' }),
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     });
+    const data = await res.json();
     if (res.ok) {
       status.textContent = '✓ Message sent! We will notify you when we launch.';
       status.className = 'send-status ok';
@@ -980,7 +981,7 @@ async function submitMsg() {
       document.getElementById('msgEmail').value = '';
       btn.textContent = 'SENT ✓';
     } else {
-      throw new Error('fail');
+      throw new Error(data.error || JSON.stringify(data));
     }
   } catch(e) {
     status.textContent = 'Error: ' + e.message;
