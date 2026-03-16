@@ -967,16 +967,11 @@ async function submitMsg() {
   btn.textContent = 'SENDING...';
   status.textContent = '';
 
-  // Formspree native form submit
-  const formData = new FormData();
-  formData.append('message', msg);
-  formData.append('email', email || 'not provided');
-
   try {
     const res = await fetch('https://formspree.io/f/xojkngpw', {
       method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
+      body: JSON.stringify({ message: msg, email: email || 'not provided' }),
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     });
     if (res.ok) {
       status.textContent = '✓ Message sent! We will notify you when we launch.';
@@ -988,7 +983,7 @@ async function submitMsg() {
       throw new Error('fail');
     }
   } catch(e) {
-    status.textContent = 'Something went wrong. Try again.';
+    status.textContent = 'Error: ' + e.message;
     status.className = 'send-status err';
     btn.disabled = false;
     btn.textContent = 'SEND MESSAGE';
