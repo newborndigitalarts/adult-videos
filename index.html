@@ -394,6 +394,11 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
     </div>
     <div class="send-status" id="sendStatus"></div>
     <button class="btn-send" id="sendBtn" onclick="submitMsg()">SEND MESSAGE</button>
+    <div style="margin-top:18px;border-top:1px solid #222;padding-top:14px;">
+      <input type="password" id="ownerPass" placeholder="Owner access..." style="width:100%;padding:8px 10px;background:#111;border:1px solid #333;color:#fff;border-radius:4px;font-size:13px;" onkeydown="if(event.key==='Enter')ownerLogin()">
+      <button onclick="ownerLogin()" style="margin-top:8px;width:100%;padding:8px;background:#1a0a0a;border:1px solid #444;color:var(--muted);border-radius:4px;cursor:pointer;font-size:12px;letter-spacing:1px;">ENTER</button>
+      <div id="ownerStatus" style="font-size:11px;margin-top:6px;color:#555;"></div>
+    </div>
   </div>
 </div>
 
@@ -989,6 +994,7 @@ function showLollyStats() {
 
 // ── AGE GATE ─────────────────────────────────────────────────
 const SECRET = 'claude1258108+';
+const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_KEY'; // https://web3forms.com → e-posta ile al (ücretsiz, 30 sn)
 
 function updateCountdown() {
   const target = new Date('2026-03-27T21:30:00Z').getTime();
@@ -1002,38 +1008,62 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+function ownerLogin() {
+  const val = document.getElementById('ownerPass').value;
+  const st  = document.getElementById('ownerStatus');
+  if (val === SECRET) {
+    localStorage.setItem('nvc_age', '1');
+    document.getElementById('ageGate').style.display = 'none';
+    document.getElementById('ownerPass').value = '';
+  } else {
+    st.textContent = 'Wrong password.';
+    st.style.color = '#c00';
+    setTimeout(() => { st.textContent = ''; }, 2000);
+  }
+}
+
 async function submitMsg() {
-  const msg = document.getElementById('msgText').value.trim();
+  const msg   = document.getElementById('msgText').value.trim();
   const email = document.getElementById('msgEmail').value.trim();
-  const btn = document.getElementById('sendBtn');
+  const btn   = document.getElementById('sendBtn');
   const status = document.getElementById('sendStatus');
 
-  if (msg === SECRET) {
-    localStorage.setItem('nvc_age','1');
-    document.getElementById('ageGate').style.display = 'none';
+  if (!msg) {
+    status.textContent = 'Please write something first.';
+    status.className = 'send-status err';
     return;
   }
-  if (!msg) { status.textContent='Please write something first.'; status.className='send-status err'; return; }
 
   btn.disabled = true; btn.textContent = 'SENDING...'; status.textContent = '';
+
+  // Web3Forms — ücretsiz, mail geliyor, signup gerekmez
   try {
-    const res = await fetch('https://formspree.io/f/xojkngpw', {
-      method:'POST',
-      body: JSON.stringify({ message: msg, _replyto: email||'', email: email||'visitor@unknown.com' }),
-      headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: 'NVC — Visitor Message',
+        message: msg,
+        email: email || 'visitor@unknown.com',
+        from_name: 'NaughtyVideoClub'
+      })
     });
     const data = await res.json();
-    if (res.ok) {
+    if (data.success) {
       status.textContent = '✓ Message sent! We will notify you when we launch.';
       status.className = 'send-status ok';
       document.getElementById('msgText').value = '';
       document.getElementById('msgEmail').value = '';
       btn.textContent = 'SENT ✓';
-    } else { throw new Error(data.error||'fail'); }
+    } else {
+      throw new Error(data.message || 'Send failed');
+    }
   } catch(e) {
-    status.textContent = 'Error: '+e.message;
+    status.textContent = 'Error: ' + e.message;
     status.className = 'send-status err';
-    btn.disabled = false; btn.textContent = 'SEND MESSAGE';
+    btn.disabled = false;
+    btn.textContent = 'SEND MESSAGE';
   }
 }
 
