@@ -1050,75 +1050,104 @@ function setSaveStatus(msg, type) {
   el.textContent = msg; el.className = 'admin-status ' + type;
 }
 
-async function fetchVideoInfo() {
-  const xvId = document.getElementById('a-xvid').value.trim();
-  if (!xvId) { setFetchStatus('xvId gir.', 'err'); return; }
+function parseXvId(raw) {
+  // Tam URL kabul et: https://www.xvideos.com/video.klufpi6bea/title
+  const urlMatch = raw.match(/xvideos\.com\/video\.([a-z0-9]+)/i);
+  if (urlMatch) return urlMatch[1];
+  // Sadece ID
+  return raw.replace(/\s/g,'');
+}
 
-  setFetchStatus('XVideos sayfası çekiliyor...', 'info');
+async function fetchVideoInfo() {
+  const raw = document.getElementById('a-xvid').value.trim();
+  if (!raw) { setFetchStatus('xvId veya URL gir.', 'err'); return; }
+
+  const xvId = parseXvId(raw);
+  document.getElementById('a-xvid').value = xvId; // alanı temizle
+
+  setFetchStatus('Bilgiler çekiliyor...', 'info');
   document.getElementById('videoPreview').classList.remove('show');
   document.getElementById('addForm').style.display = 'none';
 
+  let title = '', duration = '', views = '', thumbUrl = null, uuid = null;
+
+  // Önce XVideos JSON API dene
   try {
-    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.' + xvId + '/')}`;
-    const res = await fetch(proxyUrl);
+    const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video-api/short/video/' + xvId)}`;
+    const res = await fetch(apiUrl);
     const data = await res.json();
-    const html = data.contents;
+    const json = JSON.parse(data.contents);
 
-    // Başlık
-    const titleMatch = html.match(/<title>([^<]+)<\/title>/);
-    let title = titleMatch ? titleMatch[1].replace(/ - XVIDEOS\.COM/i,'').trim() : '';
+    title    = json.title || '';
+    duration = json.duration ? Math.round(json.duration/60) + ' min' : '';
+    thumbUrl = json.thumbnailUrl || json.thumb_url || null;
+    const watched = json.nb_watch || json.video_watched || 0;
+    if (watched >= 1e6) views = (watched/1e6).toFixed(1).replace('.0','')+'M';
+    else if (watched >= 1e3) views = (watched/1e3).toFixed(1).replace('.0','')+'K';
+    else if (watched > 0) views = String(watched);
 
-    // UUID / thumbnail
-    const thumbMatch = html.match(/thumb-cdn[^"']+xv_\d+_t\.jpg/);
-    let thumbUrl = thumbMatch ? 'https://' + thumbMatch[0] : null;
-    let uuid = null;
-    if (thumbMatch) {
-      const uuidMatch = thumbMatch[0].match(/\/([a-f0-9-]{36})\//);
+    if (thumbUrl) {
+      const uuidMatch = thumbUrl.match(/\/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\//);
       if (uuidMatch) uuid = uuidMatch[1];
     }
+  } catch(e) {}
 
-    // Süre
-    const durMatch = html.match(/(\d+)\s*min/i);
-    const duration = durMatch ? durMatch[1] + ' min' : '';
+  // JSON API çalışmadıysa HTML fallback
+  if (!title) {
+    try {
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.' + xvId + '/')}`;
+      const res = await fetch(proxyUrl);
+      const data = await res.json();
+      const html = data.contents;
 
-    // Views — sayfa içindeki view sayısı
-    const viewMatch = html.match(/"video_watched":(\d+)/);
-    let views = '';
-    if (viewMatch) {
-      const n = parseInt(viewMatch[1]);
-      if (n >= 1e6) views = (n/1e6).toFixed(1).replace('.0','') + 'M';
-      else if (n >= 1e3) views = (n/1e3).toFixed(1).replace('.0','') + 'K';
-      else views = String(n);
-    }
+      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
+      title = titleMatch ? titleMatch[1].replace(/ - XVIDEOS\.COM/i,'').trim() : '';
 
-    // Önizleme göster
-    if (thumbUrl) {
-      XV_THUMBS[xvId] = thumbUrl;
-      document.getElementById('previewThumb').src = thumbUrl;
-    } else {
-      document.getElementById('previewThumb').src = `https://picsum.photos/seed/${xvId}/320/180`;
-    }
+      const thumbMatch = html.match(/thumb-cdn[^"']+xv_\d+_t\.jpg/);
+      if (thumbMatch) {
+        thumbUrl = 'https://' + thumbMatch[0];
+        const uuidMatch = thumbMatch[0].match(/\/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})\//);
+        if (uuidMatch) uuid = uuidMatch[1];
+      }
 
-    document.getElementById('previewInfo').innerHTML =
-      `<strong>ID:</strong> ${xvId}<br>
-       <strong>Title:</strong> ${title||'—'}<br>
-       <strong>Duration:</strong> ${duration||'—'}<br>
-       <strong>Views:</strong> ${views||'—'}<br>
-       <strong>UUID:</strong> ${uuid||'not found'}`;
+      if (!duration) {
+        const durMatch = html.match(/(\d+)\s*min/i);
+        duration = durMatch ? durMatch[1] + ' min' : '';
+      }
 
-    document.getElementById('videoPreview').classList.add('show');
-
-    // Formu doldur
-    document.getElementById('a-title').value = title;
-    document.getElementById('a-dur').value = duration;
-    document.getElementById('a-views').value = views;
-    document.getElementById('addForm').style.display = 'block';
-
-    setFetchStatus('✓ Bilgiler çekildi. Kontrol et ve kaydet.', 'ok');
-
-  } catch(e) {
-    setFetchStatus('Hata: ' + e.message, 'err');
+      if (!views) {
+        const viewMatch = html.match(/"video_watched":(\d+)/);
+        if (viewMatch) {
+          const n = parseInt(viewMatch[1]);
+          if (n >= 1e6) views = (n/1e6).toFixed(1).replace('.0','')+'M';
+          else if (n >= 1e3) views = (n/1e3).toFixed(1).replace('.0','')+'K';
+          else views = String(n);
+        }
+      }
+    } catch(e) {}
   }
+
+  // Thumbnail kaydet
+  if (thumbUrl) XV_THUMBS[xvId] = thumbUrl;
+
+  // Önizleme
+  document.getElementById('previewThumb').src = thumbUrl || `https://picsum.photos/seed/${xvId}/320/180`;
+  document.getElementById('previewInfo').innerHTML =
+    `<strong>ID:</strong> ${xvId}<br>
+     <strong>Title:</strong> ${title||'—'}<br>
+     <strong>Duration:</strong> ${duration||'—'}<br>
+     <strong>Views:</strong> ${views||'—'}<br>
+     <strong>UUID:</strong> ${uuid||'not found'}`;
+  document.getElementById('videoPreview').classList.add('show');
+
+  // Formu doldur
+  document.getElementById('a-title').value = title;
+  document.getElementById('a-dur').value = duration;
+  document.getElementById('a-views').value = views;
+  document.getElementById('addForm').style.display = 'block';
+
+  if (title) setFetchStatus('✓ Bilgiler çekildi. Kontrol et ve kaydet.', 'ok');
+  else setFetchStatus('⚠ Otomatik çekilemedi — bilgileri manuel gir.', 'info');
 }
 
 async function saveVideo() {
