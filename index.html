@@ -970,7 +970,7 @@ async function submitMsg() {
   try {
     const res = await fetch('https://formspree.io/f/xojkngpw', {
       method: 'POST',
-      body: JSON.stringify({ message: msg, email: email || 'not provided' }),
+      body: JSON.stringify({ message: msg, _replyto: email || '', email: email || 'visitor@unknown.com' }),
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
     });
     const data = await res.json();
