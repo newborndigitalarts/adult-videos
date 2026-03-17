@@ -1197,7 +1197,7 @@ async function saveVideo() {
   try {
     const newId = Math.max(...videos.map(v=>v.id)) + 1;
     const newAddedAt = Math.max(...videos.map(v=>v.addedAt)) + 1;
-    const newVideo = { id:newId, title, cat, tags, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl:`https://www.xvideos.com/embedframe/${xvId}` };
+    const newVideo = { id:newId, title, tags, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl:`https://www.xvideos.com/embedframe/${xvId}` };
     videos.push(newVideo);
     if (thumbInput) XV_THUMBS[xvId] = thumbInput;
 
