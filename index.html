@@ -282,25 +282,10 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .age-logo .l3{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--muted);display:block;margin-top:-4px;}
 .age-box h3{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:8px;}
 .warning-text{color:var(--muted);font-size:12px;line-height:1.7;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border);}
-.countdown-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px;}
-.countdown{display:flex;justify-content:center;gap:8px;margin-bottom:24px;}
-.cd-unit{background:var(--bg3);border:1px solid var(--border);padding:10px 14px;min-width:64px;}
-.cd-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--red);line-height:1;display:block;}
-.cd-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);display:block;margin-top:2px;}
-.msg-wrap{text-align:left;margin-bottom:16px;}
-.msg-wrap label{display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.msg-wrap textarea{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:10px 12px;resize:none;outline:none;line-height:1.6;transition:border-color .2s;}
-.msg-wrap textarea:focus{border-color:var(--red);}
-.msg-wrap textarea::placeholder{color:var(--muted2);}
-.msg-wrap input[type=email]{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:9px 12px;outline:none;transition:border-color .2s;margin-top:8px;}
-.msg-wrap input[type=email]:focus{border-color:var(--red);}
-.msg-wrap input[type=email]::placeholder{color:var(--muted2);}
-.btn-send{display:block;width:100%;background:var(--red);border:none;color:#fff;padding:13px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:12px;}
-.btn-send:hover{background:var(--red2);}
-.btn-send:disabled{background:var(--muted2);cursor:not-allowed;}
-.send-status{font-size:12px;margin-top:10px;min-height:18px;}
-.send-status.ok{color:#4caf50;}
-.send-status.err{color:var(--red);}
+.btn-enter{display:block;width:100%;background:var(--red);border:none;color:#fff;padding:14px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-bottom:10px;}
+.btn-enter:hover{background:var(--red2);}
+.btn-leave{display:block;width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:12px;font-family:'Montserrat',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;}
+.btn-leave:hover{border-color:var(--muted);color:var(--text);}
 
 /* ── FOOTER ── */
 .site-footer{background:#000;border-top:1px solid var(--border);padding:16px;text-align:center;color:var(--muted2);font-size:11px;margin-top:24px;}
@@ -380,22 +365,11 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
     </div>
     <h3>Adult Content Warning</h3>
     <p class="warning-text">This website contains explicit adult content intended for mature audiences only. By entering you confirm you are at least 18 years of age and it is legal to view such material in your location.</p>
-    <div class="countdown-label">Site launches in</div>
-    <div class="countdown">
-      <div class="cd-unit"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">Days</span></div>
-      <div class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">Hours</span></div>
-      <div class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">Min</span></div>
-      <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">Sec</span></div>
-    </div>
-    <div class="msg-wrap">
-      <label>What do you want to see? Leave us a message:</label>
-      <textarea id="msgText" rows="3" placeholder="Tell us what you want to see... Boss didn't give you a raise? Neighbour's dog ruining your garden? Vent here. Leave your email below if you want to be notified when we launch."></textarea>
-      <input type="email" id="msgEmail" placeholder="your@email.com (optional)">
-    </div>
-    <div class="send-status" id="sendStatus"></div>
-    <button class="btn-send" id="sendBtn" onclick="submitMsg()">SEND MESSAGE</button>
+    <button class="btn-enter" onclick="enterSite()">I AM 18+ — ENTER NOW</button>
+    <button class="btn-leave" onclick="leaveSite()">I am under 18 — Leave</button>
   </div>
 </div>
+
 
 <!-- HEADER -->
 <div class="header">
@@ -620,13 +594,13 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── VIDEO DATA ────────────────────────────────────────────────
 const videos = [
-  { id:1, title:"Big black cock and innocent white girl – painful fucking", cat:"anal", tags:["anal","amateur","painful"], views:"1.1M", duration:"11 min", hd:true, isNew:true, addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
-  { id:2, title:"Llorando y gritando en anal doloroso", cat:"anal", tags:["anal","latina","painful"], views:"5.1M", duration:"10 min", hd:true, isNew:true, addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
-  { id:3, title:"18 years old first anal is so painful", cat:"anal", tags:["anal","teen","painful","first time"], views:"5.9M", duration:"10 min", hd:true, isNew:true, addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
-  { id:10, title:"19yo girl with big ass gets rough painful anal sex", cat:"anal", tags:["anal","teen","big ass","rough","painful"], views:"14.6M", duration:"13 min", hd:true, isNew:false, addedAt:16, xvId:"klekcih2186", embedUrl:"https://www.xvideos.com/embedframe/klekcih2186" },
-  { id:21, title:"Painful anal with huge orgasm and yells", cat:"anal", tags:["anal","painful","orgasm","big cock"], views:"37.8M", duration:"5 min", hd:true, isNew:false, addedAt:5, xvId:"kbabulo578b", embedUrl:"https://www.xvideos.com/embedframe/kbabulo578b" },
-  { id:22, title:"Blowjob german teen", cat:"amateur", tags:["amateur","homemade"], views:"46K", duration:"00:40", hd:true, isNew:false, addedAt:26, xvId:"iivdvlv8d66", embedUrl:"https://www.xvideos.com/embedframe/iivdvlv8d66" },
-  { id:23, title:"Deepthroating Blowjob With Cum", cat:"amateur", tags:["amateur","homemade","blowjob"], views:"355K", duration:"07:46", hd:true, isNew:false, addedAt:27, xvId:"mmcaeme144", embedUrl:"https://www.xvideos.com/embedframe/mmcaeme144" }
+  { id:1, title:"Big black cock and innocent white girl – painful fucking", tags:["anal","amateur","painful"], views:"1.1M", duration:"11 min", hd:true, isNew:true, addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
+  { id:2, title:"Llorando y gritando en anal doloroso", tags:["anal","latina","painful"], views:"5.1M", duration:"10 min", hd:true, isNew:true, addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
+  { id:3, title:"18 years old first anal is so painful", tags:["anal","teen","painful","first time"], views:"5.9M", duration:"10 min", hd:true, isNew:true, addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
+  { id:10, title:"19yo girl with big ass gets rough painful anal sex", tags:["anal","teen","big ass","rough","painful"], views:"14.6M", duration:"13 min", hd:true, isNew:false, addedAt:16, xvId:"klekcih2186", embedUrl:"https://www.xvideos.com/embedframe/klekcih2186" },
+  { id:21, title:"Painful anal with huge orgasm and yells", tags:["anal","painful","orgasm","big cock"], views:"37.8M", duration:"5 min", hd:true, isNew:false, addedAt:5, xvId:"kbabulo578b", embedUrl:"https://www.xvideos.com/embedframe/kbabulo578b" },
+  { id:22, title:"Blowjob german teen", tags:["amateur","homemade"], views:"46K", duration:"00:40", hd:true, isNew:false, addedAt:26, xvId:"iivdvlv8d66", embedUrl:"https://www.xvideos.com/embedframe/iivdvlv8d66" },
+  { id:23, title:"Deepthroating Blowjob With Cum", tags:["amateur","homemade","blowjob"], views:"355K", duration:"07:46", hd:true, isNew:false, addedAt:27, xvId:"mmcaeme144", embedUrl:"https://www.xvideos.com/embedframe/mmcaeme144" }
 ];
 
 // ── THUMBNAILS ────────────────────────────────────────────────
@@ -714,7 +688,7 @@ function makeCard(v) {
     </div>
     <div class="vinfo">
       <div class="vtitle">${v.title}</div>
-      <div class="vmeta">${v.views} views • ${v.cat}</div>
+      <div class="vmeta">${v.views} views • ${v.tags[0]}</div>
     </div>
   </div>`;
 }
@@ -786,7 +760,7 @@ function setTab(tab, catFilter) {
     currentList = [...videos].sort((a,b) => b.addedAt - a.addedAt);
   } else if (tab === 'cat' && catFilter) {
     document.getElementById('secTitle').textContent = catFilter.toUpperCase();
-    currentList = [...videos].filter(v => (v.tags||[v.cat]).includes(catFilter)).sort((a,b) => parseViews(b.views)-parseViews(a.views));
+    currentList = [...videos].filter(v => v.tags.includes(catFilter)).sort((a,b) => parseViews(b.views)-parseViews(a.views));
   }
 
   renderPage();
@@ -803,7 +777,7 @@ function doSearch(q) {
     currentPage = 1;
     currentList = videos.filter(v =>
       v.title.toLowerCase().includes(q) ||
-      v.cat.toLowerCase().includes(q) ||
+      v.tags[0].toLowerCase().includes(q) ||
       (v.tags||[]).some(t => t.toLowerCase().includes(q))
     );
     document.getElementById('secTitle').textContent = 'Search Results';
@@ -825,7 +799,7 @@ function openCats() {
   // Tüm tag'leri topla + say
   const counts = {};
   videos.forEach(v => {
-    const tags = v.tags || [v.cat];
+    const tags = v.tags || [];
     tags.forEach(t => { counts[t] = (counts[t]||0)+1; });
   });
   // Sırala: video sayısına göre
@@ -861,7 +835,7 @@ function openVideo(id) {
   const v = videos.find(x => x.id===id);
   if (!v) return;
   document.getElementById('modalTitle').textContent = v.title;
-  document.getElementById('modalFoot').textContent = `${v.cat} • ${v.views} views • ${v.duration}${v.hd?' • HD':''}`;
+  document.getElementById('modalFoot').textContent = `${v.tags[0]} • ${v.views} views • ${v.duration}${v.hd?' • HD':''}`;
   document.getElementById('videoFrame').src = v.embedUrl;
   document.getElementById('videoModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -977,58 +951,16 @@ function showLollyStats() {
 }
 
 // ── AGE GATE ─────────────────────────────────────────────────
-const SECRET = 'claude1258108+';
-
-function updateCountdown() {
-  const target = new Date('2026-03-27T21:30:00Z').getTime();
-  const diff = Math.max(0, target - Date.now());
-  const pad = n => String(Math.floor(n)).padStart(2,'0');
-  document.getElementById('cd-d').textContent = pad(diff/86400000);
-  document.getElementById('cd-h').textContent = pad((diff%86400000)/3600000);
-  document.getElementById('cd-m').textContent = pad((diff%3600000)/60000);
-  document.getElementById('cd-s').textContent = pad((diff%60000)/1000);
-}
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-async function submitMsg() {
-  const msg = document.getElementById('msgText').value.trim();
-  const email = document.getElementById('msgEmail').value.trim();
-  const btn = document.getElementById('sendBtn');
-  const status = document.getElementById('sendStatus');
-
-  if (msg === SECRET) {
-    localStorage.setItem('nvc_age','1');
-    document.getElementById('ageGate').style.display = 'none';
-    return;
-  }
-  if (!msg) { status.textContent='Please write something first.'; status.className='send-status err'; return; }
-
-  btn.disabled = true; btn.textContent = 'SENDING...'; status.textContent = '';
-  try {
-    const res = await fetch('https://formspree.io/f/xojkngpw', {
-      method:'POST',
-      body: JSON.stringify({ message: msg, _replyto: email||'', email: email||'visitor@unknown.com' }),
-      headers:{ 'Content-Type':'application/json', 'Accept':'application/json' }
-    });
-    const data = await res.json();
-    if (res.ok) {
-      status.textContent = '✓ Message sent! We will notify you when we launch.';
-      status.className = 'send-status ok';
-      document.getElementById('msgText').value = '';
-      document.getElementById('msgEmail').value = '';
-      btn.textContent = 'SENT ✓';
-    } else { throw new Error(data.error||'fail'); }
-  } catch(e) {
-    status.textContent = 'Error: '+e.message;
-    status.className = 'send-status err';
-    btn.disabled = false; btn.textContent = 'SEND MESSAGE';
-  }
-}
-
-if (localStorage.getItem('nvc_age')) {
+function enterSite() {
+  localStorage.setItem('nvc_age','1');
   document.getElementById('ageGate').style.display = 'none';
 }
+function leaveSite() {
+  window.location.href = 'https://www.google.com';
+}
+if (localStorage.getItem('nvc_age')) {
+  document.getElementById('ageGate').style.display = 'none';
+  
 
 
 // ── GITHUB YARDIMCI FONKSİYONLARI ────────────────────────────
@@ -1050,7 +982,7 @@ function replaceBlock(content, startMarker, endMarker, newBlock, required = true
 function buildVideosArrayString(vids) {
   const lines = vids.map(v => {
     const tagsJson = JSON.stringify(v.tags);
-    return `  { id:${v.id}, title:${JSON.stringify(v.title)}, cat:${JSON.stringify(v.cat)}, tags:${tagsJson}, views:${JSON.stringify(v.views)}, duration:${JSON.stringify(v.duration)}, hd:${v.hd}, isNew:${v.isNew}, addedAt:${v.addedAt}, xvId:${JSON.stringify(v.xvId)}, embedUrl:"https://www.xvideos.com/embedframe/${v.xvId}" }`;
+    return `  { id:${v.id}, title:${JSON.stringify(v.title)}, tags:${tagsJson}, views:${JSON.stringify(v.views)}, duration:${JSON.stringify(v.duration)}, hd:${v.hd}, isNew:${v.isNew}, addedAt:${v.addedAt}, xvId:${JSON.stringify(v.xvId)}, embedUrl:"https://www.xvideos.com/embedframe/${v.xvId}" }`;
   });
   return `const videos = [\n${lines.join(',\n')}\n];`;
 }
@@ -1126,7 +1058,7 @@ function setSaveStatus(msg, type) {
 // ── TAG SEÇİCİ ───────────────────────────────────────────────
 function getAllTags() {
   const fromVideos = new Set();
-  videos.forEach(v => (v.tags||[v.cat]).forEach(t => fromVideos.add(t)));
+  videos.forEach(v => (v.tags||[]).forEach(t => fromVideos.add(t)));
   const all = new Set([...DEFAULT_TAGS, ...fromVideos]);
   return [...all].sort();
 }
@@ -1254,8 +1186,9 @@ async function saveVideo() {
   const views  = document.getElementById('a-views').value.trim();
   const hd     = document.getElementById('a-hd').checked;
   const isNew  = document.getElementById('a-new').checked;
-  const tags   = selectedTags.length ? [...selectedTags] : ['uncategorized'];
-  const cat    = tags[0]; // ilk tag ana kategori
+  const tags = selectedTags.length ? [...selectedTags] : ['uncategorized'];
+  ...
+  const newVideo = { id:newId, title, tags, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl:`https://www.xvideos.com/embedframe/${xvId}` };
 
   if (!xvId || !title) { setSaveStatus('xvId ve title zorunlu.', 'err'); return; }
   if (videos.find(v => v.xvId === xvId)) { setSaveStatus('Bu video zaten listede!', 'err'); return; }
@@ -1335,7 +1268,7 @@ function renderAdminList() {
       <tbody>${sorted.map(v => `
         <tr>
           <td>${v.title.substring(0,40)}${v.title.length>40?'…':''}</td>
-          <td style="color:var(--muted2)">${(v.tags||[v.cat]).join(', ')}</td>
+          <td style="color:var(--muted2)">${(v.tags||[]).join(', ')}</td>
           <td>${v.views}</td>
           <td><span class="thumb-status ${XV_THUMBS[v.xvId]?'ok':'missing'}"></span>${XV_THUMBS[v.xvId]?'✓':'—'}</td>
           <td><button class="del-btn" onclick="deleteVideo(${v.id})" title="Sil">🗑</button></td>
@@ -1409,4 +1342,3 @@ setTab('home');
 loadMissingThumbs();
 </script>
 </body>
-</html>
