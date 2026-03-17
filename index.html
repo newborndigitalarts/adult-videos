@@ -623,8 +623,6 @@ const videos = [
   { id:1, title:"Big black cock and innocent white girl – painful fucking", cat:"anal", tags:["anal","amateur","painful"], views:"1.1M", duration:"11 min", hd:true, isNew:true, addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
   { id:2, title:"Llorando y gritando en anal doloroso", cat:"anal", tags:["anal","latina","painful"], views:"5.1M", duration:"10 min", hd:true, isNew:true, addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
   { id:3, title:"18 years old first anal is so painful", cat:"anal", tags:["anal","teen","painful","first time"], views:"5.9M", duration:"10 min", hd:true, isNew:true, addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
-  { id:7, title:"Stepfather fucks stepdaughter – rough painful hotel bathroom", cat:"anal", tags:["anal","taboo","painful","rough"], views:"1.6M", duration:"15 min", hd:true, isNew:false, addedAt:19, xvId:"uufiuet5bc2", embedUrl:"https://www.xvideos.com/embedframe/uufiuet5bc2" },
-  { id:8, title:"Painful anal for this white woman", cat:"anal", tags:["anal","painful","mature"], views:"403.1K", duration:"14 min", hd:true, isNew:false, addedAt:18, xvId:"kpbkied68f0", embedUrl:"https://www.xvideos.com/embedframe/kpbkied68f0" },
   { id:9, title:"French amateur teen tries painful anal homemade", cat:"amateur", tags:["amateur","anal","teen","homemade","painful"], views:"778.6K", duration:"30 min", hd:true, isNew:false, addedAt:17, xvId:"kfdlodfc301", embedUrl:"https://www.xvideos.com/embedframe/kfdlodfc301" },
   { id:10, title:"19yo girl with big ass gets rough painful anal sex", cat:"anal", tags:["anal","teen","big ass","rough","painful"], views:"14.6M", duration:"13 min", hd:true, isNew:false, addedAt:16, xvId:"klekcih2186", embedUrl:"https://www.xvideos.com/embedframe/klekcih2186" },
   { id:11, title:"Devote hausfrau gets painful BDSM casting", cat:"anal", tags:["anal","bdsm","casting","painful","mature"], views:"309.1K", duration:"81 min", hd:true, isNew:false, addedAt:15, xvId:"uoceokb77af", embedUrl:"https://www.xvideos.com/embedframe/uoceokb77af" },
@@ -642,7 +640,8 @@ const videos = [
   { id:23, title:"ASS DESTRUCTION – Rough painful anal blonde teen", cat:"anal", tags:["anal","teen","rough","painful","blonde"], views:"25.4M", duration:"10 min", hd:true, isNew:false, addedAt:3, xvId:"uiluuad549c", embedUrl:"https://www.xvideos.com/embedframe/uiluuad549c" },
   { id:24, title:"Get off me my ass is burning", cat:"anal", tags:["anal","painful","amateur"], views:"187.3K", duration:"6 min", hd:true, isNew:false, addedAt:2, xvId:"oukvidc2ecb", embedUrl:"https://www.xvideos.com/embedframe/oukvidc2ecb" },
   { id:25, title:"She could hardly withstand this anal penetration", cat:"amateur", tags:["amateur","anal","painful"], views:"87K", duration:"9 min", hd:true, isNew:false, addedAt:1, xvId:"oukklap3283", embedUrl:"https://www.xvideos.com/embedframe/oukklap3283" },
-] return XV_THUMBS[xvId]; }
+  { id:8, title:"Painful anal for this white woman", cat:"anal", tags:["anal","painful","mature"], views:"403.1K", duration:"14 min", hd:true, isNew:false, addedAt:18, xvId:"kpbkied68f0", embedUrl:"https://www.xvideos.com/embedframe/kpbkied68f0" },
+] }
   } catch(e){}
   return null;
 }
@@ -1050,74 +1049,7 @@ function buildThumbsString(thumbs) {
   "uebpaim777c":"https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
   "klekcih2186":"https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
   "kbabulo578b":"https://thumb-cdn77.xvideos-cdn.com/fc572b6a-9b48-43f7-8966-5eddc997c661/0/xv_27_t.jpg",
-}', thumbsStr);
-
-    const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
-      method: 'PUT',
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: `Add: ${xvId} — ${title.substring(0,50)}`,
-        content: btoa(unescape(encodeURIComponent(updatedContent))),
-        sha
-      })
-    });
-
-    if (!updateRes.ok) { const err = await updateRes.json(); throw new Error(err.message||'GitHub API hatası'); }
-
-    setSaveStatus(`✓ "${title.substring(0,40)}..." eklendi ve yayınlandı!`, 'ok');
-    renderAdminList();
-    resetAddForm();
-
-  } catch(e) {
-    videos.pop(); // başarısız olursa lokali geri al
-    if (XV_THUMBS[xvId]) delete XV_THUMBS[xvId];
-    setSaveStatus('Hata: ' + e.message, 'err');
-  } finally {
-    document.querySelector('#addForm .admin-btn').disabled = false;
-  }
 }
-
-function resetAddForm() {
-  document.getElementById('a-xvid').value = '';
-  document.getElementById('a-title').value = '';
-  document.getElementById('a-thumb').value = '';
-  document.getElementById('a-dur').value = '';
-  document.getElementById('a-views').value = '';
-  document.getElementById('a-hd').checked = true;
-  document.getElementById('a-new').checked = false;
-  document.getElementById('videoPreview').classList.remove('show');
-  document.getElementById('addForm').style.display = 'none';
-  document.getElementById('fetchStatus').className = 'admin-status';
-  document.getElementById('saveStatus').className = 'admin-status';
-  renderTagSelector();
-}
-
-function renderAdminList() {
-  document.getElementById('videoCount').textContent = videos.length;
-  const sorted = [...videos].sort((a,b) => b.addedAt - a.addedAt);
-  document.getElementById('adminVidList').innerHTML = `
-    <table>
-      <thead><tr>
-        <th>Title</th><th>Tags</th><th>Views</th><th>Thumb</th><th></th>
-      </tr></thead>
-      <tbody>${sorted.map(v => `
-        <tr>
-          <td>${v.title.substring(0,40)}${v.title.length>40?'…':''}</td>
-          <td style="color:var(--muted2)">${(v.tags||[v.cat]).join(', ')}</td>
-          <td>${v.views}</td>
-          <td><span class="thumb-status ${XV_THUMBS[v.xvId]?'ok':'missing'}"></span>${XV_THUMBS[v.xvId]?'✓':'—'}</td>
-          <td><button class="del-btn" onclick="deleteVideo(${v.id})" title="Sil">🗑</button></td>
-        </tr>`).join('')}
-      </tbody>
-    </table>`;
-}
-
-async function deleteVideo(id) {
-  const v = videos.find(x => x.id===id);
-  if (!v) return;
-  if (!confirm(`Sil ve GitHub'dan kaldır:\n"${v.title.substring(0,60)}"`)) return;
-
-  const removedVideo = {...v};
   const removedThumb = XV_THUMBS[v.xvId];
 
   // Lokal sil
