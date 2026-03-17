@@ -623,7 +623,6 @@ const videos = [
   { id:1, title:"Big black cock and innocent white girl – painful fucking", cat:"anal", tags:["anal","amateur","painful"], views:"1.1M", duration:"11 min", hd:true, isNew:true, addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
   { id:2, title:"Llorando y gritando en anal doloroso", cat:"anal", tags:["anal","latina","painful"], views:"5.1M", duration:"10 min", hd:true, isNew:true, addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
   { id:3, title:"18 years old first anal is so painful", cat:"anal", tags:["anal","teen","painful","first time"], views:"5.9M", duration:"10 min", hd:true, isNew:true, addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
-  { id:6, title:"Destroy my ass – World's Most Painful Anal – Kristal Ass", cat:"anal", tags:["anal","painful","rough"], views:"1.3M", duration:"10 min", hd:true, isNew:false, addedAt:20, xvId:"ulcmbad1219", embedUrl:"https://www.xvideos.com/embedframe/ulcmbad1219" },
   { id:7, title:"Stepfather fucks stepdaughter – rough painful hotel bathroom", cat:"anal", tags:["anal","taboo","painful","rough"], views:"1.6M", duration:"15 min", hd:true, isNew:false, addedAt:19, xvId:"uufiuet5bc2", embedUrl:"https://www.xvideos.com/embedframe/uufiuet5bc2" },
   { id:8, title:"Painful anal for this white woman", cat:"anal", tags:["anal","painful","mature"], views:"403.1K", duration:"14 min", hd:true, isNew:false, addedAt:18, xvId:"kpbkied68f0", embedUrl:"https://www.xvideos.com/embedframe/kpbkied68f0" },
   { id:9, title:"French amateur teen tries painful anal homemade", cat:"amateur", tags:["amateur","anal","teen","homemade","painful"], views:"778.6K", duration:"30 min", hd:true, isNew:false, addedAt:17, xvId:"kfdlodfc301", embedUrl:"https://www.xvideos.com/embedframe/kfdlodfc301" },
@@ -643,12 +642,7 @@ const videos = [
   { id:23, title:"ASS DESTRUCTION – Rough painful anal blonde teen", cat:"anal", tags:["anal","teen","rough","painful","blonde"], views:"25.4M", duration:"10 min", hd:true, isNew:false, addedAt:3, xvId:"uiluuad549c", embedUrl:"https://www.xvideos.com/embedframe/uiluuad549c" },
   { id:24, title:"Get off me my ass is burning", cat:"anal", tags:["anal","painful","amateur"], views:"187.3K", duration:"6 min", hd:true, isNew:false, addedAt:2, xvId:"oukvidc2ecb", embedUrl:"https://www.xvideos.com/embedframe/oukvidc2ecb" },
   { id:25, title:"She could hardly withstand this anal penetration", cat:"amateur", tags:["amateur","anal","painful"], views:"87K", duration:"9 min", hd:true, isNew:false, addedAt:1, xvId:"oukklap3283", embedUrl:"https://www.xvideos.com/embedframe/oukklap3283" },
-]
-  try {
-    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.'+xvId+'/')}`);
-    const data = await res.json();
-    const match = data.contents.match(/thumb-cdn[^"]+xv_\d+_t\.jpg/);
-    if (match) { XV_THUMBS[xvId] = 'https://'+match[0]; return XV_THUMBS[xvId]; }
+] return XV_THUMBS[xvId]; }
   } catch(e){}
   return null;
 }
@@ -1056,23 +1050,7 @@ function buildThumbsString(thumbs) {
   "uebpaim777c":"https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
   "klekcih2186":"https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
   "kbabulo578b":"https://thumb-cdn77.xvideos-cdn.com/fc572b6a-9b48-43f7-8966-5eddc997c661/0/xv_27_t.jpg",
-}
-    videos.push(newVideo);
-    if (thumbInput) XV_THUMBS[xvId] = thumbInput;
-
-    const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    const fileData = await fileRes.json();
-    const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
-    const sha = fileData.sha;
-
-    // Tüm videos array'ini ve XV_THUMBS'ı yeniden yaz
-    const videosArrayStr = buildVideosArrayString(videos);
-    let updatedContent = replaceBlock(currentContent, 'const videos = [', '];', videosArrayStr);
-
-    const thumbsStr = buildThumbsString(XV_THUMBS);
-    updatedContent = replaceBlock(updatedContent, 'const XV_THUMBS = {', '};', thumbsStr);
+}', thumbsStr);
 
     const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
       method: 'PUT',
