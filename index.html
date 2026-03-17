@@ -611,10 +611,10 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
     <a href="dmca.html">Terms of Use</a>
   </p>
   <p style="margin-top:6px;">All videos are embedded from third-party platforms. We do not host any video files.</p>
-  <p style="margin-top:6px;">Contact: <a href="mailto:newborndigitalarts@protonmail.com">newborndigitalarts@protonmail.com</a></p>
+  <p style="margin-top:6px;">Contact: <a href="/cdn-cgi/l/email-protection#b7d9d2c0d5d8c5d9d3ded0dec3d6dbd6c5c3c4f7c7c5d8c3d8d9dad6dedb99d4d8da"><span class="__cf_email__" data-cfemail="bbd5deccd9d4c9d5dfd2dcd2cfdad7dac9cfc8fbcbc9d4cfd4d5d6dad2d795d8d4d6">[email&#160;protected]</span></a></p>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── VIDEO DATA ────────────────────────────────────────────────
 const videos = [
   { id:1,  title:"Big black cock and innocent white girl – painful fucking",    cat:"anal",    tags:["anal","amateur","painful"],          views:"1.1M",  duration:"11 min", hd:true,  isNew:true,  addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
@@ -1041,6 +1041,29 @@ if (localStorage.getItem('nvc_age')) {
   document.getElementById('ageGate').style.display = 'none';
 }
 
+
+// ── GITHUB YARDIMCI FONKSİYONLARI ────────────────────────────
+
+function replaceBlock(content, startMarker, endMarker, newBlock) {
+  const startIdx = content.indexOf(startMarker);
+  const endIdx = content.indexOf(endMarker, startIdx);
+  if (startIdx === -1 || endIdx === -1) throw new Error(`Block bulunamadı: "${startMarker}"`);
+  return content.substring(0, startIdx) + newBlock + content.substring(endIdx + endMarker.length);
+}
+
+function buildVideosArrayString(vids) {
+  const lines = vids.map(v => {
+    const tagsJson = JSON.stringify(v.tags);
+    return `  { id:${v.id}, title:${JSON.stringify(v.title)}, cat:${JSON.stringify(v.cat)}, tags:${tagsJson}, views:${JSON.stringify(v.views)}, duration:${JSON.stringify(v.duration)}, hd:${v.hd}, isNew:${v.isNew}, addedAt:${v.addedAt}, xvId:${JSON.stringify(v.xvId)}, embedUrl:"https://www.xvideos.com/embedframe/${v.xvId}" }`;
+  });
+  return `const videos = [\n${lines.join(',\n')},\n]`;
+}
+
+function buildThumbsString(thumbs) {
+  const lines = Object.entries(thumbs).map(([k,v]) => `  "${k}":"${v}"`);
+  return `const XV_THUMBS = {\n${lines.join(',\n')},\n}`;
+}
+
 // ── ADMIN ─────────────────────────────────────────────────────
 const GITHUB_TOKEN = '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';
 const GITHUB_REPO  = 'newborndigitalarts/adult-videos';
@@ -1241,20 +1264,12 @@ async function saveVideo() {
     const currentContent = atob(fileData.content.replace(/\n/g,''));
     const sha = fileData.sha;
 
-    const tagsJson = JSON.stringify(tags);
-    const videoLine = `  { id:${newId}, title:${JSON.stringify(title)}, cat:${JSON.stringify(cat)}, tags:${tagsJson}, views:${JSON.stringify(views)}, duration:${JSON.stringify(dur)}, hd:${hd}, isNew:${isNew}, addedAt:${newAddedAt}, xvId:${JSON.stringify(xvId)}, embedUrl:"https://www.xvideos.com/embedframe/${xvId}" },`;
+    // Tüm videos array'ini ve XV_THUMBS'ı yeniden yaz
+    const videosArrayStr = buildVideosArrayString(videos);
+    let updatedContent = replaceBlock(currentContent, 'const videos = [', '];', videosArrayStr);
 
-    let updatedContent = currentContent.replace(
-      /(\{ id:\d+[^\n]+addedAt:\d+[^\n]+\n)(];)/,
-      `$1${videoLine}\n$2`
-    );
-
-    if (thumbInput) {
-      updatedContent = updatedContent.replace(
-        /(const XV_THUMBS = \{)/,
-        `$1\n  "${xvId}":"${thumbInput}",`
-      );
-    }
+    const thumbsStr = buildThumbsString(XV_THUMBS);
+    updatedContent = replaceBlock(updatedContent, 'const XV_THUMBS = {', '};', thumbsStr);
 
     const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
       method: 'PUT',
@@ -1273,6 +1288,8 @@ async function saveVideo() {
     resetAddForm();
 
   } catch(e) {
+    videos.pop(); // başarısız olursa lokali geri al
+    if (XV_THUMBS[xvId]) delete XV_THUMBS[xvId];
     setSaveStatus('Hata: ' + e.message, 'err');
   } finally {
     document.querySelector('#addForm .admin-btn').disabled = false;
@@ -1319,8 +1336,12 @@ async function deleteVideo(id) {
   if (!v) return;
   if (!confirm(`Sil ve GitHub'dan kaldır:\n"${v.title.substring(0,60)}"`)) return;
 
+  const removedVideo = {...v};
+  const removedThumb = XV_THUMBS[v.xvId];
+
   // Lokal sil
   videos.splice(videos.findIndex(x=>x.id===id), 1);
+  delete XV_THUMBS[v.xvId];
   renderAdminList();
   setTab(currentTab);
 
@@ -1330,7 +1351,6 @@ async function deleteVideo(id) {
   statusEl.className = 'admin-status info';
 
   try {
-    // Dosyayı çek
     const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
       headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
     });
@@ -1338,37 +1358,34 @@ async function deleteVideo(id) {
     const currentContent = atob(fileData.content.replace(/\n/g,''));
     const sha = fileData.sha;
 
-    // Video satırını bul ve sil — xvId ile eşleştir
-    const lines = currentContent.split('\n');
-    const filtered = lines.filter(line => {
-      // xvId geçen video satırını atla
-      return !(line.includes(`xvId:"${v.xvId}"`) || line.includes(`xvId:'${v.xvId}'`));
-    });
-    const updatedContent = filtered.join('\n');
+    // Tüm videos array'ini ve XV_THUMBS'ı yeniden yaz
+    const videosArrayStr = buildVideosArrayString(videos);
+    let updatedContent = replaceBlock(currentContent, 'const videos = [', '];', videosArrayStr);
 
-    // XV_THUMBS'dan da sil
-    const cleanContent = updatedContent.replace(
-      new RegExp(`\\s*"${v.xvId}":"[^"]+",?\\n?`, 'g'), '\n'
-    );
+    const thumbsStr = buildThumbsString(XV_THUMBS);
+    updatedContent = replaceBlock(updatedContent, 'const XV_THUMBS = {', '};', thumbsStr);
 
     const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
       method: 'PUT',
       headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: `Remove: ${v.xvId} — ${v.title.substring(0,50)}`,
-        content: btoa(unescape(encodeURIComponent(cleanContent))),
+        content: btoa(unescape(encodeURIComponent(updatedContent))),
         sha
       })
     });
 
     if (!updateRes.ok) { const err = await updateRes.json(); throw new Error(err.message||'GitHub API hatası'); }
 
-    statusEl.textContent = `✓ "${v.title.substring(0,35)}..." silindi ve GitHub güncellendi.`;
+    statusEl.textContent = `✓ "${v.title.substring(0,35)}..." silindi.`;
     statusEl.className = 'admin-status ok';
     setTimeout(() => { statusEl.className = 'admin-status'; }, 4000);
 
   } catch(e) {
-    statusEl.textContent = `GitHub hatası: ${e.message} — lokal silindi, manuel commit gerekebilir.`;
+    // Geri al
+    videos.push(removedVideo);
+    if (removedThumb) XV_THUMBS[removedVideo.xvId] = removedThumb;
+    statusEl.textContent = `GitHub hatası: ${e.message}`;
     statusEl.className = 'admin-status err';
   }
 }
