@@ -623,7 +623,6 @@ const videos = [
   { id:1, title:"Big black cock and innocent white girl – painful fucking", cat:"anal", tags:["anal","amateur","painful"], views:"1.1M", duration:"11 min", hd:true, isNew:true, addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
   { id:2, title:"Llorando y gritando en anal doloroso", cat:"anal", tags:["anal","latina","painful"], views:"5.1M", duration:"10 min", hd:true, isNew:true, addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
   { id:3, title:"18 years old first anal is so painful", cat:"anal", tags:["anal","teen","painful","first time"], views:"5.9M", duration:"10 min", hd:true, isNew:true, addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
-  { id:5, title:"Girlfriend was crying taking big cock in her small ass", cat:"amateur", tags:["amateur","anal","painful","big cock"], views:"91.8K", duration:"10 min", hd:true, isNew:true, addedAt:21, xvId:"ufefuhb5ff6", embedUrl:"https://www.xvideos.com/embedframe/ufefuhb5ff6" },
   { id:6, title:"Destroy my ass – World's Most Painful Anal – Kristal Ass", cat:"anal", tags:["anal","painful","rough"], views:"1.3M", duration:"10 min", hd:true, isNew:false, addedAt:20, xvId:"ulcmbad1219", embedUrl:"https://www.xvideos.com/embedframe/ulcmbad1219" },
   { id:7, title:"Stepfather fucks stepdaughter – rough painful hotel bathroom", cat:"anal", tags:["anal","taboo","painful","rough"], views:"1.6M", duration:"15 min", hd:true, isNew:false, addedAt:19, xvId:"uufiuet5bc2", embedUrl:"https://www.xvideos.com/embedframe/uufiuet5bc2" },
   { id:8, title:"Painful anal for this white woman", cat:"anal", tags:["anal","painful","mature"], views:"403.1K", duration:"14 min", hd:true, isNew:false, addedAt:18, xvId:"kpbkied68f0", embedUrl:"https://www.xvideos.com/embedframe/kpbkied68f0" },
@@ -645,18 +644,6 @@ const videos = [
   { id:24, title:"Get off me my ass is burning", cat:"anal", tags:["anal","painful","amateur"], views:"187.3K", duration:"6 min", hd:true, isNew:false, addedAt:2, xvId:"oukvidc2ecb", embedUrl:"https://www.xvideos.com/embedframe/oukvidc2ecb" },
   { id:25, title:"She could hardly withstand this anal penetration", cat:"amateur", tags:["amateur","anal","painful"], views:"87K", duration:"9 min", hd:true, isNew:false, addedAt:1, xvId:"oukklap3283", embedUrl:"https://www.xvideos.com/embedframe/oukklap3283" },
 ]
-
-// ── THUMBNAILS ────────────────────────────────────────────────
-const XV_THUMBS = {
-  "uudotvpe2d5":"https://thumb-cdn77.xvideos-cdn.com/d87192f0-3d9c-4398-ab69-a78fa13645e8/0/xv_15_t.jpg",
-  "kdatkmhd92c":"https://thumb-cdn77.xvideos-cdn.com/e45152e0-1792-4c1c-a567-0e47ae0ea543/0/xv_5_t.jpg",
-  "uebpaim777c":"https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
-  "klekcih2186":"https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
-  "kbabulo578b":"https://thumb-cdn77.xvideos-cdn.com/fc572b6a-9b48-43f7-8966-5eddc997c661/0/xv_27_t.jpg",
-}
-
-async function fetchThumb(xvId) {
-  if (XV_THUMBS[xvId]) return XV_THUMBS[xvId];
   try {
     const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.'+xvId+'/')}`);
     const data = await res.json();
@@ -1063,214 +1050,13 @@ function buildVideosArrayString(vids) {
 
 function buildThumbsString(thumbs) {
   const lines = Object.entries(thumbs).map(([k,v]) => `  "${k}":"${v}"`);
-  return `const XV_THUMBS = {\n${lines.join(',\n')},\n}`;
+  return `const XV_THUMBS = {
+  "uudotvpe2d5":"https://thumb-cdn77.xvideos-cdn.com/d87192f0-3d9c-4398-ab69-a78fa13645e8/0/xv_15_t.jpg",
+  "kdatkmhd92c":"https://thumb-cdn77.xvideos-cdn.com/e45152e0-1792-4c1c-a567-0e47ae0ea543/0/xv_5_t.jpg",
+  "uebpaim777c":"https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
+  "klekcih2186":"https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
+  "kbabulo578b":"https://thumb-cdn77.xvideos-cdn.com/fc572b6a-9b48-43f7-8966-5eddc997c661/0/xv_27_t.jpg",
 }
-
-// ── ADMIN ─────────────────────────────────────────────────────
-let GITHUB_TOKEN = localStorage.getItem('nvc_gh_token') || '';
-const GITHUB_REPO  = 'newborndigitalarts/adult-videos';
-const GITHUB_FILE  = 'index.html';
-const ADMIN_PASS   = 'claude1258108+';
-
-// Varsayılan tag listesi — videolar eklendikçe genişler
-const DEFAULT_TAGS = ['anal','amateur','milf','teen','lesbian','asian','latina','bbw','compilation','rough','painful','homemade','taboo','big cock','big ass','blonde','brunette','mature','bdsm','creampie','doggystyle','orgasm','casting','first time'];
-let selectedTags = [];
-
-let adminUnlockCount = 0;
-let adminUnlockTimer;
-
-function adminTap() {
-  adminUnlockCount++;
-  clearTimeout(adminUnlockTimer);
-  adminUnlockTimer = setTimeout(() => { adminUnlockCount = 0; }, 2000);
-  if (adminUnlockCount >= 7) {
-    adminUnlockCount = 0;
-    const pw = prompt('Admin password:');
-    if (pw !== ADMIN_PASS) return;
-    // Token kontrolü
-    GITHUB_TOKEN = localStorage.getItem('nvc_gh_token') || '';
-    if (!GITHUB_TOKEN) {
-      const t = prompt('GitHub Token (ghp_...):');
-      if (!t || !t.startsWith('ghp_')) { alert('Geçersiz token format.'); return; }
-      localStorage.setItem('nvc_gh_token', t);
-      GITHUB_TOKEN = t;
-    }
-    openAdmin();
-  }
-}
-
-function resetGithubToken() {
-  localStorage.removeItem('nvc_gh_token');
-  GITHUB_TOKEN = '';
-  alert('Token silindi. Bir sonraki girişte yeniden girilecek.');
-}
-
-function openAdmin() {
-  document.getElementById('adminPanel').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  renderAdminList();
-  renderTagSelector();
-}
-
-function closeAdmin() {
-  document.getElementById('adminPanel').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function setFetchStatus(msg, type) {
-  const el = document.getElementById('fetchStatus');
-  el.textContent = msg; el.className = 'admin-status ' + type;
-}
-
-function setSaveStatus(msg, type) {
-  const el = document.getElementById('saveStatus');
-  el.textContent = msg; el.className = 'admin-status ' + type;
-}
-
-// ── TAG SEÇİCİ ───────────────────────────────────────────────
-function getAllTags() {
-  const fromVideos = new Set();
-  videos.forEach(v => (v.tags||[v.cat]).forEach(t => fromVideos.add(t)));
-  const all = new Set([...DEFAULT_TAGS, ...fromVideos]);
-  return [...all].sort();
-}
-
-function renderTagSelector() {
-  selectedTags = [];
-  const tags = getAllTags();
-  const wrap = document.getElementById('tagSelector');
-  wrap.innerHTML = tags.map(t =>
-    `<span class="tag-chip" id="tc-${t.replace(/\s/g,'_')}" onclick="toggleTag('${t}')">${t}</span>`
-  ).join('');
-  updateSelectedLabel();
-}
-
-function toggleTag(tag) {
-  const idx = selectedTags.indexOf(tag);
-  const el = document.getElementById('tc-'+tag.replace(/\s/g,'_'));
-  if (idx === -1) {
-    selectedTags.push(tag);
-    if (el) el.classList.add('selected');
-  } else {
-    selectedTags.splice(idx, 1);
-    if (el) el.classList.remove('selected');
-  }
-  updateSelectedLabel();
-}
-
-function addNewTag() {
-  const input = document.getElementById('a-newtag');
-  const tag = input.value.trim().toLowerCase();
-  if (!tag) return;
-  input.value = '';
-  // Chip yoksa ekle
-  const wrap = document.getElementById('tagSelector');
-  if (!document.getElementById('tc-'+tag.replace(/\s/g,'_'))) {
-    const chip = document.createElement('span');
-    chip.className = 'tag-chip';
-    chip.id = 'tc-'+tag.replace(/\s/g,'_');
-    chip.textContent = tag;
-    chip.onclick = () => toggleTag(tag);
-    wrap.appendChild(chip);
-  }
-  toggleTag(tag);
-}
-
-function updateSelectedLabel() {
-  document.getElementById('selectedTagsLabel').textContent =
-    selectedTags.length ? selectedTags.join(', ') : '—';
-}
-
-// ── THUMBNAIL PREVIEW ────────────────────────────────────────
-function previewThumbUrl(url) {
-  if (url && url.startsWith('http')) {
-    document.getElementById('previewThumb').src = url;
-    document.getElementById('videoPreview').classList.add('show');
-  }
-}
-
-// ── FETCH INFO ───────────────────────────────────────────────
-function parseXvId(raw) {
-  const urlMatch = raw.match(/xvideos\.com\/video\.([a-z0-9]+)/i);
-  if (urlMatch) return urlMatch[1];
-  return raw.replace(/\s/g,'');
-}
-
-async function fetchVideoInfo() {
-  const raw = document.getElementById('a-xvid').value.trim();
-  if (!raw) { setFetchStatus('xvId veya URL gir.', 'err'); return; }
-
-  const xvId = parseXvId(raw);
-  document.getElementById('a-xvid').value = xvId;
-
-  setFetchStatus('Bilgiler çekiliyor...', 'info');
-  document.getElementById('videoPreview').classList.remove('show');
-  document.getElementById('addForm').style.display = 'none';
-
-  let title = '', duration = '', views = '';
-
-  try {
-    const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video-api/short/video/' + xvId)}`;
-    const res = await fetch(apiUrl);
-    const data = await res.json();
-    const json = JSON.parse(data.contents);
-    title    = json.title || '';
-    duration = json.duration ? Math.round(json.duration/60) + ' min' : '';
-    const watched = json.nb_watch || json.video_watched || 0;
-    if (watched >= 1e6) views = (watched/1e6).toFixed(1).replace('.0','')+'M';
-    else if (watched >= 1e3) views = (watched/1e3).toFixed(1).replace('.0','')+'K';
-    else if (watched > 0) views = String(watched);
-  } catch(e) {}
-
-  if (!title) {
-    try {
-      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.' + xvId + '/')}`;
-      const res = await fetch(proxyUrl);
-      const data = await res.json();
-      const html = data.contents;
-      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
-      title = titleMatch ? titleMatch[1].replace(/ - XVIDEOS\.COM/i,'').trim() : '';
-      if (!duration) { const m = html.match(/(\d+)\s*min/i); duration = m ? m[1]+' min' : ''; }
-    } catch(e) {}
-  }
-
-  document.getElementById('previewInfo').innerHTML =
-    `<strong>ID:</strong> ${xvId}<br>
-     <strong>Title:</strong> ${title||'—'}<br>
-     <strong>Duration:</strong> ${duration||'—'}<br>
-     <strong>Views:</strong> ${views||'—'}`;
-  document.getElementById('videoPreview').classList.add('show');
-  document.getElementById('a-title').value = title;
-  document.getElementById('a-dur').value = duration;
-  document.getElementById('a-views').value = views;
-  document.getElementById('addForm').style.display = 'block';
-
-  if (title) setFetchStatus('✓ Bilgiler çekildi. Thumbnail URL yapıştır, tag seç, kaydet.', 'ok');
-  else setFetchStatus('⚠ Otomatik çekilemedi — bilgileri manuel gir.', 'info');
-}
-
-// ── SAVE VIDEO ───────────────────────────────────────────────
-async function saveVideo() {
-  const xvId   = document.getElementById('a-xvid').value.trim();
-  const title  = document.getElementById('a-title').value.trim();
-  const thumbInput = document.getElementById('a-thumb').value.trim();
-  const dur    = document.getElementById('a-dur').value.trim();
-  const views  = document.getElementById('a-views').value.trim();
-  const hd     = document.getElementById('a-hd').checked;
-  const isNew  = document.getElementById('a-new').checked;
-  const tags   = selectedTags.length ? [...selectedTags] : ['uncategorized'];
-  const cat    = tags[0]; // ilk tag ana kategori
-
-  if (!xvId || !title) { setSaveStatus('xvId ve title zorunlu.', 'err'); return; }
-  if (videos.find(v => v.xvId === xvId)) { setSaveStatus('Bu video zaten listede!', 'err'); return; }
-
-  setSaveStatus('GitHub\'a kaydediliyor...', 'info');
-  document.querySelector('#addForm .admin-btn').disabled = true;
-
-  try {
-    const newId = Math.max(...videos.map(v=>v.id)) + 1;
-    const newAddedAt = Math.max(...videos.map(v=>v.addedAt)) + 1;
-    const newVideo = { id:newId, title, cat, tags, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl:`https://www.xvideos.com/embedframe/${xvId}` };
     videos.push(newVideo);
     if (thumbInput) XV_THUMBS[xvId] = thumbInput;
 
