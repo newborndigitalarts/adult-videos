@@ -1187,8 +1187,6 @@ async function saveVideo() {
   const hd     = document.getElementById('a-hd').checked;
   const isNew  = document.getElementById('a-new').checked;
   const tags = selectedTags.length ? [...selectedTags] : ['uncategorized'];
-  ...
-  const newVideo = { id:newId, title, tags, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl:`https://www.xvideos.com/embedframe/${xvId}` };
 
   if (!xvId || !title) { setSaveStatus('xvId ve title zorunlu.', 'err'); return; }
   if (videos.find(v => v.xvId === xvId)) { setSaveStatus('Bu video zaten listede!', 'err'); return; }
