@@ -508,7 +508,10 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
   <div class="admin-wrap">
     <div class="admin-head">
       <span class="admin-title">⚙ NVC Admin</span>
-      <button class="admin-close" onclick="closeAdmin()">✕ CLOSE</button>
+      <div style="display:flex;gap:8px;">
+        <button class="admin-btn secondary" onclick="resetGithubToken()" style="font-size:10px;padding:4px 10px;">🔑 TOKEN SIFIRLA</button>
+        <button class="admin-close" onclick="closeAdmin()">✕ CLOSE</button>
+      </div>
     </div>
 
     <!-- Video Ekle -->
@@ -1065,7 +1068,7 @@ function buildThumbsString(thumbs) {
 }
 
 // ── ADMIN ─────────────────────────────────────────────────────
-const GITHUB_TOKEN = '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';
+let GITHUB_TOKEN = localStorage.getItem('nvc_gh_token') || '';
 const GITHUB_REPO  = 'newborndigitalarts/adult-videos';
 const GITHUB_FILE  = 'index.html';
 const ADMIN_PASS   = 'claude1258108+';
@@ -1084,8 +1087,23 @@ function adminTap() {
   if (adminUnlockCount >= 7) {
     adminUnlockCount = 0;
     const pw = prompt('Admin password:');
-    if (pw === ADMIN_PASS) openAdmin();
+    if (pw !== ADMIN_PASS) return;
+    // Token kontrolü
+    GITHUB_TOKEN = localStorage.getItem('nvc_gh_token') || '';
+    if (!GITHUB_TOKEN) {
+      const t = prompt('GitHub Token (ghp_...):');
+      if (!t || !t.startsWith('ghp_')) { alert('Geçersiz token format.'); return; }
+      localStorage.setItem('nvc_gh_token', t);
+      GITHUB_TOKEN = t;
+    }
+    openAdmin();
   }
+}
+
+function resetGithubToken() {
+  localStorage.removeItem('nvc_gh_token');
+  GITHUB_TOKEN = '';
+  alert('Token silindi. Bir sonraki girişte yeniden girilecek.');
 }
 
 function openAdmin() {
