@@ -623,7 +623,6 @@ const videos = [
   { id:1, title:"Big black cock and innocent white girl – painful fucking", cat:"anal", tags:["anal","amateur","painful"], views:"1.1M", duration:"11 min", hd:true, isNew:true, addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
   { id:2, title:"Llorando y gritando en anal doloroso", cat:"anal", tags:["anal","latina","painful"], views:"5.1M", duration:"10 min", hd:true, isNew:true, addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
   { id:3, title:"18 years old first anal is so painful", cat:"anal", tags:["anal","teen","painful","first time"], views:"5.9M", duration:"10 min", hd:true, isNew:true, addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
-  { id:9, title:"French amateur teen tries painful anal homemade", cat:"amateur", tags:["amateur","anal","teen","homemade","painful"], views:"778.6K", duration:"30 min", hd:true, isNew:false, addedAt:17, xvId:"kfdlodfc301", embedUrl:"https://www.xvideos.com/embedframe/kfdlodfc301" },
   { id:10, title:"19yo girl with big ass gets rough painful anal sex", cat:"anal", tags:["anal","teen","big ass","rough","painful"], views:"14.6M", duration:"13 min", hd:true, isNew:false, addedAt:16, xvId:"klekcih2186", embedUrl:"https://www.xvideos.com/embedframe/klekcih2186" },
   { id:11, title:"Devote hausfrau gets painful BDSM casting", cat:"anal", tags:["anal","bdsm","casting","painful","mature"], views:"309.1K", duration:"81 min", hd:true, isNew:false, addedAt:15, xvId:"uoceokb77af", embedUrl:"https://www.xvideos.com/embedframe/uoceokb77af" },
   { id:12, title:"Compilation – deep and painful anal sex", cat:"compilation", tags:["compilation","anal","painful"], views:"875.7K", duration:"42 min", hd:true, isNew:false, addedAt:14, xvId:"otlpiad3974", embedUrl:"https://www.xvideos.com/embedframe/otlpiad3974" },
@@ -641,46 +640,7 @@ const videos = [
   { id:24, title:"Get off me my ass is burning", cat:"anal", tags:["anal","painful","amateur"], views:"187.3K", duration:"6 min", hd:true, isNew:false, addedAt:2, xvId:"oukvidc2ecb", embedUrl:"https://www.xvideos.com/embedframe/oukvidc2ecb" },
   { id:25, title:"She could hardly withstand this anal penetration", cat:"amateur", tags:["amateur","anal","painful"], views:"87K", duration:"9 min", hd:true, isNew:false, addedAt:1, xvId:"oukklap3283", embedUrl:"https://www.xvideos.com/embedframe/oukklap3283" },
   { id:8, title:"Painful anal for this white woman", cat:"anal", tags:["anal","painful","mature"], views:"403.1K", duration:"14 min", hd:true, isNew:false, addedAt:18, xvId:"kpbkied68f0", embedUrl:"https://www.xvideos.com/embedframe/kpbkied68f0" },
-] }
-  } catch(e){}
-  return null;
-}
-
-async function loadMissingThumbs() {
-  for (const v of videos.filter(v => !XV_THUMBS[v.xvId])) {
-    const url = await fetchThumb(v.xvId);
-    if (url) document.querySelectorAll(`#th-${v.xvId}`).forEach(i => i.src = url);
-    await new Promise(r => setTimeout(r, 300));
-  }
-}
-
-// ── UTILITIES ────────────────────────────────────────────────
-function parseViews(s) {
-  if (!s) return 0;
-  s = s.toUpperCase().replace(/,/g,'');
-  if (s.endsWith('M')) return parseFloat(s)*1e6;
-  if (s.endsWith('K')) return parseFloat(s)*1e3;
-  return parseFloat(s)||0;
-}
-
-// Daily seed — changes at UTC 05:00
-function dailySeed() {
-  const now = new Date();
-  const utc5 = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 5, 0, 0));
-  if (now < utc5) utc5.setUTCDate(utc5.getUTCDate()-1);
-  return utc5.getTime();
-}
-
-function seededRandom(seed) {
-  let s = seed;
-  return function() {
-    s = (s * 1664525 + 1013904223) & 0xffffffff;
-    return (s >>> 0) / 0xffffffff;
-  };
-}
-
-function shuffleWithSeed(arr, seed) {
-  const a = [...arr];
+]
   const rng = seededRandom(seed);
   for (let i = a.length-1; i > 0; i--) {
     const j = Math.floor(rng() * (i+1));
@@ -1049,34 +1009,7 @@ function buildThumbsString(thumbs) {
   "uebpaim777c":"https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
   "klekcih2186":"https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
   "kbabulo578b":"https://thumb-cdn77.xvideos-cdn.com/fc572b6a-9b48-43f7-8966-5eddc997c661/0/xv_27_t.jpg",
-}
-  const removedThumb = XV_THUMBS[v.xvId];
-
-  // Lokal sil
-  videos.splice(videos.findIndex(x=>x.id===id), 1);
-  delete XV_THUMBS[v.xvId];
-  renderAdminList();
-  setTab(currentTab);
-
-  // Status göster
-  const statusEl = document.getElementById('deleteStatus');
-  statusEl.textContent = `"${v.title.substring(0,35)}..." GitHub'dan siliniyor...`;
-  statusEl.className = 'admin-status info';
-
-  try {
-    const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    const fileData = await fileRes.json();
-    const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
-    const sha = fileData.sha;
-
-    // Tüm videos array'ini ve XV_THUMBS'ı yeniden yaz
-    const videosArrayStr = buildVideosArrayString(videos);
-    let updatedContent = replaceBlock(currentContent, 'const videos = [', '];', videosArrayStr);
-
-    const thumbsStr = buildThumbsString(XV_THUMBS);
-    updatedContent = replaceBlock(updatedContent, 'const XV_THUMBS = {', '};', thumbsStr);
+}', thumbsStr);
 
     const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
       method: 'PUT',
