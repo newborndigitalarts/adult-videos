@@ -802,7 +802,9 @@ function doSearch(q) {
     if (!q) { label.style.display='none'; setTab(currentTab); return; }
     currentPage = 1;
     currentList = videos.filter(v =>
-      v.title.toLowerCase().includes(q) || v.cat.toLowerCase().includes(q)
+      v.title.toLowerCase().includes(q) ||
+      v.cat.toLowerCase().includes(q) ||
+      (v.tags||[]).some(t => t.toLowerCase().includes(q))
     );
     document.getElementById('secTitle').textContent = 'Search Results';
     label.style.display = 'block';
