@@ -323,17 +323,28 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 .admin-status.ok{display:block;background:rgba(76,175,80,.1);border:1px solid #4caf50;color:#4caf50;}
 .admin-status.err{display:block;background:rgba(224,32,32,.1);border:1px solid var(--red);color:var(--red);}
 .admin-status.info{display:block;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);}
-.admin-vidlist{max-height:300px;overflow-y:auto;}
+.admin-vidlist{max-height:500px;overflow-y:auto;}
 .admin-vidlist table{width:100%;border-collapse:collapse;font-size:11px;}
-.admin-vidlist th{text-align:left;color:var(--muted2);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:1px;text-transform:uppercase;}
-.admin-vidlist td{padding:6px 8px;border-bottom:1px solid #1e1e1e;color:var(--muted);vertical-align:middle;}
-.admin-vidlist td:first-child{color:var(--text);}
+.admin-vidlist th{text-align:left;color:var(--muted2);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:1px;text-transform:uppercase;position:sticky;top:0;background:var(--bg2);z-index:1;}
+.admin-vidlist td{padding:8px 10px;border-bottom:1px solid #1e1e1e;color:var(--muted);vertical-align:middle;}
+.admin-vidlist td:first-child{color:var(--text);max-width:260px;}
 .admin-vidlist tr:hover td{background:var(--bg3);}
 .del-btn{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:13px;padding:2px 6px;}
 .del-btn:hover{color:var(--red);}
 .thumb-status{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--muted2);margin-right:4px;}
 .thumb-status.ok{background:#4caf50;}
 .thumb-status.missing{background:#f5a623;}
+.src-badge{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:2px;margin-right:4px;letter-spacing:.5px;text-transform:uppercase;}
+.src-badge.xvideos{background:#e02020;color:#fff;}
+.src-badge.xhamster{background:#f5a623;color:#000;}
+.src-badge.pornhub{background:#ff9900;color:#000;}
+.src-badge.redtube{background:#cc0000;color:#fff;}
+.admin-list-toolbar{display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;}
+.admin-search{flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:8px 12px;outline:none;}
+.admin-search:focus{border-color:var(--red);}
+.admin-search::placeholder{color:var(--muted2);}
+.admin-filter-select{background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-family:'Montserrat',sans-serif;font-size:11px;padding:8px 10px;outline:none;cursor:pointer;}
+.admin-list-count{font-size:11px;color:var(--muted2);white-space:nowrap;}
 
 /* Tag chips */
 .tag-chip{
@@ -492,12 +503,22 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
     <div class="admin-section">
       <h3>Add New Video</h3>
       <div class="admin-row">
+        <div class="admin-field" style="max-width:180px;">
+          <label>Kaynak Site</label>
+          <select class="admin-select" id="a-source" onchange="updateSourceLabel()">
+            <option value="xvideos">XVideos</option>
+            <option value="xhamster">XHamster</option>
+            <option value="pornhub">Pornhub</option>
+            <option value="redtube">RedTube</option>
+          </select>
+        </div>
         <div class="admin-field">
-          <label>XVideos ID (URL'den — video.<strong>bu kısım</strong>/...)</label>
+          <label id="a-xvid-label">Video ID (URL'den)</label>
           <div style="display:flex;gap:8px;">
             <input class="admin-input" id="a-xvid" placeholder="örn: uioacfoc8a6" style="flex:1">
             <button class="admin-btn secondary" onclick="fetchVideoInfo()">FETCH INFO</button>
           </div>
+          <div id="a-xvid-hint" style="font-size:10px;color:var(--muted2);margin-top:4px;"></div>
         </div>
       </div>
       <div class="admin-status" id="fetchStatus"></div>
@@ -574,6 +595,20 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
     <div class="admin-section">
       <h3>Current Videos (<span id="videoCount">0</span>)</h3>
       <div class="admin-status" id="deleteStatus" style="margin-bottom:10px;"></div>
+      <div class="admin-list-toolbar">
+        <input class="admin-search" id="vidSearch" placeholder="Başlık veya tag ara..." oninput="filterAdminList()">
+        <select class="admin-filter-select" id="vidSourceFilter" onchange="filterAdminList()">
+          <option value="">Tüm kaynaklar</option>
+          <option value="xvideos">XVideos</option>
+          <option value="xhamster">XHamster</option>
+          <option value="pornhub">Pornhub</option>
+          <option value="redtube">RedTube</option>
+        </select>
+        <select class="admin-filter-select" id="vidTagFilter" onchange="filterAdminList()">
+          <option value="">Tüm taglar</option>
+        </select>
+        <span class="admin-list-count" id="vidListCount"></span>
+      </div>
       <div class="admin-vidlist" id="adminVidList"></div>
     </div>
 
@@ -607,7 +642,7 @@ const videos = [
 ];
 
 // ── THUMBNAILS ────────────────────────────────────────────────
-const XV_THUMBS = {
+const THUMBS = {
   "uudotvpe2d5":"https://thumb-cdn77.xvideos-cdn.com/d87192f0-3d9c-4398-ab69-a78fa13645e8/0/xv_15_t.jpg",
   "kdatkmhd92c":"https://thumb-cdn77.xvideos-cdn.com/e45152e0-1792-4c1c-a567-0e47ae0ea543/0/xv_5_t.jpg",
   "uebpaim777c":"https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
@@ -620,20 +655,42 @@ const XV_THUMBS = {
   "uvphdfmcdca":"https://thumbs-gcore.xvideos-cdn.com/45ac1efa-fe06-453d-a3aa-7fa1301daf1c/0/xv_9_t.jpg"
 };
 
-async function fetchThumb(xvId) {
-  if (XV_THUMBS[xvId]) return XV_THUMBS[xvId];
+async function fetchThumb(xvId, source) {
+  if (THUMBS[xvId]) return THUMBS[xvId];
+  const src = source || 'xvideos';
   try {
-    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.'+xvId+'/')}`);
+    let pageUrl = '';
+    if (src === 'xvideos')  pageUrl = 'https://www.xvideos.com/video.' + xvId + '/';
+    else if (src === 'xhamster') pageUrl = 'https://xhamster.com/videos/x' + xvId;
+    else if (src === 'pornhub')  pageUrl = 'https://www.pornhub.com/view_video.php?viewkey=' + xvId;
+    else if (src === 'redtube')  pageUrl = 'https://www.redtube.com/' + xvId;
+    if (!pageUrl) return null;
+
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(pageUrl)}`);
     const data = await res.json();
-    const match = data.contents.match(/thumb-cdn[^"]+xv_\d+_t\.jpg/);
-    if (match) { XV_THUMBS[xvId] = 'https://'+match[0]; return XV_THUMBS[xvId]; }
+    const html = data.contents;
+
+    let match = null;
+    if (src === 'xvideos') {
+      match = html.match(/thumb-cdn[^"]+xv_\d+_t\.jpg/);
+      if (match) { THUMBS[xvId] = 'https://' + match[0]; return THUMBS[xvId]; }
+    } else if (src === 'xhamster') {
+      match = html.match(/https:\/\/[^"']+xhamster[^"']+\.jpg/);
+      if (match) { THUMBS[xvId] = match[0]; return THUMBS[xvId]; }
+    } else if (src === 'pornhub') {
+      match = html.match(/https:\/\/[^"']+phncdn[^"']+\.jpg/);
+      if (match) { THUMBS[xvId] = match[0]; return THUMBS[xvId]; }
+    } else if (src === 'redtube') {
+      match = html.match(/https:\/\/[^"']+redtube[^"']+\.jpg/);
+      if (match) { THUMBS[xvId] = match[0]; return THUMBS[xvId]; }
+    }
   } catch(e){}
   return null;
 }
 
 async function loadMissingThumbs() {
-  for (const v of videos.filter(v => !XV_THUMBS[v.xvId])) {
-    const url = await fetchThumb(v.xvId);
+  for (const v of videos.filter(v => !THUMBS[v.xvId])) {
+    const url = await fetchThumb(v.xvId, v.source);
     if (url) document.querySelectorAll(`#th-${v.xvId}`).forEach(i => i.src = url);
     await new Promise(r => setTimeout(r, 300));
   }
@@ -681,7 +738,7 @@ let currentPage = 1;
 let currentTab = 'home';
 
 function makeCard(v) {
-  const thumb = XV_THUMBS[v.xvId] || `https://picsum.photos/seed/${v.xvId}/400/225`;
+  const thumb = THUMBS[v.xvId] || `https://picsum.photos/seed/${v.xvId}/400/225`;
   const fallback = `https://picsum.photos/seed/${v.xvId}/400/225`;
   return `
   <div class="vcard" onclick="openVideo(${v.id})">
@@ -710,7 +767,7 @@ function renderPage() {
   }
   grid.innerHTML = slice.map(makeCard).join('');
   // Apply known thumbs
-  Object.entries(XV_THUMBS).forEach(([id,url]) => {
+  Object.entries(THUMBS).forEach(([id,url]) => {
     document.querySelectorAll(`#th-${id}`).forEach(i => i.src = url);
   });
   renderPagination();
@@ -1025,16 +1082,17 @@ function replaceBlock(content, startMarker, endMarker, newBlock, required = true
 function buildVideosArrayString(vids) {
   const lines = vids.map(v => {
     const tagsJson = JSON.stringify(v.tags);
-    return `  { id:${v.id}, title:${JSON.stringify(v.title)}, tags:${tagsJson}, views:${JSON.stringify(v.views)}, duration:${JSON.stringify(v.duration)}, hd:${v.hd}, isNew:${v.isNew}, addedAt:${v.addedAt}, xvId:${JSON.stringify(v.xvId)}, embedUrl:"https://www.xvideos.com/embedframe/${v.xvId}" }`;
+    const src = v.source || 'xvideos';
+    return `  { id:${v.id}, source:"${src}", title:${JSON.stringify(v.title)}, tags:${tagsJson}, views:${JSON.stringify(v.views)}, duration:${JSON.stringify(v.duration)}, hd:${v.hd}, isNew:${v.isNew}, addedAt:${v.addedAt}, xvId:${JSON.stringify(v.xvId)}, embedUrl:${JSON.stringify(v.embedUrl)} }`;
   });
   return `const videos = [\n${lines.join(',\n')}\n];`;
 }
 
 function buildThumbsString(thumbs) {
   const entries = Object.entries(thumbs);
-  if (!entries.length) return `const XV_THUMBS = {};`;
+  if (!entries.length) return `const THUMBS = {};`;
   const lines = entries.map(([k,v]) => `  "${k}":"${v}"`);
-  return `const XV_THUMBS = {\n${lines.join(',\n')}\n};`;
+  return `const THUMBS = {\n${lines.join(',\n')}\n};`;
 }
 
 // ── ADMIN ─────────────────────────────────────────────────────
@@ -1160,7 +1218,47 @@ function previewThumbUrl(url) {
   }
 }
 
+// ── SOURCE LABEL ─────────────────────────────────────────────
+const SOURCE_HINTS = {
+  xvideos:  { label: "XVideos ID — video.[ID]/...", placeholder: 'örn: uioacfoc8a6' },
+  xhamster: { label: "XHamster Video ID — videos/title-[ID]", placeholder: 'örn: 12345678' },
+  pornhub:  { label: "Pornhub viewkey — ?viewkey=[ID]", placeholder: 'örn: ph5e3e5b5f96e6b' },
+  redtube:  { label: "RedTube Video ID — redtube.com/[ID]", placeholder: 'örn: 12345678' },
+};
+
+function updateSourceLabel() {
+  const src = document.getElementById('a-source').value;
+  const hint = SOURCE_HINTS[src] || SOURCE_HINTS.xvideos;
+  document.getElementById('a-xvid-label').innerHTML = hint.label;
+  document.getElementById('a-xvid').placeholder = hint.placeholder;
+  document.getElementById('a-xvid-hint').textContent = '';
+  document.getElementById('a-xvid').value = '';
+  document.getElementById('addForm').style.display = 'none';
+  document.getElementById('videoPreview').classList.remove('show');
+}
+
 // ── FETCH INFO ───────────────────────────────────────────────
+function parseVideoId(raw, source) {
+  if (source === 'xvideos') {
+    const m = raw.match(/xvideos\.com\/video\.([a-z0-9]+)/i);
+    if (m) return m[1];
+  } else if (source === 'xhamster') {
+    const m = raw.match(/xhamster\.com\/videos\/[^/]+-([0-9]+)/i);
+    if (m) return m[1];
+    const m2 = raw.match(/([0-9]{6,})/);
+    if (m2) return m2[1];
+  } else if (source === 'pornhub') {
+    const m = raw.match(/viewkey=([a-z0-9]+)/i);
+    if (m) return m[1];
+  } else if (source === 'redtube') {
+    const m = raw.match(/redtube\.com\/([0-9]+)/i);
+    if (m) return m[1];
+    const m2 = raw.match(/([0-9]{6,})/);
+    if (m2) return m2[1];
+  }
+  return raw.replace(/\s/g,'');
+}
+
 function parseXvId(raw) {
   const urlMatch = raw.match(/xvideos\.com\/video\.([a-z0-9]+)/i);
   if (urlMatch) return urlMatch[1];
@@ -1169,9 +1267,10 @@ function parseXvId(raw) {
 
 async function fetchVideoInfo() {
   const raw = document.getElementById('a-xvid').value.trim();
-  if (!raw) { setFetchStatus('xvId veya URL gir.', 'err'); return; }
+  const source = document.getElementById('a-source').value;
+  if (!raw) { setFetchStatus('ID veya URL gir.', 'err'); return; }
 
-  const xvId = parseXvId(raw);
+  const xvId = parseVideoId(raw, source);
   document.getElementById('a-xvid').value = xvId;
 
   setFetchStatus('Bilgiler çekiliyor...', 'info');
@@ -1230,6 +1329,14 @@ async function saveVideo() {
   const hd     = document.getElementById('a-hd').checked;
   const isNew  = document.getElementById('a-new').checked;
   const tags = selectedTags.length ? [...selectedTags] : ['uncategorized'];
+  const source = document.getElementById('a-source').value;
+
+  // embedUrl'i source'a göre üret
+  let embedUrl = '';
+  if (source === 'xvideos')  embedUrl = `https://www.xvideos.com/embedframe/${xvId}`;
+  else if (source === 'xhamster') embedUrl = `https://xhamster.com/xembed.php?video=${xvId}`;
+  else if (source === 'pornhub')  embedUrl = `https://www.pornhub.com/embed/${xvId}`;
+  else if (source === 'redtube')  embedUrl = `https://www.redtube.com/embed/?id=${xvId}`;
 
   if (!xvId || !title) { setSaveStatus('xvId ve title zorunlu.', 'err'); return; }
   if (videos.find(v => v.xvId === xvId)) { setSaveStatus('Bu video zaten listede!', 'err'); return; }
@@ -1240,9 +1347,9 @@ async function saveVideo() {
   try {
     const newId = Math.max(...videos.map(v=>v.id)) + 1;
     const newAddedAt = Math.max(...videos.map(v=>v.addedAt)) + 1;
-    const newVideo = { id:newId, title, tags, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl:`https://www.xvideos.com/embedframe/${xvId}` };
+    const newVideo = { id:newId, source, title, tags, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl };
     videos.push(newVideo);
-    if (thumbInput) XV_THUMBS[xvId] = thumbInput;
+    if (thumbInput) THUMBS[xvId] = thumbInput;
 
     const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
       headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
@@ -1251,12 +1358,12 @@ async function saveVideo() {
     const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
     const sha = fileData.sha;
 
-    // Tüm videos array'ini ve XV_THUMBS'ı yeniden yaz
+    // Tüm videos array'ini ve THUMBS'ı yeniden yaz
     const videosArrayStr = buildVideosArrayString(videos);
     let updatedContent = replaceBlock(currentContent, 'const videos = [', '];', videosArrayStr);
 
-    const thumbsStr = buildThumbsString(XV_THUMBS);
-    updatedContent = replaceBlock(updatedContent, 'const XV_THUMBS = {', '};', thumbsStr, false);
+    const thumbsStr = buildThumbsString(THUMBS);
+    updatedContent = replaceBlock(updatedContent, 'const THUMBS = {', '};', thumbsStr, false);
 
     const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
       method: 'PUT',
@@ -1276,7 +1383,7 @@ async function saveVideo() {
 
   } catch(e) {
     videos.pop(); // başarısız olursa lokali geri al
-    if (XV_THUMBS[xvId]) delete XV_THUMBS[xvId];
+    if (THUMBS[xvId]) delete THUMBS[xvId];
     setSaveStatus('Hata: ' + e.message, 'err');
   } finally {
     document.querySelector('#addForm .admin-btn').disabled = false;
@@ -1295,27 +1402,56 @@ function resetAddForm() {
   document.getElementById('addForm').style.display = 'none';
   document.getElementById('fetchStatus').className = 'admin-status';
   document.getElementById('saveStatus').className = 'admin-status';
+  document.getElementById('a-source').value = 'xvideos';
+  updateSourceLabel();
   renderTagSelector();
 }
 
 function renderAdminList() {
   document.getElementById('videoCount').textContent = videos.length;
-  const sorted = [...videos].sort((a,b) => b.addedAt - a.addedAt);
-  document.getElementById('adminVidList').innerHTML = `
+  // Tag filter dropdown'u doldur
+  const tagFilter = document.getElementById('vidTagFilter');
+  const allTags = [...new Set(videos.flatMap(v => v.tags||[]))].sort();
+  const currentTag = tagFilter.value;
+  tagFilter.innerHTML = '<option value="">Tüm taglar</option>' +
+    allTags.map(t => `<option value="${t}"${t===currentTag?' selected':''}>${t}</option>`).join('');
+  filterAdminList();
+}
+
+function filterAdminList() {
+  const q = (document.getElementById('vidSearch')?.value||'').toLowerCase().trim();
+  const src = document.getElementById('vidSourceFilter')?.value||'';
+  const tag = document.getElementById('vidTagFilter')?.value||'';
+
+  let filtered = [...videos].sort((a,b) => b.addedAt - a.addedAt);
+  if (q)   filtered = filtered.filter(v => v.title.toLowerCase().includes(q) || (v.tags||[]).some(t=>t.includes(q)));
+  if (src) filtered = filtered.filter(v => (v.source||'xvideos') === src);
+  if (tag) filtered = filtered.filter(v => (v.tags||[]).includes(tag));
+
+  document.getElementById('vidListCount').textContent =
+    filtered.length === videos.length ? `${videos.length} video` : `${filtered.length} / ${videos.length} video`;
+
+  document.getElementById('adminVidList').innerHTML = filtered.length ? `
     <table>
       <thead><tr>
-        <th>Title</th><th>Tags</th><th>Views</th><th>Thumb</th><th></th>
+        <th>Kaynak / Başlık</th><th>Tags</th><th>Views</th><th>Thumb</th><th></th>
       </tr></thead>
-      <tbody>${sorted.map(v => `
-        <tr>
-          <td>${v.title.substring(0,40)}${v.title.length>40?'…':''}</td>
-          <td style="color:var(--muted2)">${(v.tags||[]).join(', ')}</td>
+      <tbody>${filtered.map(v => {
+        const src = v.source||'xvideos';
+        const srcLabel = {xvideos:'XV',xhamster:'XH',pornhub:'PH',redtube:'RT'}[src]||src.substring(0,2).toUpperCase();
+        return `<tr>
+          <td>
+            <span class="src-badge ${src}">${srcLabel}</span>
+            ${v.title.substring(0,45)}${v.title.length>45?'…':''}
+          </td>
+          <td style="color:var(--muted2);font-size:10px;">${(v.tags||[]).slice(0,3).join(', ')}</td>
           <td>${v.views}</td>
-          <td><span class="thumb-status ${XV_THUMBS[v.xvId]?'ok':'missing'}"></span>${XV_THUMBS[v.xvId]?'✓':'—'}</td>
+          <td><span class="thumb-status ${THUMBS[v.xvId]?'ok':'missing'}"></span>${THUMBS[v.xvId]?'✓':'—'}</td>
           <td><button class="del-btn" onclick="deleteVideo(${v.id})" title="Sil">🗑</button></td>
-        </tr>`).join('')}
+        </tr>`;
+      }).join('')}
       </tbody>
-    </table>`;
+    </table>` : '<div style="padding:20px;text-align:center;color:var(--muted2);font-size:12px;">Sonuç bulunamadı.</div>';
 }
 
 async function deleteVideo(id) {
@@ -1324,11 +1460,11 @@ async function deleteVideo(id) {
   if (!confirm(`Sil ve GitHub'dan kaldır:\n"${v.title.substring(0,60)}"`)) return;
 
   const removedVideo = {...v};
-  const removedThumb = XV_THUMBS[v.xvId];
+  const removedThumb = THUMBS[v.xvId];
 
   // Lokal sil
   videos.splice(videos.findIndex(x=>x.id===id), 1);
-  delete XV_THUMBS[v.xvId];
+  delete THUMBS[v.xvId];
   renderAdminList();
   setTab(currentTab);
 
@@ -1345,12 +1481,12 @@ async function deleteVideo(id) {
     const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
     const sha = fileData.sha;
 
-    // Tüm videos array'ini ve XV_THUMBS'ı yeniden yaz
+    // Tüm videos array'ini ve THUMBS'ı yeniden yaz
     const videosArrayStr = buildVideosArrayString(videos);
     let updatedContent = replaceBlock(currentContent, 'const videos = [', '];', videosArrayStr);
 
-    const thumbsStr = buildThumbsString(XV_THUMBS);
-    updatedContent = replaceBlock(updatedContent, 'const XV_THUMBS = {', '};', thumbsStr, false);
+    const thumbsStr = buildThumbsString(THUMBS);
+    updatedContent = replaceBlock(updatedContent, 'const THUMBS = {', '};', thumbsStr, false);
 
     const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
       method: 'PUT',
@@ -1371,7 +1507,1476 @@ async function deleteVideo(id) {
   } catch(e) {
     // Geri al
     videos.push(removedVideo);
-    if (removedThumb) XV_THUMBS[removedVideo.xvId] = removedThumb;
+    if (removedThumb) THUMBS[removedVideo.xvId] = removedThumb;
+    statusEl.textContent = `GitHub hatası: ${e.message}`;
+    statusEl.className = 'admin-status err';
+  }
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+initVote();
+setTab('home');
+loadMissingThumbs();
+</script>
+</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naughty Video Club – Curated Adult Videos</title>
+<meta name="description" content="Editor-curated adult videos. Real, amateur, authentic — not algorithmically pushed content.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#111;
+  --bg2:#1a1a1a;
+  --bg3:#222;
+  --border:#2e2e2e;
+  --red:#e02020;
+  --red2:#ff3333;
+  --text:#f0f0f0;
+  --muted:#888;
+  --muted2:#555;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;font-size:13px;}
+
+/* ── HEADER ── */
+.header{
+  background:#000;
+  border-bottom:2px solid var(--red);
+  padding:0 16px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  position:sticky;
+  top:0;
+  z-index:300;
+}
+.logo{display:flex;align-items:baseline;gap:5px;text-decoration:none;flex-shrink:0;}
+.logo-n{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--red);letter-spacing:2px;}
+.logo-v{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;letter-spacing:2px;}
+.logo-c{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:var(--muted);}
+
+/* Search */
+.search-wrap{flex:1;max-width:400px;display:flex;background:var(--bg3);border:1px solid var(--border);}
+.search-wrap input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:7px 12px;}
+.search-wrap input::placeholder{color:var(--muted2);}
+.search-wrap button{background:var(--red);border:none;color:#fff;padding:0 14px;cursor:pointer;font-size:13px;transition:background .2s;}
+.search-wrap button:hover{background:var(--red2);}
+
+/* ── NAV ── */
+.nav{
+  background:var(--bg2);
+  border-bottom:1px solid var(--border);
+  padding:0 16px;
+  display:flex;
+  gap:0;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.nav::-webkit-scrollbar{display:none;}
+.nav-link{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:11px;
+  font-weight:600;
+  padding:10px 16px;
+  white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:all .2s;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  cursor:pointer;
+  background:none;
+  border-top:none;
+  border-left:none;
+  border-right:none;
+  font-family:'Montserrat',sans-serif;
+}
+.nav-link:hover,.nav-link.active{color:#fff;border-bottom-color:var(--red);}
+
+/* ── LAYOUT ── */
+.page{display:flex;max-width:1400px;margin:0 auto;padding:16px;gap:16px;align-items:flex-start;}
+
+/* ── LEFT PANEL ── */
+.left-panel{width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;}
+
+.panel-block{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-top:2px solid var(--red);
+  padding:16px;
+}
+.panel-block h4{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px;
+  letter-spacing:2px;
+  color:var(--red);
+  margin-bottom:10px;
+}
+
+/* Part 1 — About */
+.about-text{color:var(--muted);font-size:11px;line-height:1.8;}
+.about-text strong{color:var(--text);}
+
+/* Part 2+3 — Vote */
+.vote-question{font-size:11px;color:var(--text);line-height:1.6;margin-bottom:12px;font-weight:500;}
+.vote-btn{
+  display:block;
+  width:100%;
+  padding:9px 10px;
+  border:1px solid var(--border);
+  background:var(--bg3);
+  color:var(--muted);
+  font-family:'Montserrat',sans-serif;
+  font-size:11px;
+  font-weight:600;
+  cursor:pointer;
+  text-align:left;
+  transition:all .2s;
+  margin-bottom:6px;
+  position:relative;
+  overflow:hidden;
+}
+.vote-btn:hover{border-color:var(--red);color:#fff;}
+.vote-btn.voted-real{border-color:#4caf50;color:#4caf50;}
+.vote-btn.voted-fake{border-color:var(--muted2);color:var(--muted2);}
+.vote-bar{
+  position:absolute;
+  left:0;top:0;height:100%;
+  background:rgba(76,175,80,0.12);
+  transition:width .5s ease;
+  pointer-events:none;
+}
+.vote-bar.fake-bar{background:rgba(100,100,100,0.12);}
+.vote-pct{float:right;font-weight:700;}
+.vote-total{font-size:10px;color:var(--muted2);margin-top:4px;text-align:center;}
+
+/* Part 4 — Lollipop */
+.lolly-wrap{text-align:center;}
+.lolly-img{font-size:40px;display:block;margin-bottom:8px;}
+.lolly-text{font-size:10px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.lolly-btn{
+  display:block;
+  width:100%;
+  background:linear-gradient(135deg,#e91e8c,#ff6b35);
+  border:none;
+  color:#fff;
+  padding:10px;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  letter-spacing:.5px;
+  transition:opacity .2s;
+}
+.lolly-btn:hover{opacity:.85;}
+.lolly-thanks{font-size:13px;color:#e91e8c;margin-top:8px;min-height:20px;text-align:center;}
+
+/* ── MAIN ── */
+.main{flex:1;min-width:0;}
+
+/* Section header */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.sec-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:20px;
+  letter-spacing:2px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.sec-title::before{content:'';display:block;width:3px;height:18px;background:var(--red);}
+
+/* Search results label */
+.search-label{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.search-label span{color:var(--red);font-weight:600;}
+
+/* Video grid */
+.vgrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-bottom:20px;
+}
+@media(max-width:1100px){.vgrid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:700px){.vgrid{grid-template-columns:repeat(2,1fr);}}
+
+/* Video card */
+.vcard{cursor:pointer;transition:transform .15s;}
+.vcard:hover{transform:translateY(-2px);}
+.vthumb{position:relative;width:100%;padding-bottom:56.25%;background:var(--bg3);overflow:hidden;}
+.vthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.vcard:hover .vthumb img{transform:scale(1.05);}
+.voverlay{position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;}
+.vcard:hover .voverlay{opacity:1;}
+.vplay{width:40px;height:40px;background:rgba(224,32,32,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.vplay::after{content:'';width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:13px solid #fff;margin-left:3px;}
+.vdur{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.85);color:#fff;font-size:10px;font-weight:600;padding:1px 5px;}
+.vhd{position:absolute;top:4px;left:4px;background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:1px 4px;letter-spacing:.5px;}
+.vnew{position:absolute;top:4px;right:4px;background:#f5a623;color:#000;font-size:9px;font-weight:700;padding:1px 4px;}
+.vinfo{padding:5px 2px 2px;}
+.vtitle{font-size:11px;font-weight:500;color:var(--text);line-height:1.4;margin-bottom:2px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.vmeta{font-size:10px;color:var(--muted);}
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:center;gap:4px;padding:16px 0 8px;}
+.pg-btn{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  color:var(--muted);
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  font-family:'Montserrat',sans-serif;
+  font-size:12px;
+  font-weight:600;
+  transition:all .2s;
+}
+.pg-btn:hover,.pg-btn.active{background:var(--red);border-color:var(--red);color:#fff;}
+.pg-btn.disabled{opacity:.3;cursor:not-allowed;pointer-events:none;}
+.pg-dots{color:var(--muted2);font-size:12px;padding:0 4px;}
+
+/* No results */
+.no-results{color:var(--muted);padding:32px;text-align:center;font-size:13px;}
+
+/* ── CATEGORIES DRAWER ── */
+.cat-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  z-index:400;
+  align-items:flex-end;
+}
+.cat-overlay.open{display:flex;}
+.cat-drawer{
+  background:var(--bg2);
+  border-top:2px solid var(--red);
+  width:100%;
+  max-height:70vh;
+  overflow-y:auto;
+  padding:20px 24px;
+  animation:slideUp .25s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.cat-drawer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cat-drawer-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--text);}
+.cat-close{background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;}
+.cat-close:hover{color:#fff;background:var(--red);border-color:var(--red);}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+.cat-card{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  padding:14px 12px;
+  cursor:pointer;
+  transition:all .2s;
+  text-align:center;
+}
+.cat-card:hover{border-color:var(--red);background:#1f1212;}
+.cat-card-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--text);display:block;margin-bottom:2px;}
+.cat-card-count{font-size:10px;color:var(--muted);}
+.cat-card-count.empty{color:var(--muted2);}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;align-items:center;justify-content:center;padding:12px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#000;border:1px solid var(--border);width:100%;max-width:960px;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.modal-title{font-size:13px;font-weight:600;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:85%;}
+.modal-close{background:var(--bg3);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.modal-close:hover{color:#fff;background:var(--red);border-color:var(--red);}
+.modal-body{position:relative;width:100%;padding-bottom:56.25%;}
+.modal-body iframe{position:absolute;inset:0;width:100%;height:100%;border:none;background:#000;}
+.modal-foot{padding:7px 14px;background:var(--bg2);border-top:1px solid var(--border);font-size:11px;color:var(--muted);}
+
+/* ── COMING SOON / AGE GATE ── */
+.age-gate{position:fixed;inset:0;background:#0a0a0a;z-index:9999;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px;}
+.age-box{text-align:center;width:100%;max-width:500px;padding:40px 36px;background:var(--bg2);border:1px solid var(--border);border-top:3px solid var(--red);}
+.age-logo{margin-bottom:20px;}
+.age-logo .l1{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--red);letter-spacing:3px;}
+.age-logo .l2{font-family:'Bebas Neue',sans-serif;font-size:36px;color:#fff;letter-spacing:3px;}
+.age-logo .l3{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--muted);display:block;margin-top:-4px;}
+.age-box h3{font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text);margin-bottom:8px;}
+.warning-text{color:var(--muted);font-size:12px;line-height:1.7;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.btn-enter{display:block;width:100%;background:var(--red);border:none;color:#fff;padding:14px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-bottom:10px;}
+.btn-enter:hover{background:var(--red2);}
+.btn-leave{display:block;width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:12px;font-family:'Montserrat',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;}
+.btn-leave:hover{border-color:var(--muted);color:var(--text);}
+
+/* ── FOOTER ── */
+.site-footer{background:#000;border-top:1px solid var(--border);padding:16px;text-align:center;color:var(--muted2);font-size:11px;margin-top:24px;}
+.site-footer a{color:var(--muted);text-decoration:none;margin:0 8px;}
+.site-footer a:hover{color:var(--red);}
+
+/* ── ADMIN PANEL ── */
+.admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9000;overflow-y:auto;padding:20px;}
+.admin-overlay.open{display:block;}
+.admin-wrap{max-width:760px;margin:0 auto;}
+.admin-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--red);}
+.admin-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--red);}
+.admin-close{background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:6px 14px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:12px;}
+.admin-close:hover{color:#fff;border-color:var(--red);}
+.admin-section{background:var(--bg2);border:1px solid var(--border);padding:20px;margin-bottom:16px;}
+.admin-section h3{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--text);margin-bottom:14px;}
+.admin-row{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.admin-row label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px;}
+.admin-field{flex:1;}
+.admin-input{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:9px 12px;outline:none;transition:border-color .2s;}
+.admin-input:focus{border-color:var(--red);}
+.admin-input::placeholder{color:var(--muted2);}
+.admin-select{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'Montserrat',sans-serif;font-size:12px;padding:9px 12px;outline:none;cursor:pointer;}
+.admin-btn{background:var(--red);border:none;color:#fff;padding:9px 18px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .2s;}
+.admin-btn:hover{background:var(--red2);}
+.admin-btn:disabled{background:var(--muted2);cursor:not-allowed;}
+.admin-btn.secondary{background:var(--bg3);border:1px solid var(--border);color:var(--muted);}
+.admin-btn.secondary:hover{border-color:var(--red);color:#fff;}
+.admin-preview{display:none;gap:14px;background:var(--bg3);border:1px solid var(--border);padding:12px;margin-top:10px;}
+.admin-preview.show{display:flex;}
+.admin-preview img{width:160px;height:90px;object-fit:cover;flex-shrink:0;border:1px solid var(--border);}
+.admin-preview-info{font-size:11px;color:var(--muted);line-height:2;}
+.admin-preview-info strong{color:var(--text);}
+.admin-status{font-size:12px;margin-top:10px;min-height:18px;padding:8px 12px;display:none;}
+.admin-status.ok{display:block;background:rgba(76,175,80,.1);border:1px solid #4caf50;color:#4caf50;}
+.admin-status.err{display:block;background:rgba(224,32,32,.1);border:1px solid var(--red);color:var(--red);}
+.admin-status.info{display:block;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);}
+.admin-vidlist{max-height:300px;overflow-y:auto;}
+.admin-vidlist table{width:100%;border-collapse:collapse;font-size:11px;}
+.admin-vidlist th{text-align:left;color:var(--muted2);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:1px;text-transform:uppercase;}
+.admin-vidlist td{padding:6px 8px;border-bottom:1px solid #1e1e1e;color:var(--muted);vertical-align:middle;}
+.admin-vidlist td:first-child{color:var(--text);}
+.admin-vidlist tr:hover td{background:var(--bg3);}
+.del-btn{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:13px;padding:2px 6px;}
+.del-btn:hover{color:var(--red);}
+.thumb-status{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--muted2);margin-right:4px;}
+.thumb-status.ok{background:#4caf50;}
+.thumb-status.missing{background:#f5a623;}
+
+/* Tag chips */
+.tag-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--muted);font-size:11px;font-weight:600;
+  padding:4px 10px;cursor:pointer;transition:all .15s;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.tag-chip:hover{border-color:var(--red);color:#fff;}
+.tag-chip.selected{background:#1a0a0a;border-color:var(--red);color:var(--red);}
+.tag-chip .tag-x{color:var(--muted2);font-size:10px;margin-left:2px;}
+.tag-chip.selected .tag-x{color:var(--red);}
+
+@media(max-width:900px){
+  .left-panel{display:none;}
+  .page{padding:10px;}
+}
+</style>
+</head>
+<body>
+
+<!-- AGE GATE -->
+<div class="age-gate" id="ageGate">
+  <div class="age-box">
+    <div class="age-logo">
+      <span class="l1">Naughty </span><span class="l2">Video</span>
+      <span class="l3">Club</span>
+    </div>
+    <h3>Adult Content Warning</h3>
+    <p class="warning-text">This website contains explicit adult content intended for mature audiences only. By entering you confirm you are at least 18 years of age and it is legal to view such material in your location.</p>
+    <button class="btn-enter" onclick="enterSite()">I AM 18+ — ENTER NOW</button>
+    <button class="btn-leave" onclick="leaveSite()">I am under 18 — Leave</button>
+  </div>
+</div>
+
+
+<!-- HEADER -->
+<div class="header">
+  <a class="logo" href="#" onclick="setTab('home');return false;">
+    <span class="logo-n">Naughty</span>
+    <span class="logo-v">Video</span>
+    <span class="logo-c">Club</span>
+  </a>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search videos..." oninput="doSearch(this.value)">
+    <button onclick="doSearch(document.getElementById('searchInput').value)">🔍</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-link active" id="tab-home"     onclick="setTab('home')">Home</button>
+  <button class="nav-link"        id="tab-trending"  onclick="setTab('trending')">Trending Today</button>
+  <button class="nav-link"        id="tab-newest"    onclick="setTab('newest')">Newest</button>
+  <button class="nav-link"        id="tab-categories" onclick="openCats()">Categories</button>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+
+    <!-- Part 1: About -->
+    <div class="panel-block">
+      <h4>About Us</h4>
+      <p class="about-text">
+        We built this with limited tools and zero budget.<br><br>
+        The internet has <strong>millions of porn sites</strong> pushing algorithmically selected content — optimized for clicks, not authenticity.<br><br>
+        We do something different: <strong>every video here is hand-picked by a human editor</strong> who values real moments over polished production.<br><br>
+        No studios. No scripts. No fake moaning on cue.
+      </p>
+    </div>
+
+    <!-- Part 2+3: Vote -->
+    <div class="panel-block">
+      <h4>Your Taste</h4>
+      <p class="vote-question">Which do you prefer?</p>
+      <button class="vote-btn" id="vbtn-real" onclick="castVote('real')">
+        <div class="vote-bar" id="vbar-real"></div>
+        🎥 Real &amp; Amateur
+        <span class="vote-pct" id="vpct-real">–</span>
+      </button>
+      <button class="vote-btn" id="vbtn-fake" onclick="castVote('fake')">
+        <div class="vote-bar fake-bar" id="vbar-fake"></div>
+        🎬 Studio &amp; Produced
+        <span class="vote-pct" id="vpct-fake">–</span>
+      </button>
+      <div class="vote-total" id="vote-total"></div>
+    </div>
+
+    <!-- Part 4: Lollipop -->
+    <div class="panel-block">
+      <div class="lolly-wrap">
+        <h4>Support Us</h4>
+        <span class="lolly-img">🍭</span>
+        <p class="lolly-text">Like what we're building? Buy us a lollipop. Seriously, that's all we ask.</p>
+        <button class="lolly-btn" id="lollyBtn" onclick="buyLolly()">BUY ME A LOLLIPOP — $0.99</button>
+        <div class="lolly-thanks" id="lollyThanks"></div>
+        <div id="lollyStats" style="display:none;margin-top:10px;background:var(--bg);border:1px solid var(--border);padding:10px;text-align:left;font-size:11px;color:var(--muted);line-height:1.9;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main" id="mainContent">
+    <div class="sec-head">
+      <div class="sec-title" id="secTitle">Home</div>
+    </div>
+    <div id="searchLabel" class="search-label" style="display:none"></div>
+    <div class="vgrid" id="videoGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+</div>
+
+<!-- CATEGORIES DRAWER -->
+<div class="cat-overlay" id="catOverlay" onclick="closeCatsIfBg(event)">
+  <div class="cat-drawer">
+    <div class="cat-drawer-head">
+      <span class="cat-drawer-title">Categories</span>
+      <button class="cat-close" onclick="closeCats()">✕</button>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="modal-overlay" id="videoModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title" id="modalTitle"></span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <iframe id="videoFrame" src="" allowfullscreen allow="autoplay"></iframe>
+    </div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-overlay" id="adminPanel">
+  <div class="admin-wrap">
+    <div class="admin-head">
+      <span class="admin-title">⚙ NVC Admin</span>
+      <div style="display:flex;gap:8px;">
+        <button class="admin-btn secondary" onclick="resetGithubToken()" style="font-size:10px;padding:4px 10px;">🔑 TOKEN SIFIRLA</button>
+        <button class="admin-close" onclick="closeAdmin()">✕ CLOSE</button>
+      </div>
+    </div>
+
+    <!-- Video Ekle -->
+    <div class="admin-section">
+      <h3>Add New Video</h3>
+      <div class="admin-row">
+        <div class="admin-field" style="max-width:180px;">
+          <label>Kaynak Site</label>
+          <select class="admin-select" id="a-source" onchange="updateSourceLabel()">
+            <option value="xvideos">XVideos</option>
+            <option value="xhamster">XHamster</option>
+            <option value="pornhub">Pornhub</option>
+            <option value="redtube">RedTube</option>
+          </select>
+        </div>
+        <div class="admin-field">
+          <label id="a-xvid-label">Video ID (URL'den)</label>
+          <div style="display:flex;gap:8px;">
+            <input class="admin-input" id="a-xvid" placeholder="örn: uioacfoc8a6" style="flex:1">
+            <button class="admin-btn secondary" onclick="fetchVideoInfo()">FETCH INFO</button>
+          </div>
+          <div id="a-xvid-hint" style="font-size:10px;color:var(--muted2);margin-top:4px;"></div>
+        </div>
+      </div>
+      <div class="admin-status" id="fetchStatus"></div>
+
+      <div class="admin-preview" id="videoPreview">
+        <img id="previewThumb" src="" alt="thumb">
+        <div class="admin-preview-info" id="previewInfo"></div>
+      </div>
+
+      <div id="addForm" style="display:none;margin-top:14px;">
+
+        <!-- Thumbnail URL -->
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Thumbnail URL <span style="color:var(--muted2);font-weight:400;">(XVideos'ta resme sağ tık → Resmi yeni sekmede aç → URL kopyala)</span></label>
+            <div style="display:flex;gap:8px;">
+              <input class="admin-input" id="a-thumb" placeholder="https://thumb-cdn77.xvideos-cdn.com/..." style="flex:1" oninput="previewThumbUrl(this.value)">
+            </div>
+          </div>
+        </div>
+
+        <!-- Title -->
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Title</label>
+            <input class="admin-input" id="a-title" placeholder="Video başlığı">
+          </div>
+        </div>
+
+        <!-- Tags — çoklu, serbest -->
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Tags <span style="color:var(--muted2);font-weight:400;">(birden fazla seçebilirsin + yeni ekleyebilirsin)</span></label>
+            <div id="tagSelector" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;"></div>
+            <div style="display:flex;gap:8px;">
+              <input class="admin-input" id="a-newtag" placeholder="Yeni tag ekle (örn: creampie)" style="flex:1" onkeydown="if(event.key==='Enter'){addNewTag();event.preventDefault();}">
+              <button class="admin-btn secondary" onclick="addNewTag()">+ EKLE</button>
+            </div>
+            <div style="margin-top:6px;font-size:10px;color:var(--muted2);">Seçili: <span id="selectedTagsLabel" style="color:var(--muted);">—</span></div>
+          </div>
+        </div>
+
+        <!-- Duration + Views -->
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Duration</label>
+            <input class="admin-input" id="a-dur" placeholder="örn: 12 min">
+          </div>
+          <div class="admin-field">
+            <label>Views</label>
+            <input class="admin-input" id="a-views" placeholder="örn: 1.2M">
+          </div>
+        </div>
+
+        <!-- HD + NEW -->
+        <div class="admin-row" style="gap:20px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:11px;">
+            <input type="checkbox" id="a-hd" checked> HD
+          </label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--muted);font-size:11px;">
+            <input type="checkbox" id="a-new"> Mark as NEW
+          </label>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:10px;">
+          <button class="admin-btn" onclick="saveVideo()">💾 SAVE & PUBLISH</button>
+          <button class="admin-btn secondary" onclick="resetAddForm()">RESET</button>
+        </div>
+        <div class="admin-status" id="saveStatus"></div>
+      </div>
+    </div>
+
+    <!-- Video Listesi -->
+    <div class="admin-section">
+      <h3>Current Videos (<span id="videoCount">0</span>)</h3>
+      <div class="admin-status" id="deleteStatus" style="margin-bottom:10px;"></div>
+      <div class="admin-vidlist" id="adminVidList"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="site-footer" onclick="adminTap()">
+  <p>© 2025 NaughtyVideoClub.com &nbsp;|&nbsp;
+    <a href="dmca.html">DMCA</a>
+    <a href="dmca.html">Privacy Policy</a>
+    <a href="dmca.html">Terms of Use</a>
+  </p>
+  <p style="margin-top:6px;">All videos are embedded from third-party platforms. We do not host any video files.</p>
+  <p style="margin-top:6px;">Contact: <a href="/cdn-cgi/l/email-protection#b7d9d2c0d5d8c5d9d3ded0dec3d6dbd6c5c3c4f7c7c5d8c3d8d9dad6dedb99d4d8da"><span class="__cf_email__" data-cfemail="bbd5deccd9d4c9d5dfd2dcd2cfdad7dac9cfc8fbcbc9d4cfd4d5d6dad2d795d8d4d6">[email&#160;protected]</span></a></p>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── VIDEO DATA ────────────────────────────────────────────────
+const videos = [
+  { id:1, title:"Big black cock and innocent white girl – painful fucking", tags:["anal","amateur","painful"], views:"1.1M", duration:"11 min", hd:true, isNew:true, addedAt:25, xvId:"uudotvpe2d5", embedUrl:"https://www.xvideos.com/embedframe/uudotvpe2d5" },
+  { id:2, title:"Llorando y gritando en anal doloroso", tags:["anal","latina","painful"], views:"5.1M", duration:"10 min", hd:true, isNew:true, addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
+  { id:3, title:"18 years old first anal is so painful", tags:["anal","teen","painful","first time"], views:"5.9M", duration:"10 min", hd:true, isNew:true, addedAt:23, xvId:"uebpaim777c", embedUrl:"https://www.xvideos.com/embedframe/uebpaim777c" },
+  { id:10, title:"19yo girl with big ass gets rough painful anal sex", tags:["anal","teen","big ass","rough","painful"], views:"14.6M", duration:"13 min", hd:true, isNew:false, addedAt:16, xvId:"klekcih2186", embedUrl:"https://www.xvideos.com/embedframe/klekcih2186" },
+  { id:21, title:"Painful anal with huge orgasm and yells", tags:["anal","painful","orgasm","big cock"], views:"37.8M", duration:"5 min", hd:true, isNew:false, addedAt:5, xvId:"kbabulo578b", embedUrl:"https://www.xvideos.com/embedframe/kbabulo578b" },
+  { id:22, title:"Blowjob german teen", tags:["amateur","homemade"], views:"46K", duration:"00:40", hd:true, isNew:false, addedAt:26, xvId:"iivdvlv8d66", embedUrl:"https://www.xvideos.com/embedframe/iivdvlv8d66" },
+  { id:23, title:"Deepthroating Blowjob With Cum", tags:["amateur","homemade","blowjob"], views:"355K", duration:"07:46", hd:true, isNew:false, addedAt:27, xvId:"mmcaeme144", embedUrl:"https://www.xvideos.com/embedframe/mmcaeme144" },
+  { id:24, title:"Deepthroat Blowjob", tags:["deepthroat","amateur","homemade"], views:"11,5M", duration:"03:43", hd:true, isNew:false, addedAt:28, xvId:"hpktmcac4a", embedUrl:"https://www.xvideos.com/embedframe/hpktmcac4a" },
+  { id:25, title:"Deep throat Queen", tags:["deepthroat","amateur"], views:"11,4M", duration:"07:16", hd:true, isNew:false, addedAt:29, xvId:"ikvldlv738b", embedUrl:"https://www.xvideos.com/embedframe/ikvldlv738b" },
+  { id:26, title:"Amateur Anal Compilation", tags:["anal","compilation","amateur","homemade"], views:"820K", duration:"16:16", hd:true, isNew:true, addedAt:30, xvId:"uvphdfmcdca", embedUrl:"https://www.xvideos.com/embedframe/uvphdfmcdca" }
+];
+
+// ── THUMBNAILS ────────────────────────────────────────────────
+const THUMBS = {
+  "uudotvpe2d5":"https://thumb-cdn77.xvideos-cdn.com/d87192f0-3d9c-4398-ab69-a78fa13645e8/0/xv_15_t.jpg",
+  "kdatkmhd92c":"https://thumb-cdn77.xvideos-cdn.com/e45152e0-1792-4c1c-a567-0e47ae0ea543/0/xv_5_t.jpg",
+  "uebpaim777c":"https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
+  "klekcih2186":"https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
+  "kbabulo578b":"https://thumb-cdn77.xvideos-cdn.com/fc572b6a-9b48-43f7-8966-5eddc997c661/0/xv_27_t.jpg",
+  "iivdvlv8d66":"https://thumb-cdn77.xvideos-cdn.com/eb514b80-4b29-4f2b-8457-cae1acb66b41/0/xv_21_t.jpg",
+  "mmcaeme144":"https://thumb-cdn77.xvideos-cdn.com/304e970e-6510-4595-80a9-fef377b98baf/0/xv_5_t.jpg",
+  "hpktmcac4a":"https://thumb-cdn77.xvideos-cdn.com/1a996871-4333-4385-8ffa-ea1b7a799e59/0/xv_4_t.jpg",
+  "ikvldlv738b":"https://thumb-cdn77.xvideos-cdn.com/32bb653a-4bf9-4f26-9275-e557dc6f60db/0/xv_6_t.jpg",
+  "uvphdfmcdca":"https://thumbs-gcore.xvideos-cdn.com/45ac1efa-fe06-453d-a3aa-7fa1301daf1c/0/xv_9_t.jpg"
+};
+
+async function fetchThumb(xvId, source) {
+  if (THUMBS[xvId]) return THUMBS[xvId];
+  const src = source || 'xvideos';
+  try {
+    let pageUrl = '';
+    if (src === 'xvideos')  pageUrl = 'https://www.xvideos.com/video.' + xvId + '/';
+    else if (src === 'xhamster') pageUrl = 'https://xhamster.com/videos/x' + xvId;
+    else if (src === 'pornhub')  pageUrl = 'https://www.pornhub.com/view_video.php?viewkey=' + xvId;
+    else if (src === 'redtube')  pageUrl = 'https://www.redtube.com/' + xvId;
+    if (!pageUrl) return null;
+
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(pageUrl)}`);
+    const data = await res.json();
+    const html = data.contents;
+
+    let match = null;
+    if (src === 'xvideos') {
+      match = html.match(/thumb-cdn[^"]+xv_\d+_t\.jpg/);
+      if (match) { THUMBS[xvId] = 'https://' + match[0]; return THUMBS[xvId]; }
+    } else if (src === 'xhamster') {
+      match = html.match(/https:\/\/[^"']+xhamster[^"']+\.jpg/);
+      if (match) { THUMBS[xvId] = match[0]; return THUMBS[xvId]; }
+    } else if (src === 'pornhub') {
+      match = html.match(/https:\/\/[^"']+phncdn[^"']+\.jpg/);
+      if (match) { THUMBS[xvId] = match[0]; return THUMBS[xvId]; }
+    } else if (src === 'redtube') {
+      match = html.match(/https:\/\/[^"']+redtube[^"']+\.jpg/);
+      if (match) { THUMBS[xvId] = match[0]; return THUMBS[xvId]; }
+    }
+  } catch(e){}
+  return null;
+}
+
+async function loadMissingThumbs() {
+  for (const v of videos.filter(v => !THUMBS[v.xvId])) {
+    const url = await fetchThumb(v.xvId, v.source);
+    if (url) document.querySelectorAll(`#th-${v.xvId}`).forEach(i => i.src = url);
+    await new Promise(r => setTimeout(r, 300));
+  }
+}
+
+// ── UTILITIES ────────────────────────────────────────────────
+function parseViews(s) {
+  if (!s) return 0;
+  s = s.toUpperCase().replace(/,/g,'');
+  if (s.endsWith('M')) return parseFloat(s)*1e6;
+  if (s.endsWith('K')) return parseFloat(s)*1e3;
+  return parseFloat(s)||0;
+}
+
+// Daily seed — changes at UTC 05:00
+function dailySeed() {
+  const now = new Date();
+  const utc5 = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 5, 0, 0));
+  if (now < utc5) utc5.setUTCDate(utc5.getUTCDate()-1);
+  return utc5.getTime();
+}
+
+function seededRandom(seed) {
+  let s = seed;
+  return function() {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    return (s >>> 0) / 0xffffffff;
+  };
+}
+
+function shuffleWithSeed(arr, seed) {
+  const a = [...arr];
+  const rng = seededRandom(seed);
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(rng() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ── PAGINATION ────────────────────────────────────────────────
+const PER_PAGE = 20;
+let currentList = [];
+let currentPage = 1;
+let currentTab = 'home';
+
+function makeCard(v) {
+  const thumb = THUMBS[v.xvId] || `https://picsum.photos/seed/${v.xvId}/400/225`;
+  const fallback = `https://picsum.photos/seed/${v.xvId}/400/225`;
+  return `
+  <div class="vcard" onclick="openVideo(${v.id})">
+    <div class="vthumb">
+      <img src="${thumb}" id="th-${v.xvId}" alt="${v.title}" loading="lazy" onerror="this.onerror=null;this.src='${fallback}'">
+      <div class="voverlay"><div class="vplay"></div></div>
+      <span class="vdur">${v.duration}</span>
+      ${v.hd?'<span class="vhd">HD</span>':''}
+      ${v.isNew?'<span class="vnew">NEW</span>':''}
+    </div>
+    <div class="vinfo">
+      <div class="vtitle">${v.title}</div>
+      <div class="vmeta">${v.views} views • ${v.tags[0]}</div>
+    </div>
+  </div>`;
+}
+
+function renderPage() {
+  const start = (currentPage-1)*PER_PAGE;
+  const slice = currentList.slice(start, start+PER_PAGE);
+  const grid = document.getElementById('videoGrid');
+  if (!slice.length) {
+    grid.innerHTML = '<div class="no-results">No videos found.</div>';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+  grid.innerHTML = slice.map(makeCard).join('');
+  // Apply known thumbs
+  Object.entries(THUMBS).forEach(([id,url]) => {
+    document.querySelectorAll(`#th-${id}`).forEach(i => i.src = url);
+  });
+  renderPagination();
+}
+
+function renderPagination() {
+  const total = Math.ceil(currentList.length / PER_PAGE);
+  if (total <= 1) { document.getElementById('pagination').innerHTML=''; return; }
+  let html = '';
+  html += `<button class="pg-btn${currentPage===1?' disabled':''}" onclick="goPage(${currentPage-1})">‹</button>`;
+  for (let i=1; i<=total; i++) {
+    if (total > 7 && i > 3 && i < total-1 && Math.abs(i-currentPage) > 1) {
+      if (i===4 || i===total-2) html += '<span class="pg-dots">…</span>';
+      continue;
+    }
+    html += `<button class="pg-btn${i===currentPage?' active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  html += `<button class="pg-btn${currentPage===total?' disabled':''}" onclick="goPage(${currentPage+1})">›</button>`;
+  document.getElementById('pagination').innerHTML = html;
+}
+
+function goPage(p) {
+  const total = Math.ceil(currentList.length/PER_PAGE);
+  if (p < 1 || p > total) return;
+  currentPage = p;
+  renderPage();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── TABS ──────────────────────────────────────────────────────
+function setTab(tab, catFilter) {
+  currentTab = tab;
+  currentPage = 1;
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('tab-'+tab);
+  if (btn) btn.classList.add('active');
+
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchLabel').style.display = 'none';
+
+  const seed = dailySeed();
+
+  if (tab === 'home') {
+    document.getElementById('secTitle').textContent = 'Home';
+    currentList = shuffleWithSeed(videos, seed);
+  } else if (tab === 'trending') {
+    document.getElementById('secTitle').textContent = 'Trending Today';
+    // Ağırlıklı: view skoru + günlük seed shuffle ile hafif karışım
+    const scored = videos.map(v => ({...v, score: parseViews(v.views) * (0.7 + 0.3 * seededRandom(seed + v.id)())}));
+    currentList = scored.sort((a,b) => b.score - a.score);
+  } else if (tab === 'newest') {
+    document.getElementById('secTitle').textContent = 'Newest';
+    currentList = [...videos].sort((a,b) => b.addedAt - a.addedAt);
+  } else if (tab === 'cat' && catFilter) {
+    document.getElementById('secTitle').textContent = catFilter.toUpperCase();
+    currentList = [...videos].filter(v => v.tags.includes(catFilter)).sort((a,b) => parseViews(b.views)-parseViews(a.views));
+  }
+
+  renderPage();
+}
+
+// ── SEARCH ────────────────────────────────────────────────────
+let searchTimer;
+function doSearch(q) {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    q = q.trim().toLowerCase();
+    const label = document.getElementById('searchLabel');
+    if (!q) { label.style.display='none'; setTab(currentTab); return; }
+    currentPage = 1;
+    currentList = videos.filter(v =>
+      v.title.toLowerCase().includes(q) ||
+      v.tags[0].toLowerCase().includes(q) ||
+      (v.tags||[]).some(t => t.toLowerCase().includes(q))
+    );
+    document.getElementById('secTitle').textContent = 'Search Results';
+    label.style.display = 'block';
+    label.innerHTML = `Showing results for <span>"${q}"</span> — ${currentList.length} video${currentList.length!==1?'s':''}`;
+    document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+    renderPage();
+  }, 250);
+}
+
+// ── CATEGORIES ────────────────────────────────────────────────
+const CAT_LABELS = {
+  anal:'Anal', amateur:'Amateur', milf:'MILF', teen:'Teen (18+)',
+  lesbian:'Lesbian', asian:'Asian', latina:'Latina', bbw:'BBW',
+  compilation:'Compilation', hd:'HD'
+};
+
+function openCats() {
+  // Tüm tag'leri topla + say
+  const counts = {};
+  videos.forEach(v => {
+    const tags = v.tags || [];
+    tags.forEach(t => { counts[t] = (counts[t]||0)+1; });
+  });
+  // Sırala: video sayısına göre
+  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = sorted.map(([tag, count]) =>
+    `<div class="cat-card" onclick="selectCat('${tag}')">
+      <span class="cat-card-name">${tag.toUpperCase()}</span>
+      <span class="cat-card-count">${count} video${count!==1?'s':''}</span>
+    </div>`
+  ).join('');
+  document.getElementById('catOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function selectCat(cat) {
+  closeCats();
+  setTab('cat', cat);
+  document.getElementById('tab-categories').classList.add('active');
+}
+
+function closeCats() {
+  document.getElementById('catOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeCatsIfBg(e) {
+  if (e.target === document.getElementById('catOverlay')) closeCats();
+}
+
+// ── MODAL ────────────────────────────────────────────────────
+function openVideo(id) {
+  const v = videos.find(x => x.id===id);
+  if (!v) return;
+  document.getElementById('modalTitle').textContent = v.title;
+  document.getElementById('modalFoot').textContent = `${v.tags[0]} • ${v.views} views • ${v.duration}${v.hd?' • HD':''}`;
+  document.getElementById('videoFrame').src = v.embedUrl;
+  document.getElementById('videoModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('videoModal').classList.remove('open');
+  document.getElementById('videoFrame').src = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('videoModal').addEventListener('click', function(e) { if (e.target===this) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key==='Escape') { closeModal(); closeCats(); }});
+
+// ── VOTE ─────────────────────────────────────────────────────
+const JSONBIN_ID  = '69b9f178aa77b81da9f3fe81';
+const JSONBIN_KEY = '$2a$10$gwq/uEdhxFppHJ2LYoXyPOzUPPU01zyrTEcuj32r/QocoFcE9pbNW';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+
+async function initVote() {
+  const voted = localStorage.getItem('nvc_voted');
+  try {
+    const res = await fetch(JSONBIN_URL, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    const data = await res.json();
+    const real = data.record.real || 0;
+    const fake = data.record.fake || 0;
+    updateVoteUI(real, fake, voted);
+  } catch(e) {
+    // JSONBin erişilemiyorsa localStorage ile devam et
+    const real = parseInt(localStorage.getItem('nvc_vote_real')||'0');
+    const fake = parseInt(localStorage.getItem('nvc_vote_fake')||'0');
+    updateVoteUI(real, fake, voted);
+  }
+}
+
+async function castVote(type) {
+  if (localStorage.getItem('nvc_voted')) return;
+  localStorage.setItem('nvc_voted', type);
+  try {
+    // Önce mevcut sayıları oku
+    const res = await fetch(JSONBIN_URL, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    const data = await res.json();
+    let real = data.record.real || 0;
+    let fake = data.record.fake || 0;
+    if (type==='real') real++; else fake++;
+    // Güncelle
+    await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY
+      },
+      body: JSON.stringify({ real, fake })
+    });
+    updateVoteUI(real, fake, type);
+  } catch(e) {
+    // Hata olursa localStorage'a yaz
+    let real = parseInt(localStorage.getItem('nvc_vote_real')||'0');
+    let fake = parseInt(localStorage.getItem('nvc_vote_fake')||'0');
+    if (type==='real') real++; else fake++;
+    localStorage.setItem('nvc_vote_real', real);
+    localStorage.setItem('nvc_vote_fake', fake);
+    updateVoteUI(real, fake, type);
+  }
+}
+
+function updateVoteUI(real, fake, voted) {
+  const total = real + fake;
+  const rPct = total ? Math.round(real/total*100) : 0;
+  const fPct = total ? Math.round(fake/total*100) : 0;
+  document.getElementById('vpct-real').textContent = total ? rPct+'%' : '–';
+  document.getElementById('vpct-fake').textContent = total ? fPct+'%' : '–';
+  document.getElementById('vbar-real').style.width = total ? rPct+'%' : '0%';
+  document.getElementById('vbar-fake').style.width = total ? fPct+'%' : '0%';
+  document.getElementById('vote-total').textContent = total ? total+' vote'+(total!==1?'s':'') : '';
+  if (voted==='real') { document.getElementById('vbtn-real').classList.add('voted-real'); }
+  if (voted==='fake') { document.getElementById('vbtn-fake').classList.add('voted-fake'); }
+}
+
+// ── LOLLIPOP ─────────────────────────────────────────────────
+let lollyClickCount = 0;
+let lollyClickTimer;
+
+async function buyLolly() {
+  const now = new Date();
+
+  // localStorage — yerel sayaç
+  const clicks = parseInt(localStorage.getItem('nvc_lolly_clicks')||'0') + 1;
+  const history = JSON.parse(localStorage.getItem('nvc_lolly_history')||'[]');
+  history.unshift(now.toISOString());
+  if (history.length > 20) history.pop();
+  localStorage.setItem('nvc_lolly_clicks', clicks);
+  localStorage.setItem('nvc_lolly_last', now.toISOString());
+  localStorage.setItem('nvc_lolly_history', JSON.stringify(history));
+
+  // Formspree — sessiz bildirim
+  const info = {
+    _subject: '🍭 Lollipop Click #' + clicks,
+    event: 'lollipop_click',
+    click_number: clicks,
+    timestamp: now.toUTCString(),
+    local_time: now.toLocaleString(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    language: navigator.language || 'unknown',
+    screen: window.screen.width + 'x' + window.screen.height,
+    referrer: document.referrer || 'direct',
+    page_url: window.location.href,
+  };
+  fetch('https://formspree.io/f/xojkngpw', {
+    method: 'POST',
+    body: JSON.stringify(info),
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+  }).catch(() => {}); // sessiz — hata olsa bile kullanıcı görmez
+
+  // Teşekkür mesajı
+  document.getElementById('lollyThanks').textContent = 'Thank you! Maybe later 😄';
+  setTimeout(() => { document.getElementById('lollyThanks').textContent = ''; }, 3000);
+
+  // Gizli panel — 5 hızlı tıklama
+  lollyClickCount++;
+  clearTimeout(lollyClickTimer);
+  lollyClickTimer = setTimeout(() => { lollyClickCount = 0; }, 1500);
+  if (lollyClickCount >= 5) {
+    lollyClickCount = 0;
+    showLollyStats();
+  }
+}
+
+function showLollyStats() {
+  const clicks = localStorage.getItem('nvc_lolly_clicks') || '0';
+  const last = localStorage.getItem('nvc_lolly_last');
+  const history = JSON.parse(localStorage.getItem('nvc_lolly_history')||'[]');
+  const lastStr = last ? new Date(last).toLocaleString() : 'never';
+  const historyStr = history.slice(0,5).map((t,i) => `#${i+1}: ${new Date(t).toLocaleString()}`).join('<br>');
+  const panel = document.getElementById('lollyStats');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  panel.innerHTML = `
+    <strong style="color:var(--red);letter-spacing:1px;">🍭 LOLLIPOP STATS</strong><br>
+    Total clicks: <strong style="color:var(--text)">${clicks}</strong><br>
+    Last click: <strong style="color:var(--text)">${lastStr}</strong><br>
+    <br><strong style="color:var(--muted2);font-size:10px;">RECENT CLICKS:</strong><br>
+    ${historyStr || 'none yet'}
+    <br><br>
+    <span style="color:var(--muted2);font-size:10px;">Click 5x again to close</span>
+  `;
+}
+
+// ── AGE GATE ─────────────────────────────────────────────────
+function enterSite() {
+  localStorage.setItem('nvc_age','1');
+  document.getElementById('ageGate').style.display = 'none';
+}
+function leaveSite() {
+  window.location.href = 'https://www.google.com';
+}
+if (localStorage.getItem('nvc_age')) {
+  document.getElementById('ageGate').style.display = 'none';
+}
+
+
+// ── GITHUB YARDIMCI FONKSİYONLARI ────────────────────────────
+
+function replaceBlock(content, startMarker, endMarker, newBlock, required = true) {
+  const startIdx = content.indexOf(startMarker);
+  if (startIdx === -1) {
+    if (!required) return content; // bulunamazsa değişiklik yapma
+    throw new Error(`Block bulunamadı: "${startMarker}"`);
+  }
+  const endIdx = content.indexOf(endMarker, startIdx);
+  if (endIdx === -1) {
+    if (!required) return content;
+    throw new Error(`Block sonu bulunamadı: "${endMarker}"`);
+  }
+  return content.substring(0, startIdx) + newBlock + content.substring(endIdx + endMarker.length);
+}
+
+function buildVideosArrayString(vids) {
+  const lines = vids.map(v => {
+    const tagsJson = JSON.stringify(v.tags);
+    const src = v.source || 'xvideos';
+    return `  { id:${v.id}, source:"${src}", title:${JSON.stringify(v.title)}, tags:${tagsJson}, views:${JSON.stringify(v.views)}, duration:${JSON.stringify(v.duration)}, hd:${v.hd}, isNew:${v.isNew}, addedAt:${v.addedAt}, xvId:${JSON.stringify(v.xvId)}, embedUrl:${JSON.stringify(v.embedUrl)} }`;
+  });
+  return `const videos = [\n${lines.join(',\n')}\n];`;
+}
+
+function buildThumbsString(thumbs) {
+  const entries = Object.entries(thumbs);
+  if (!entries.length) return `const THUMBS = {};`;
+  const lines = entries.map(([k,v]) => `  "${k}":"${v}"`);
+  return `const THUMBS = {\n${lines.join(',\n')}\n};`;
+}
+
+// ── ADMIN ─────────────────────────────────────────────────────
+let GITHUB_TOKEN = localStorage.getItem('nvc_gh_token') || '';
+const GITHUB_REPO  = 'newborndigitalarts/adult-videos';
+const GITHUB_FILE  = 'index.html';
+const ADMIN_PASS   = 'claude1258108+';
+
+// Varsayılan tag listesi — videolar eklendikçe genişler
+const DEFAULT_TAGS = ['anal','amateur','milf','teen','lesbian','asian','latina','bbw','compilation','rough','painful','homemade','taboo','big cock','big ass','blonde','brunette','mature','bdsm','creampie','doggystyle','orgasm','casting','first time'];
+let selectedTags = [];
+
+let adminUnlockCount = 0;
+let adminUnlockTimer;
+
+function adminTap() {
+  adminUnlockCount++;
+  clearTimeout(adminUnlockTimer);
+  adminUnlockTimer = setTimeout(() => { adminUnlockCount = 0; }, 2000);
+  if (adminUnlockCount >= 7) {
+    adminUnlockCount = 0;
+    const pw = prompt('Admin password:');
+    if (pw !== ADMIN_PASS) return;
+    // Token kontrolü
+    GITHUB_TOKEN = localStorage.getItem('nvc_gh_token') || '';
+    if (!GITHUB_TOKEN) {
+      const t = prompt('GitHub Token (ghp_...):');
+      if (!t || !t.startsWith('ghp_')) { alert('Geçersiz token format.'); return; }
+      localStorage.setItem('nvc_gh_token', t);
+      GITHUB_TOKEN = t;
+    }
+    openAdmin();
+  }
+}
+
+function resetGithubToken() {
+  localStorage.removeItem('nvc_gh_token');
+  GITHUB_TOKEN = '';
+  alert('Token silindi. Bir sonraki girişte yeniden girilecek.');
+}
+
+function openAdmin() {
+  document.getElementById('adminPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderAdminList();
+  renderTagSelector();
+}
+
+function closeAdmin() {
+  document.getElementById('adminPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setFetchStatus(msg, type) {
+  const el = document.getElementById('fetchStatus');
+  el.textContent = msg; el.className = 'admin-status ' + type;
+}
+
+function setSaveStatus(msg, type) {
+  const el = document.getElementById('saveStatus');
+  el.textContent = msg; el.className = 'admin-status ' + type;
+}
+
+// ── TAG SEÇİCİ ───────────────────────────────────────────────
+function getAllTags() {
+  const fromVideos = new Set();
+  videos.forEach(v => (v.tags||[]).forEach(t => fromVideos.add(t)));
+  const all = new Set([...DEFAULT_TAGS, ...fromVideos]);
+  return [...all].sort();
+}
+
+function renderTagSelector() {
+  selectedTags = [];
+  const tags = getAllTags();
+  const wrap = document.getElementById('tagSelector');
+  wrap.innerHTML = tags.map(t =>
+    `<span class="tag-chip" id="tc-${t.replace(/\s/g,'_')}" onclick="toggleTag('${t}')">${t}</span>`
+  ).join('');
+  updateSelectedLabel();
+}
+
+function toggleTag(tag) {
+  const idx = selectedTags.indexOf(tag);
+  const el = document.getElementById('tc-'+tag.replace(/\s/g,'_'));
+  if (idx === -1) {
+    selectedTags.push(tag);
+    if (el) el.classList.add('selected');
+  } else {
+    selectedTags.splice(idx, 1);
+    if (el) el.classList.remove('selected');
+  }
+  updateSelectedLabel();
+}
+
+function addNewTag() {
+  const input = document.getElementById('a-newtag');
+  const tag = input.value.trim().toLowerCase();
+  if (!tag) return;
+  input.value = '';
+  // Chip yoksa ekle
+  const wrap = document.getElementById('tagSelector');
+  if (!document.getElementById('tc-'+tag.replace(/\s/g,'_'))) {
+    const chip = document.createElement('span');
+    chip.className = 'tag-chip';
+    chip.id = 'tc-'+tag.replace(/\s/g,'_');
+    chip.textContent = tag;
+    chip.onclick = () => toggleTag(tag);
+    wrap.appendChild(chip);
+  }
+  toggleTag(tag);
+}
+
+function updateSelectedLabel() {
+  document.getElementById('selectedTagsLabel').textContent =
+    selectedTags.length ? selectedTags.join(', ') : '—';
+}
+
+// ── THUMBNAIL PREVIEW ────────────────────────────────────────
+function previewThumbUrl(url) {
+  if (url && url.startsWith('http')) {
+    document.getElementById('previewThumb').src = url;
+    document.getElementById('videoPreview').classList.add('show');
+  }
+}
+
+// ── SOURCE LABEL ─────────────────────────────────────────────
+const SOURCE_HINTS = {
+  xvideos:  { label: "XVideos ID — video.[ID]/...", placeholder: 'örn: uioacfoc8a6' },
+  xhamster: { label: "XHamster Video ID — videos/title-[ID]", placeholder: 'örn: 12345678' },
+  pornhub:  { label: "Pornhub viewkey — ?viewkey=[ID]", placeholder: 'örn: ph5e3e5b5f96e6b' },
+  redtube:  { label: "RedTube Video ID — redtube.com/[ID]", placeholder: 'örn: 12345678' },
+};
+
+function updateSourceLabel() {
+  const src = document.getElementById('a-source').value;
+  const hint = SOURCE_HINTS[src] || SOURCE_HINTS.xvideos;
+  document.getElementById('a-xvid-label').innerHTML = hint.label;
+  document.getElementById('a-xvid').placeholder = hint.placeholder;
+  document.getElementById('a-xvid-hint').textContent = '';
+  document.getElementById('a-xvid').value = '';
+  document.getElementById('addForm').style.display = 'none';
+  document.getElementById('videoPreview').classList.remove('show');
+}
+
+// ── FETCH INFO ───────────────────────────────────────────────
+function parseVideoId(raw, source) {
+  if (source === 'xvideos') {
+    const m = raw.match(/xvideos\.com\/video\.([a-z0-9]+)/i);
+    if (m) return m[1];
+  } else if (source === 'xhamster') {
+    const m = raw.match(/xhamster\.com\/videos\/[^/]+-([0-9]+)/i);
+    if (m) return m[1];
+    const m2 = raw.match(/([0-9]{6,})/);
+    if (m2) return m2[1];
+  } else if (source === 'pornhub') {
+    const m = raw.match(/viewkey=([a-z0-9]+)/i);
+    if (m) return m[1];
+  } else if (source === 'redtube') {
+    const m = raw.match(/redtube\.com\/([0-9]+)/i);
+    if (m) return m[1];
+    const m2 = raw.match(/([0-9]{6,})/);
+    if (m2) return m2[1];
+  }
+  return raw.replace(/\s/g,'');
+}
+
+function parseXvId(raw) {
+  const urlMatch = raw.match(/xvideos\.com\/video\.([a-z0-9]+)/i);
+  if (urlMatch) return urlMatch[1];
+  return raw.replace(/\s/g,'');
+}
+
+async function fetchVideoInfo() {
+  const raw = document.getElementById('a-xvid').value.trim();
+  const source = document.getElementById('a-source').value;
+  if (!raw) { setFetchStatus('ID veya URL gir.', 'err'); return; }
+
+  const xvId = parseVideoId(raw, source);
+  document.getElementById('a-xvid').value = xvId;
+
+  setFetchStatus('Bilgiler çekiliyor...', 'info');
+  document.getElementById('videoPreview').classList.remove('show');
+  document.getElementById('addForm').style.display = 'none';
+
+  let title = '', duration = '', views = '';
+
+  try {
+    const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video-api/short/video/' + xvId)}`;
+    const res = await fetch(apiUrl);
+    const data = await res.json();
+    const json = JSON.parse(data.contents);
+    title    = json.title || '';
+    duration = json.duration ? Math.round(json.duration/60) + ' min' : '';
+    const watched = json.nb_watch || json.video_watched || 0;
+    if (watched >= 1e6) views = (watched/1e6).toFixed(1).replace('.0','')+'M';
+    else if (watched >= 1e3) views = (watched/1e3).toFixed(1).replace('.0','')+'K';
+    else if (watched > 0) views = String(watched);
+  } catch(e) {}
+
+  if (!title) {
+    try {
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://www.xvideos.com/video.' + xvId + '/')}`;
+      const res = await fetch(proxyUrl);
+      const data = await res.json();
+      const html = data.contents;
+      const titleMatch = html.match(/<title>([^<]+)<\/title>/);
+      title = titleMatch ? titleMatch[1].replace(/ - XVIDEOS\.COM/i,'').trim() : '';
+      if (!duration) { const m = html.match(/(\d+)\s*min/i); duration = m ? m[1]+' min' : ''; }
+    } catch(e) {}
+  }
+
+  document.getElementById('previewInfo').innerHTML =
+    `<strong>ID:</strong> ${xvId}<br>
+     <strong>Title:</strong> ${title||'—'}<br>
+     <strong>Duration:</strong> ${duration||'—'}<br>
+     <strong>Views:</strong> ${views||'—'}`;
+  document.getElementById('videoPreview').classList.add('show');
+  document.getElementById('a-title').value = title;
+  document.getElementById('a-dur').value = duration;
+  document.getElementById('a-views').value = views;
+  document.getElementById('addForm').style.display = 'block';
+
+  if (title) setFetchStatus('✓ Bilgiler çekildi. Thumbnail URL yapıştır, tag seç, kaydet.', 'ok');
+  else setFetchStatus('⚠ Otomatik çekilemedi — bilgileri manuel gir.', 'info');
+}
+
+// ── SAVE VIDEO ───────────────────────────────────────────────
+async function saveVideo() {
+  const xvId   = document.getElementById('a-xvid').value.trim();
+  const title  = document.getElementById('a-title').value.trim();
+  const thumbInput = document.getElementById('a-thumb').value.trim();
+  const dur    = document.getElementById('a-dur').value.trim();
+  const views  = document.getElementById('a-views').value.trim();
+  const hd     = document.getElementById('a-hd').checked;
+  const isNew  = document.getElementById('a-new').checked;
+  const tags = selectedTags.length ? [...selectedTags] : ['uncategorized'];
+  const source = document.getElementById('a-source').value;
+
+  // embedUrl'i source'a göre üret
+  let embedUrl = '';
+  if (source === 'xvideos')  embedUrl = `https://www.xvideos.com/embedframe/${xvId}`;
+  else if (source === 'xhamster') embedUrl = `https://xhamster.com/xembed.php?video=${xvId}`;
+  else if (source === 'pornhub')  embedUrl = `https://www.pornhub.com/embed/${xvId}`;
+  else if (source === 'redtube')  embedUrl = `https://www.redtube.com/embed/?id=${xvId}`;
+
+  if (!xvId || !title) { setSaveStatus('xvId ve title zorunlu.', 'err'); return; }
+  if (videos.find(v => v.xvId === xvId)) { setSaveStatus('Bu video zaten listede!', 'err'); return; }
+
+  setSaveStatus('GitHub\'a kaydediliyor...', 'info');
+  document.querySelector('#addForm .admin-btn').disabled = true;
+
+  try {
+    const newId = Math.max(...videos.map(v=>v.id)) + 1;
+    const newAddedAt = Math.max(...videos.map(v=>v.addedAt)) + 1;
+    const newVideo = { id:newId, source, title, tags, views, duration:dur, hd, isNew, addedAt:newAddedAt, xvId, embedUrl };
+    videos.push(newVideo);
+    if (thumbInput) THUMBS[xvId] = thumbInput;
+
+    const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const fileData = await fileRes.json();
+    const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
+    const sha = fileData.sha;
+
+    // Tüm videos array'ini ve THUMBS'ı yeniden yaz
+    const videosArrayStr = buildVideosArrayString(videos);
+    let updatedContent = replaceBlock(currentContent, 'const videos = [', '];', videosArrayStr);
+
+    const thumbsStr = buildThumbsString(THUMBS);
+    updatedContent = replaceBlock(updatedContent, 'const THUMBS = {', '};', thumbsStr, false);
+
+    const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Add: ${xvId} — ${title.substring(0,50)}`,
+        content: btoa(unescape(encodeURIComponent(updatedContent))),
+        sha
+      })
+    });
+
+    if (!updateRes.ok) { const err = await updateRes.json(); throw new Error(err.message||'GitHub API hatası'); }
+
+    setSaveStatus(`✓ "${title.substring(0,40)}..." eklendi ve yayınlandı!`, 'ok');
+    renderAdminList();
+    resetAddForm();
+
+  } catch(e) {
+    videos.pop(); // başarısız olursa lokali geri al
+    if (THUMBS[xvId]) delete THUMBS[xvId];
+    setSaveStatus('Hata: ' + e.message, 'err');
+  } finally {
+    document.querySelector('#addForm .admin-btn').disabled = false;
+  }
+}
+
+function resetAddForm() {
+  document.getElementById('a-xvid').value = '';
+  document.getElementById('a-title').value = '';
+  document.getElementById('a-thumb').value = '';
+  document.getElementById('a-dur').value = '';
+  document.getElementById('a-views').value = '';
+  document.getElementById('a-hd').checked = true;
+  document.getElementById('a-new').checked = false;
+  document.getElementById('videoPreview').classList.remove('show');
+  document.getElementById('addForm').style.display = 'none';
+  document.getElementById('fetchStatus').className = 'admin-status';
+  document.getElementById('saveStatus').className = 'admin-status';
+  document.getElementById('a-source').value = 'xvideos';
+  updateSourceLabel();
+  renderTagSelector();
+}
+
+function renderAdminList() {
+  document.getElementById('videoCount').textContent = videos.length;
+  const sorted = [...videos].sort((a,b) => b.addedAt - a.addedAt);
+  document.getElementById('adminVidList').innerHTML = `
+    <table>
+      <thead><tr>
+        <th>Title</th><th>Tags</th><th>Views</th><th>Thumb</th><th></th>
+      </tr></thead>
+      <tbody>${sorted.map(v => `
+        <tr>
+          <td>${v.title.substring(0,38)}${v.title.length>38?'…':''}</td>
+          <td style="color:var(--muted2)">${(v.source||'xv').substring(0,4)} · ${(v.tags||[]).slice(0,2).join(', ')}</td>
+          <td>${v.views}</td>
+          <td><span class="thumb-status ${THUMBS[v.xvId]?'ok':'missing'}"></span>${THUMBS[v.xvId]?'✓':'—'}</td>
+          <td><button class="del-btn" onclick="deleteVideo(${v.id})" title="Sil">🗑</button></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function deleteVideo(id) {
+  const v = videos.find(x => x.id===id);
+  if (!v) return;
+  if (!confirm(`Sil ve GitHub'dan kaldır:\n"${v.title.substring(0,60)}"`)) return;
+
+  const removedVideo = {...v};
+  const removedThumb = THUMBS[v.xvId];
+
+  // Lokal sil
+  videos.splice(videos.findIndex(x=>x.id===id), 1);
+  delete THUMBS[v.xvId];
+  renderAdminList();
+  setTab(currentTab);
+
+  // Status göster
+  const statusEl = document.getElementById('deleteStatus');
+  statusEl.textContent = `"${v.title.substring(0,35)}..." GitHub'dan siliniyor...`;
+  statusEl.className = 'admin-status info';
+
+  try {
+    const fileRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const fileData = await fileRes.json();
+    const currentContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
+    const sha = fileData.sha;
+
+    // Tüm videos array'ini ve THUMBS'ı yeniden yaz
+    const videosArrayStr = buildVideosArrayString(videos);
+    let updatedContent = replaceBlock(currentContent, 'const videos = [', '];', videosArrayStr);
+
+    const thumbsStr = buildThumbsString(THUMBS);
+    updatedContent = replaceBlock(updatedContent, 'const THUMBS = {', '};', thumbsStr, false);
+
+    const updateRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Remove: ${v.xvId} — ${v.title.substring(0,50)}`,
+        content: btoa(unescape(encodeURIComponent(updatedContent))),
+        sha
+      })
+    });
+
+    if (!updateRes.ok) { const err = await updateRes.json(); throw new Error(err.message||'GitHub API hatası'); }
+
+    statusEl.textContent = `✓ "${v.title.substring(0,35)}..." silindi.`;
+    statusEl.className = 'admin-status ok';
+    setTimeout(() => { statusEl.className = 'admin-status'; }, 4000);
+
+  } catch(e) {
+    // Geri al
+    videos.push(removedVideo);
+    if (removedThumb) THUMBS[removedVideo.xvId] = removedThumb;
     statusEl.textContent = `GitHub hatası: ${e.message}`;
     statusEl.className = 'admin-status err';
   }
