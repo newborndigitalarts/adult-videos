@@ -857,22 +857,59 @@ document.getElementById('videoModal').addEventListener('click', function(e) { if
 document.addEventListener('keydown', e => { if (e.key==='Escape') { closeModal(); closeCats(); }});
 
 // ── VOTE ─────────────────────────────────────────────────────
-function initVote() {
-  let real = parseInt(localStorage.getItem('nvc_vote_real')||'0');
-  let fake = parseInt(localStorage.getItem('nvc_vote_fake')||'0');
+const JSONBIN_ID  = '69b9f178aa77b81da9f3fe81';
+const JSONBIN_KEY = '$2a$10$gwq/uEdhxFppHJ2LYoXyPOzUPPU01zyrTEcuj32r/QocoFcE9pbNW';
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+
+async function initVote() {
   const voted = localStorage.getItem('nvc_voted');
-  updateVoteUI(real, fake, voted);
+  try {
+    const res = await fetch(JSONBIN_URL, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    const data = await res.json();
+    const real = data.record.real || 0;
+    const fake = data.record.fake || 0;
+    updateVoteUI(real, fake, voted);
+  } catch(e) {
+    // JSONBin erişilemiyorsa localStorage ile devam et
+    const real = parseInt(localStorage.getItem('nvc_vote_real')||'0');
+    const fake = parseInt(localStorage.getItem('nvc_vote_fake')||'0');
+    updateVoteUI(real, fake, voted);
+  }
 }
 
-function castVote(type) {
+async function castVote(type) {
   if (localStorage.getItem('nvc_voted')) return;
-  let real = parseInt(localStorage.getItem('nvc_vote_real')||'0');
-  let fake = parseInt(localStorage.getItem('nvc_vote_fake')||'0');
-  if (type==='real') real++; else fake++;
-  localStorage.setItem('nvc_vote_real', real);
-  localStorage.setItem('nvc_vote_fake', fake);
   localStorage.setItem('nvc_voted', type);
-  updateVoteUI(real, fake, type);
+  try {
+    // Önce mevcut sayıları oku
+    const res = await fetch(JSONBIN_URL, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    const data = await res.json();
+    let real = data.record.real || 0;
+    let fake = data.record.fake || 0;
+    if (type==='real') real++; else fake++;
+    // Güncelle
+    await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_KEY
+      },
+      body: JSON.stringify({ real, fake })
+    });
+    updateVoteUI(real, fake, type);
+  } catch(e) {
+    // Hata olursa localStorage'a yaz
+    let real = parseInt(localStorage.getItem('nvc_vote_real')||'0');
+    let fake = parseInt(localStorage.getItem('nvc_vote_fake')||'0');
+    if (type==='real') real++; else fake++;
+    localStorage.setItem('nvc_vote_real', real);
+    localStorage.setItem('nvc_vote_fake', fake);
+    updateVoteUI(real, fake, type);
+  }
 }
 
 function updateVoteUI(real, fake, voted) {
