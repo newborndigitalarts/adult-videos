@@ -1,6 +1,6 @@
-// ── NVC DATA ─────────────────────────────────────────────────
-// Bu dosya admin paneli tarafından otomatik güncellenir.
-// Manuel düzenleme yapma.
+// ── NVC DATA — v1 ────────────────────────────────────────────
+// Tek veri kaynağı. index.html ve video.html bu dosyayı yükler.
+// Admin paneli video ekle/sil işlemlerinde bu dosyayı da günceller.
 
 const videos = [
   { id:2, source:"xvideos", title:"Llorando y gritando en anal doloroso", tags:["anal","latina","painful"], views:"5.1M", duration:"10 min", hd:true, isNew:true, addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
@@ -46,5 +46,6 @@ const THUMBS = {
   "xhvSuSg":"https://ic-vt-nss.xhcdn.com/a/Y2I1M2E4ODU1NDVkZGIwZTJjOWFiNjEyMGJmMzY5ZGY/s(w:1280,h:720),webp/017/373/315/v2/2560x1440.208.webp",
   "iikhfthd84e":"https://thumb-cdn77.xvideos-cdn.com/aa28fc12-bdb7-486a-8601-ffe8d436c084/0/xv_28_t.jpg",
   "hoeumcd3fed":"https://thumb-cdn77.xvideos-cdn.com/03435b5d-3541-4310-87c1-735528466dab/0/xv_15_t.jpg",
-  "8670479":"https://ic-vt-nss.xhcdn.com/a/OTRiMmRkNWU4ODI0MDAzMGI0MmFjNGQ2YzIxNzlmMDk/s(w:1280,h:720),webp/008/670/479/v2/2560x1440.206.webp"
+  "8670479":"https://ic-vt-nss.xhcdn.com/a/OTRiMmRkNWU4ODI0MDAzMGI0MmFjNGQ2YzIxNzlmMDk/s(w:1280,h:720),webp/008/670/479/v2/2560x1440.206.webp",
+  "10614748":""
 };
