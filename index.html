@@ -582,7 +582,7 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
         </div>
 
         <div style="margin-top:14px;display:flex;gap:10px;">
-          <button class="admin-btn" onclick="saveVideo()">💾 SAVE & PUBLISH</button>
+          <button class="admin-btn" id="saveBtn" onclick="saveVideo()">💾 SAVE & PUBLISH</button>
           <button class="admin-btn secondary" onclick="resetAddForm()">RESET</button>
         </div>
         <div class="admin-status" id="saveStatus"></div>
@@ -1327,7 +1327,7 @@ async function saveVideo() {
   if (videos.find(v => v.xvId === xvId)) { setSaveStatus('Bu video zaten listede!', 'err'); return; }
 
   setSaveStatus('GitHub\'a kaydediliyor...', 'info');
-  document.querySelector('#addForm .admin-btn').disabled = true;
+  document.getElementById('saveBtn').disabled = true;
 
   try {
     const newId = Math.max(...videos.map(v=>v.id)) + 1;
@@ -1371,7 +1371,7 @@ async function saveVideo() {
     if (THUMBS[xvId]) delete THUMBS[xvId];
     setSaveStatus('Hata: ' + e.message, 'err');
   } finally {
-    document.querySelector('#addForm .admin-btn').disabled = false;
+    document.getElementById('saveBtn').disabled = false;
   }
 }
 
