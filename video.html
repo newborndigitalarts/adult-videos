@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NVC – Watch</title>
 <meta name="description" content="Watch on Naughty Video Club">
+<!-- v3: og meta — JS ile render() içinde dinamik olarak güncellenir -->
+<meta property="og:type" content="video.other">
+<meta property="og:site_name" content="NaughtyVideoClub">
+<meta property="og:title" content="NVC – Watch" id="og-title">
+<meta property="og:description" content="Watch on Naughty Video Club" id="og-desc">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 <script src="data.js"></script>
@@ -106,6 +111,21 @@ body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;
 </div>
 
 <script>
+// ── v3 ────────────────────────────────────────────────────────
+// Değişiklikler:
+//   - esc() fonksiyonu eklendi, tüm HTML çıktıları escape ediliyor (XSS fix)
+//   - render() içinde og:title ve og:description dinamik güncelleniyor
+
+// ── XSS ESCAPE ────────────────────────────────────────────────
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function getParam(name){return new URLSearchParams(window.location.search).get(name);}
 
 function goVideo(id){window.location.href='video.html?id='+id;}
@@ -116,20 +136,24 @@ function getRandom8(pool,excludeId){
   return arr.slice(0,8);
 }
 
+// v3: tüm v.title, v.tags, v.duration çıktıları esc() ile escape ediliyor
 function makeRecCard(v){
   const thumb=THUMBS[v.xvId]||('https://picsum.photos/seed/'+v.xvId+'/400/225');
   const fb='https://picsum.photos/seed/'+v.xvId+'/400/225';
+  const safeTitle = esc(v.title);
+  const safeTag   = esc(v.tags[0]||'');
+  const safeViews = esc(v.views||'');
   return '<div class="vcard" onclick="goVideo('+v.id+')">'
     +'<div class="vthumb">'
-    +'<img src="'+thumb+'" alt="" loading="lazy" onerror="this.onerror=null;this.src=\''+fb+'\'">'
+    +'<img src="'+thumb+'" alt="'+safeTitle+'" loading="lazy" onerror="this.onerror=null;this.src=\''+fb+'\'">'
     +'<div class="voverlay"><div class="vplay"></div></div>'
-    +'<span class="vdur">'+v.duration+'</span>'
+    +'<span class="vdur">'+esc(v.duration)+'</span>'
     +(v.hd?'<span class="vhd">HD</span>':'')
     +(v.isNew?'<span class="vnew">NEW</span>':'')
     +'</div>'
     +'<div class="vinfo">'
-    +'<div class="vtitle">'+v.title+'</div>'
-    +'<div class="vmeta">'+(v.views?v.views+' views • ':'')+(v.tags[0]||'')+'</div>'
+    +'<div class="vtitle">'+safeTitle+'</div>'
+    +'<div class="vmeta">'+(safeViews?safeViews+' views • ':'')+safeTag+'</div>'
     +'</div></div>';
 }
 
@@ -140,25 +164,34 @@ function render(){
   const v=videos.find(x=>x.id===id);
   if(!v){col.innerHTML='<div class="not-found"><h2>Video Not Found</h2><p>This video may have been removed.</p></div>';return;}
 
-  document.title=v.title+' – NVC';
+  // v3: og meta dinamik güncelle
+  document.title = v.title + ' – NVC';
+  const ogTitle = document.getElementById('og-title');
+  const ogDesc  = document.getElementById('og-desc');
+  if (ogTitle) ogTitle.setAttribute('content', v.title + ' – NaughtyVideoClub');
+  if (ogDesc)  ogDesc.setAttribute('content', 'Watch ' + v.title + ' on Naughty Video Club.');
 
   const primaryTag=v.tags[0]||'';
   let pool=primaryTag?videos.filter(x=>x.tags.includes(primaryTag)):videos;
   if(pool.length<5)pool=videos;
   const rec8=getRandom8(pool,v.id);
 
-  const tagsHtml=(v.tags||[]).map(t=>'<span class="tag-pill" onclick="window.location.href=\'index.html?cat='+encodeURIComponent(t)+'\'">'+t+'</span>').join('');
+  // v3: tag pill'leri esc() ile escape ediliyor
+  const tagsHtml=(v.tags||[]).map(t=>
+    '<span class="tag-pill" onclick="window.location.href=\'index.html?cat='+encodeURIComponent(t)+'\'">'+esc(t)+'</span>'
+  ).join('');
 
+  // v3: video-title ve meta alanları esc() ile escape ediliyor
   col.innerHTML=
     '<div class="player-wrap">'
-    +'<iframe src="'+v.embedUrl+'" allow="autoplay"></iframe>'
+    +'<iframe src="'+esc(v.embedUrl)+'" allow="autoplay"></iframe>'
     +'<div class="player-shield"></div>'
     +'</div>'
     +'<div class="video-info">'
-    +'<div class="video-title">'+v.title+'</div>'
+    +'<div class="video-title">'+esc(v.title)+'</div>'
     +'<div class="video-meta">'
-    +(v.views?'<span>👁 '+v.views+' views</span>':'')
-    +'<span>⏱ '+v.duration+'</span>'
+    +(v.views?'<span>👁 '+esc(v.views)+' views</span>':'')
+    +'<span>⏱ '+esc(v.duration)+'</span>'
     +(v.hd?'<span>🎬 HD</span>':'')
     +'</div>'
     +'<div class="tag-list">'+tagsHtml+'</div>'
