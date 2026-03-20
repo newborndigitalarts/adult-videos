@@ -24,7 +24,8 @@ const videos = [
   { id:37, source:"xvideos", title:"BBC DP Painal for wife", tags:["painal","bbc","wife","sharing","anal","amateur","brunette","double penetration","milf","mmf","threesome","homemade"], views:"1.5M", duration:"03:48", hd:true, isNew:false, addedAt:41, xvId:"iikhfthd84e", embedUrl:"https://www.xvideos.com/embedframe/iikhfthd84e" },
   { id:38, source:"xvideos", title:"Up her ass", tags:["anal","painal","amateur","doggystyle","milf","painful","rough","homemade","bbc"], views:"1,3M", duration:"08:35", hd:true, isNew:false, addedAt:42, xvId:"hoeumcd3fed", embedUrl:"https://www.xvideos.com/embedframe/hoeumcd3fed" },
   { id:39, source:"xvideos", title:"Husbands Filming their Hot Wives in Action", tags:["amateur","gangbang","doggystyle","threesome","wife","mmf","sharing","compilation","tag team","milf"], views:"998K", duration:"24:03", hd:true, isNew:false, addedAt:43, xvId:"8670479", embedUrl:"https://xhamster.com/xembed.php?video=8670479" },
-  { id:40, source:"xvideos", title:"your boyfriend fucked my ass", tags:["ffm","threesome","anal","amateur","homemade"], views:"527K", duration:"06:31", hd:true, isNew:false, addedAt:44, xvId:"https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495", embedUrl:"https://www.xvideos.com/embedframe/https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495" }
+  { id:40, source:"xvideos", title:"your boyfriend fucked my ass", tags:["ffm","threesome","anal","amateur","homemade"], views:"527K", duration:"06:31", hd:true, isNew:false, addedAt:44, xvId:"https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495", embedUrl:"https://www.xvideos.com/embedframe/https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495" },
+  { id:41, source:"xhamster", title:"Husband coaches wife", tags:["cuckold","wife","homemade"], views:"668K", duration:"07:16", hd:true, isNew:false, addedAt:45, xvId:"14385902", embedUrl:"https://xhamster.com/xembed.php?video=14385902" }
 ];
 
 const THUMBS = {
@@ -32,6 +33,7 @@ const THUMBS = {
   "9218463":"https://ic-vt-nss.xhcdn.com/a/YTI1ZmZmZDRmNGEwNjcxNzM4NjI4YTBmNzAyNzg3ZmM/s(w:1280,h:720),webp/009/218/463/v2/2560x1440.207.webp",
   "12623636":"https://ic-vt-nss.xhcdn.com/a/M2I5ZmMyNTQyY2Y4MTkxNzE1NGM5NTQwZjRjYjU4OGU/s(w:1280,h:720),webp/012/623/636/v2/2560x1440.229.webp",
   "13863614":"https://ic-vt-nss.xhcdn.com/a/MGViNTY4YTVkMjAxNmQ4YTg0NjQ1MDI4MzJhNDdlN2U/s(w:1280,h:720),webp/013/863/614/v2/2560x1440.204.webp",
+  "14385902":"https://ic-vt-nss.xhcdn.com/a/YWI0NjkxMThjYWVkYTRiMjRkN2VlYzNhZDllZjRlNGM/s(w:1280,h:720),webp/014/385/902/v2/2560x1440.220.webp",
   "kdatkmhd92c":"https://thumb-cdn77.xvideos-cdn.com/e45152e0-1792-4c1c-a567-0e47ae0ea543/0/xv_5_t.jpg",
   "uebpaim777c":"https://thumb-cdn77.xvideos-cdn.com/617b6438-4097-41e7-9948-b6edf20c1105/0/xv_3_t.jpg",
   "klekcih2186":"https://thumb-cdn77.xvideos-cdn.com/4d1d8c9a-a73f-45ad-a64e-5a2eebc68554/0/xv_27_t.jpg",
