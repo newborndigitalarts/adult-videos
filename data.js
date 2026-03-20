@@ -1,6 +1,6 @@
-// ── NVC DATA — v1 ────────────────────────────────────────────
+// ── NVC DATA — v2 ────────────────────────────────────────────
 // Tek veri kaynağı. index.html ve video.html bu dosyayı yükler.
-// Admin paneli video ekle/sil işlemlerinde bu dosyayı da günceller.
+// Admin paneli video ekle/sil işlemlerinde SADECE bu dosyayı günceller.
 
 const videos = [
   { id:2, source:"xvideos", title:"Llorando y gritando en anal doloroso", tags:["anal","latina","painful"], views:"5.1M", duration:"10 min", hd:true, isNew:true, addedAt:24, xvId:"kdatkmhd92c", embedUrl:"https://www.xvideos.com/embedframe/kdatkmhd92c" },
@@ -24,7 +24,6 @@ const videos = [
   { id:37, source:"xvideos", title:"BBC DP Painal for wife", tags:["painal","bbc","wife","sharing","anal","amateur","brunette","double penetration","milf","mmf","threesome","homemade"], views:"1.5M", duration:"03:48", hd:true, isNew:false, addedAt:41, xvId:"iikhfthd84e", embedUrl:"https://www.xvideos.com/embedframe/iikhfthd84e" },
   { id:38, source:"xvideos", title:"Up her ass", tags:["anal","painal","amateur","doggystyle","milf","painful","rough","homemade","bbc"], views:"1,3M", duration:"08:35", hd:true, isNew:false, addedAt:42, xvId:"hoeumcd3fed", embedUrl:"https://www.xvideos.com/embedframe/hoeumcd3fed" },
   { id:39, source:"xvideos", title:"Husbands Filming their Hot Wives in Action", tags:["amateur","gangbang","doggystyle","threesome","wife","mmf","sharing","compilation","tag team","milf"], views:"998K", duration:"24:03", hd:true, isNew:false, addedAt:43, xvId:"8670479", embedUrl:"https://xhamster.com/xembed.php?video=8670479" },
-  { id:40, source:"xvideos", title:"your boyfriend fucked my ass", tags:["ffm","threesome","anal","amateur","homemade"], views:"527K", duration:"06:31", hd:true, isNew:false, addedAt:44, xvId:"https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495", embedUrl:"https://www.xvideos.com/embedframe/https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495" },
   { id:41, source:"xhamster", title:"Husband coaches wife", tags:["cuckold","wife","homemade"], views:"668K", duration:"07:16", hd:true, isNew:false, addedAt:45, xvId:"14385902", embedUrl:"https://xhamster.com/xembed.php?video=14385902" }
 ];
 
@@ -49,6 +48,5 @@ const THUMBS = {
   "xhF3CBZ":"https://ic-vt-nss.xhcdn.com/a/MTQ0NzUyNzdlNDI2MjM4NzBhOTk2N2EwMmMwYzZlMjc/s(w:1280,h:720),webp/017/994/540/v2/2560x1440.207.webp",
   "xhvSuSg":"https://ic-vt-nss.xhcdn.com/a/Y2I1M2E4ODU1NDVkZGIwZTJjOWFiNjEyMGJmMzY5ZGY/s(w:1280,h:720),webp/017/373/315/v2/2560x1440.208.webp",
   "iikhfthd84e":"https://thumb-cdn77.xvideos-cdn.com/aa28fc12-bdb7-486a-8601-ffe8d436c084/0/xv_28_t.jpg",
-  "hoeumcd3fed":"https://thumb-cdn77.xvideos-cdn.com/03435b5d-3541-4310-87c1-735528466dab/0/xv_15_t.jpg",
-  "https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495":"https://ic-vt-nss.xhcdn.com/a/OGQwY2EyYjdlYjYwZDgwOGIxYmIxN2VmNDNkOTA0Yzg/s(w:1280,h:720),webp/009/673/495/v2/2560x1440.202.webp"
+  "hoeumcd3fed":"https://thumb-cdn77.xvideos-cdn.com/03435b5d-3541-4310-87c1-735528466dab/0/xv_15_t.jpg"
 };
