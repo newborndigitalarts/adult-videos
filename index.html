@@ -1207,4 +1207,11 @@ initVote();
 setTab('home');
 loadMissingThumbs();
 
-// URL'den kategori parametresi varsa direk
+// URL'den kategori parametresi varsa direkt aç (video.html tag pill'lerinden gelir)
+(function() {
+  const cat = new URLSearchParams(window.location.search).get('cat');
+  if (cat) { setTab('cat', cat); document.getElementById('tab-categories').classList.add('active'); }
+})();
+</script>
+</body>
+</html>
