@@ -23,10 +23,12 @@ const videos = [
   { id:36, source:"xhamster", title:"Hot gang DP", tags:["gangbang","amateur","painful","double penetration","homemade","sharing"], views:"254K", duration:"00:45", hd:true, isNew:false, addedAt:40, xvId:"xhvSuSg", embedUrl:"https://xhamster.com/xembed.php?video=xhvSuSg" },
   { id:37, source:"xvideos", title:"BBC DP Painal for wife", tags:["painal","bbc","wife","sharing","anal","amateur","brunette","double penetration","milf","mmf","threesome","homemade"], views:"1.5M", duration:"03:48", hd:true, isNew:false, addedAt:41, xvId:"iikhfthd84e", embedUrl:"https://www.xvideos.com/embedframe/iikhfthd84e" },
   { id:38, source:"xvideos", title:"Up her ass", tags:["anal","painal","amateur","doggystyle","milf","painful","rough","homemade","bbc"], views:"1,3M", duration:"08:35", hd:true, isNew:false, addedAt:42, xvId:"hoeumcd3fed", embedUrl:"https://www.xvideos.com/embedframe/hoeumcd3fed" },
-  { id:39, source:"xvideos", title:"Husbands Filming their Hot Wives in Action", tags:["amateur","gangbang","doggystyle","threesome","wife","mmf","sharing","compilation","tag team","milf"], views:"998K", duration:"24:03", hd:true, isNew:false, addedAt:43, xvId:"8670479", embedUrl:"https://xhamster.com/xembed.php?video=8670479" }
+  { id:39, source:"xvideos", title:"Husbands Filming their Hot Wives in Action", tags:["amateur","gangbang","doggystyle","threesome","wife","mmf","sharing","compilation","tag team","milf"], views:"998K", duration:"24:03", hd:true, isNew:false, addedAt:43, xvId:"8670479", embedUrl:"https://xhamster.com/xembed.php?video=8670479" },
+  { id:40, source:"xvideos", title:"your boyfriend fucked my ass", tags:["ffm","threesome","anal","amateur","homemade"], views:"527K", duration:"06:31", hd:true, isNew:false, addedAt:44, xvId:"https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495", embedUrl:"https://www.xvideos.com/embedframe/https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495" }
 ];
 
 const THUMBS = {
+  "8670479":"https://ic-vt-nss.xhcdn.com/a/OTRiMmRkNWU4ODI0MDAzMGI0MmFjNGQ2YzIxNzlmMDk/s(w:1280,h:720),webp/008/670/479/v2/2560x1440.206.webp",
   "9218463":"https://ic-vt-nss.xhcdn.com/a/YTI1ZmZmZDRmNGEwNjcxNzM4NjI4YTBmNzAyNzg3ZmM/s(w:1280,h:720),webp/009/218/463/v2/2560x1440.207.webp",
   "12623636":"https://ic-vt-nss.xhcdn.com/a/M2I5ZmMyNTQyY2Y4MTkxNzE1NGM5NTQwZjRjYjU4OGU/s(w:1280,h:720),webp/012/623/636/v2/2560x1440.229.webp",
   "13863614":"https://ic-vt-nss.xhcdn.com/a/MGViNTY4YTVkMjAxNmQ4YTg0NjQ1MDI4MzJhNDdlN2U/s(w:1280,h:720),webp/013/863/614/v2/2560x1440.204.webp",
@@ -46,6 +48,5 @@ const THUMBS = {
   "xhvSuSg":"https://ic-vt-nss.xhcdn.com/a/Y2I1M2E4ODU1NDVkZGIwZTJjOWFiNjEyMGJmMzY5ZGY/s(w:1280,h:720),webp/017/373/315/v2/2560x1440.208.webp",
   "iikhfthd84e":"https://thumb-cdn77.xvideos-cdn.com/aa28fc12-bdb7-486a-8601-ffe8d436c084/0/xv_28_t.jpg",
   "hoeumcd3fed":"https://thumb-cdn77.xvideos-cdn.com/03435b5d-3541-4310-87c1-735528466dab/0/xv_15_t.jpg",
-  "8670479":"https://ic-vt-nss.xhcdn.com/a/OTRiMmRkNWU4ODI0MDAzMGI0MmFjNGQ2YzIxNzlmMDk/s(w:1280,h:720),webp/008/670/479/v2/2560x1440.206.webp",
-  "10614748":""
+  "https://xhamster.com/videos/your-boyfriend-fucked-my-ass-9673495":"https://ic-vt-nss.xhcdn.com/a/OGQwY2EyYjdlYjYwZDgwOGIxYmIxN2VmNDNkOTA0Yzg/s(w:1280,h:720),webp/009/673/495/v2/2560x1440.202.webp"
 };
