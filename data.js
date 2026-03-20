@@ -23,7 +23,8 @@ const videos = [
   { id:37, source:"xvideos", title:"BBC DP Painal for wife", tags:["painal","bbc","wife","sharing","anal","amateur","brunette","double penetration","milf","mmf","threesome","homemade"], views:"1.5M", duration:"03:48", hd:true, isNew:false, addedAt:41, xvId:"iikhfthd84e", embedUrl:"https://www.xvideos.com/embedframe/iikhfthd84e" },
   { id:38, source:"xvideos", title:"Up her ass", tags:["anal","painal","amateur","doggystyle","milf","painful","rough","homemade","bbc"], views:"1,3M", duration:"08:35", hd:true, isNew:false, addedAt:42, xvId:"hoeumcd3fed", embedUrl:"https://www.xvideos.com/embedframe/hoeumcd3fed" },
   { id:39, source:"xvideos", title:"Husbands Filming their Hot Wives in Action", tags:["amateur","gangbang","doggystyle","threesome","wife","mmf","sharing","compilation","tag team","milf"], views:"998K", duration:"24:03", hd:true, isNew:false, addedAt:43, xvId:"8670479", embedUrl:"https://xhamster.com/xembed.php?video=8670479" },
-  { id:41, source:"xhamster", title:"Husband coaches wife", tags:["cuckold","wife","homemade"], views:"668K", duration:"07:16", hd:true, isNew:false, addedAt:45, xvId:"14385902", embedUrl:"https://xhamster.com/xembed.php?video=14385902" }
+  { id:41, source:"xhamster", title:"Husband coaches wife", tags:["cuckold","wife","homemade"], views:"668K", duration:"07:16", hd:true, isNew:false, addedAt:45, xvId:"14385902", embedUrl:"https://xhamster.com/xembed.php?video=14385902" },
+  { id:42, source:"xvideos", title:"Awesome russian girl", tags:["deepthroat","amateur","blowjob","homemade","russian"], views:"567K", duration:"05:54", hd:true, isNew:false, addedAt:46, xvId:"ivdkochfcb0", embedUrl:"https://www.xvideos.com/embedframe/ivdkochfcb0" }
 ];
 
 const THUMBS = {
@@ -47,5 +48,6 @@ const THUMBS = {
   "xhF3CBZ":"https://ic-vt-nss.xhcdn.com/a/MTQ0NzUyNzdlNDI2MjM4NzBhOTk2N2EwMmMwYzZlMjc/s(w:1280,h:720),webp/017/994/540/v2/2560x1440.207.webp",
   "xhvSuSg":"https://ic-vt-nss.xhcdn.com/a/Y2I1M2E4ODU1NDVkZGIwZTJjOWFiNjEyMGJmMzY5ZGY/s(w:1280,h:720),webp/017/373/315/v2/2560x1440.208.webp",
   "iikhfthd84e":"https://thumb-cdn77.xvideos-cdn.com/aa28fc12-bdb7-486a-8601-ffe8d436c084/0/xv_28_t.jpg",
-  "hoeumcd3fed":"https://thumb-cdn77.xvideos-cdn.com/03435b5d-3541-4310-87c1-735528466dab/0/xv_15_t.jpg"
+  "hoeumcd3fed":"https://thumb-cdn77.xvideos-cdn.com/03435b5d-3541-4310-87c1-735528466dab/0/xv_15_t.jpg",
+  "ivdkochfcb0":"https://thumbs-gcore.xvideos-cdn.com/bda8fb7f-fdf3-412b-86de-7fc3be197c77/0/xv_24_t.jpg"
 };
