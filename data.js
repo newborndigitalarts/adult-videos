@@ -26,7 +26,8 @@ const videos = [
   { id:39, source:"xvideos", title:"Husbands Filming their Hot Wives in Action", tags:["amateur","gangbang","doggystyle","threesome","wife","mmf","sharing","compilation","tag team","milf"], views:"998K", duration:"24:03", hd:true, isNew:false, addedAt:43, xvId:"8670479", embedUrl:"https://xhamster.com/xembed.php?video=8670479" },
   { id:41, source:"xhamster", title:"Husband coaches wife", tags:["cuckold","wife","homemade"], views:"668K", duration:"07:16", hd:true, isNew:false, addedAt:45, xvId:"14385902", embedUrl:"https://xhamster.com/xembed.php?video=14385902" },
   { id:42, source:"xvideos", title:"russian home porn", tags:["russian","wife","mature","amateur","anal","homemade"], views:"853K", duration:"10:19", hd:true, isNew:false, addedAt:46, xvId:"https://www.xvideos3.com/video.hfmbehm8ea5/russian_home_porn_mature_vol.2", embedUrl:"https://www.xvideos.com/embedframe/https://www.xvideos3.com/video.hfmbehm8ea5/russian_home_porn_mature_vol.2" },
-  { id:43, source:"xvideos", title:"olya fucked in her ass", tags:["russian","homemade","anal","amateur"], views:"658K", duration:"04:26", hd:true, isNew:false, addedAt:47, xvId:"ahtpui1e3e", embedUrl:"https://www.xvideos.com/embedframe/ahtpui1e3e" }
+  { id:43, source:"xvideos", title:"olya fucked in her ass", tags:["russian","homemade","anal","amateur"], views:"658K", duration:"04:26", hd:true, isNew:false, addedAt:47, xvId:"ahtpui1e3e", embedUrl:"https://www.xvideos.com/embedframe/ahtpui1e3e" },
+  { id:44, source:"xvideos", title:"russian hot couple", tags:["russian","amateur","homemade"], views:"296K", duration:"03:30", hd:true, isNew:false, addedAt:48, xvId:"https://www.xvideos3.com/video.kioileha0f7/russian_home_video", embedUrl:"https://www.xvideos.com/embedframe/https://www.xvideos3.com/video.kioileha0f7/russian_home_video" }
 ];
 
 const THUMBS = {
@@ -52,5 +53,6 @@ const THUMBS = {
   "iikhfthd84e":"https://thumb-cdn77.xvideos-cdn.com/aa28fc12-bdb7-486a-8601-ffe8d436c084/0/xv_28_t.jpg",
   "hoeumcd3fed":"https://thumb-cdn77.xvideos-cdn.com/03435b5d-3541-4310-87c1-735528466dab/0/xv_15_t.jpg",
   "https://www.xvideos3.com/video.hfmbehm8ea5/russian_home_porn_mature_vol.2":"https://thumb-cdn77.xvideos-cdn.com/ca639d28-8436-4554-a38d-c534e2807ccc/0/xv_30_t.jpg",
-  "ahtpui1e3e":"https://thumbs-gcore.xvideos-cdn.com/3b98db0c-f8d4-44f4-9230-12fbaa1ccf6f/0/xv_7_t.jpg"
+  "ahtpui1e3e":"https://thumbs-gcore.xvideos-cdn.com/3b98db0c-f8d4-44f4-9230-12fbaa1ccf6f/0/xv_7_t.jpg",
+  "https://www.xvideos3.com/video.kioileha0f7/russian_home_video":"https://thumb-cdn77.xvideos-cdn.com/718add7f-5d98-4931-b0c8-46d4d3b40dd9/0/xv_21_t.jpg"
 };
