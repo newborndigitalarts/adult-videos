@@ -38,7 +38,8 @@ const videos = [
   { id:51, source:"xvideos", title:"Sex with the secretary in the office", tags:["turkish","amateur","anal","office"], views:"648K", duration:"03:18", hd:true, isNew:false, addedAt:55, xvId:"dcbem5298", embedUrl:"https://www.xvideos.com/embedframe/dcbem5298" },
   { id:52, source:"xvideos", title:"Amateur Anal", tags:["amateur","anal","turkish","homemade"], views:"751K", duration:"04:24", hd:true, isNew:false, addedAt:56, xvId:"huvcimfe540", embedUrl:"https://www.xvideos.com/embedframe/huvcimfe540" },
   { id:53, source:"xvideos", title:"Mature woman with his boyfriend", tags:["mature","amateur","homemade","doggystyle","painful"], views:"745K", duration:"03:29", hd:true, isNew:false, addedAt:57, xvId:"hdhfpkm3b41", embedUrl:"https://www.xvideos.com/embedframe/hdhfpkm3b41" },
-  { id:54, source:"xvideos", title:"b. facefucking, slapping and face spitting", tags:["humiliation","amateur","facefuck","slapping","rough","homemade","deepthroat"], views:"852K", duration:"16:08", hd:true, isNew:false, addedAt:58, xvId:"klcatbd1d9a", embedUrl:"https://www.xvideos.com/embedframe/klcatbd1d9a" }
+  { id:54, source:"xvideos", title:"b. facefucking, slapping and face spitting", tags:["humiliation","amateur","facefuck","slapping","rough","homemade","deepthroat"], views:"852K", duration:"16:08", hd:true, isNew:false, addedAt:58, xvId:"klcatbd1d9a", embedUrl:"https://www.xvideos.com/embedframe/klcatbd1d9a" },
+  { id:55, source:"xvideos", title:"Teen deepthroat", tags:["deepthroat","amateur","homemade","facefuck"], views:"265K", duration:"17:39", hd:true, isNew:false, addedAt:59, xvId:"hkpuaib4509", embedUrl:"https://www.xvideos.com/embedframe/hkpuaib4509" }
 ];
 
 const THUMBS = {
@@ -75,5 +76,6 @@ const THUMBS = {
   "dcbem5298":"https://thumb-cdn77.xvideos-cdn.com/a8111126-2fe8-4c5d-bb4b-08083b4719d9/0/xv_20_p.jpg",
   "huvcimfe540":"https://thumb-cdn77.xvideos-cdn.com/6fa6c795-5cca-4331-b22f-7e0e5c4675a2/0/xv_18_t.jpg",
   "hdhfpkm3b41":"https://thumb-cdn77.xvideos-cdn.com/abda5ceb-61dd-42b7-adcf-e91c93415864/0/xv_19_t.jpg",
-  "klcatbd1d9a":"https://thumb-cdn77.xvideos-cdn.com/5ee20473-9986-48d1-b685-62bc7ad774e7/0/xv_6_t.jpg"
+  "klcatbd1d9a":"https://thumb-cdn77.xvideos-cdn.com/5ee20473-9986-48d1-b685-62bc7ad774e7/0/xv_6_t.jpg",
+  "hkpuaib4509":"https://thumb-cdn77.xvideos-cdn.com/0b92b05f-1f3c-492c-905b-8dcdab1b321f/0/xv_13_t.jpg"
 };
